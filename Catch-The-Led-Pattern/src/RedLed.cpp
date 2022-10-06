@@ -12,11 +12,12 @@ class RedLed : public Led {
         RedLed(int input_pin){
             Led::setPin(input_pin);
         }
+
         void setFade(){
-            analogWrite(this->PIN, brightness);
-            brightness = brightness + fadeAmount;
-            if (brightness == 0 || brightness == 255){
-                fadeAmount = -fadeAmount;
+            analogWrite(this->PIN, this->brightness);
+            this->brightness = this->brightness + this->fadeAmount;
+            if (this->brightness == 0 or this->brightness == 255){
+                this->fadeAmount *= -1;
             }
         }
 
