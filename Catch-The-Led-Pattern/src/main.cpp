@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include "GreenLed.cpp"
+#include "RedLed.cpp"
 /*
 
   CLASSI : 
@@ -55,6 +57,7 @@
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
 void setup() {
+  
   // put your setup code here, to run once:
 }
 
