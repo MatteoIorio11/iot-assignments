@@ -2,15 +2,34 @@
 /*
 
   CLASSI : 
-  1- Classe per i LED
+  1- Classe per i LED {ABSTRACT}: 
+      + stato
+      - manage stato (get/set)
+      - manage fade(+ luminosità) *only for red led*
   2- Classe per creare il pattern dei LED e gestisce la comparazione con quella presa in input dall'utente:
+      - generate pattern
+      - manage the difficulty 
+      - manage the game over
+      - manage the timers
+      - comparison pattern
         * Bot.pattern == Utente.pattern ? 1 : 0
-  3- Classe utente nella quale si crea il pattern di Input
+  3- Classe utente nella quale si gestisce il pattern di Input
+      - manage the input pattern
   4- ? Gestione fade del potenziometro ?
 
   ++++++++++++++++ STATI DEL PROGRAMMA +++++++++++++++++++
 
-  * start -> [PHASE 1] red led is blinking -> when T1 ( FIRST BUTTON ) is touched the game begins -> 
+  * start -> [PHASE 1] red led is blinking -> 
+                    
+                    --------------- SELECT THE DIFFICULTY ---------------
+                    1) By using the Potentiometer we can select the difficulty of our project : 
+                      1 ) easy 
+                      2 ) normal
+                      3 ) medium
+                      4 ) difficult 
+                      for each difficulty we have a different style of X2 - X3 seconds reduction
+                    
+                    when T1 ( FIRST BUTTON ) is touched the game begins -> 
                     before 10 seconds : -> all leds go off -> 
                                           1) Print on the serial line :"GO" and the score is set to 0 (zero)
                                           ---- GAME BEGIN ---- 
@@ -31,7 +50,9 @@
 
   LOGICA : 
   1)  La logica della scelta del pattern è un semplice array di boleani/interi [0, 1, 0, 0] -> LED 1 ACCESO, LED 2, LED 0, LED 3 ==> SPENTI
-  2)  
+  2)  X1 timer (10 seconds, the first timer ) -> if the player starts the game -> the handler must controll the state of the loop looking at the STATE
+  3)  The main is views has a big switch, in different case we have different option to do. 
+      -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
 void setup() {
   // put your setup code here, to run once:
