@@ -16,4 +16,8 @@ class User{
                 positions[i]=false;
             }
         }
+
+        bool[] getPositions(){
+            return positions;
+        }
 };
