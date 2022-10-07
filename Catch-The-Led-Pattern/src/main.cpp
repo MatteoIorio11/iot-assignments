@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include "GreenLed.cpp"
 #include "RedLed.cpp"
+#include "Status.cpp"
+#include "User.cpp"
+#include "Bot.cpp"
 /*
 
   CLASSI : 
