@@ -10,5 +10,10 @@ class User{
                 positions[selected_pos]=true;
             }
         }
-
+    
+        void resetAllPositions(){
+            for(int i = 0; i < NLED, i++){
+                positions[i]=false;
+            }
+        }
 };
