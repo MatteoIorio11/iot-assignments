@@ -2,7 +2,7 @@
 class User{
 
     private : 
-        bool positions[NLED];
+        bool positions[NLED] = {false};
     
     public : 
         void addPos(int selected_pos){
@@ -12,12 +12,12 @@ class User{
         }
     
         void resetAllPositions(){
-            for(int i = 0; i < NLED, i++){
+            for(int i = 0; i < NLED; i++){
                 positions[i]=false;
             }
         }
 
-        bool[] getPositions(){
+        bool* getPositions(){
             return positions;
         }
 };
