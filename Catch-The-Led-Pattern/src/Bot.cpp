@@ -51,4 +51,14 @@ class Bot{
                 return false;
             }
         }
+
+        /*
+        *   Resets the sequence
+        */
+
+        void resetSequence(){
+            for(int i = 0; i < 3; i++){
+                this->positions[i] = 0;
+            }
+        }
 };
