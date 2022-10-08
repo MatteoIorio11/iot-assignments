@@ -10,7 +10,7 @@
 
 class Bot{
     private:
-        int positions[NLED] = {0, 0, 0, 0};
+        bool positions[NLED] = {false};
 
     public:
 
@@ -21,13 +21,9 @@ class Bot{
         void generateSequence(){
             int count = 1;
             srand((unsigned) time(NULL));
-            while(count <= 4){
-                int randNum = rand() % 4;
-                while(this->positions[randNum] != 0){
-                    randNum = rand() % 4;
-                }
-                this->positions[randNum] = count;
-                count++;
+            for(int i = 0; i < NLED; i++){
+                //If the random number generated is even, then the led is setted to TRUE ( LIGHT ON ), in the other case the led is off.
+                this->positions[i] = ((rand() % 10) + 1) % 2 == 0 ? true : false;
             }
         }
 
@@ -35,7 +31,7 @@ class Bot{
         *   returns the sequence
         */
 
-        int* getSequence(){
+        bool* getSequence(){
             return this->positions;
         }
 
@@ -45,11 +41,7 @@ class Bot{
 
 
         bool validate(int position, int val){
-            if(this->positions[position] == val){
-                return true;
-            }else{
-                return false;
-            }
+            return this->positions[position] == val;
         }
 
         /*
@@ -57,8 +49,8 @@ class Bot{
         */
 
         void resetSequence(){
-            for(int i = 0; i < 3; i++){
-                this->positions[i] = 0;
+            for(int i = 0; i < NLED; i++){
+                this->positions[i] = false;
             }
         }
 };
