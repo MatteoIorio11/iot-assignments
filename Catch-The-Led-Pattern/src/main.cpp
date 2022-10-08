@@ -4,6 +4,8 @@
 #include "Status.cpp"
 #include "User.cpp"
 #include "Bot.cpp"
+#include "TimerController.cpp"
+
 /*
 
   CLASSI : 
@@ -59,9 +61,30 @@
   3)  The main is views has a big switch, in different case we have different option to do. 
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
+/*---- LEDS -----*/
+#define PIN_LED_1_GREEN 13
+#define PIN_LED_2_GREEN 12
+#define PIN_LED_3_GREEN 11
+#define PIN_LED_4_GREEN 10
+#define PIN_RED_LED 9
+/*---- POTENTIOMETER -----*/
+#define POTENTIOMETER_INPUT_PIN A0;
+/*---- BUTTONS -----*/
+#define PIN_BUTTON_1 2
+#define PIN_BUTTON_1 3
+#define PIN_BUTTON_1 4
+#define PIN_BUTTON_1 5
+
+User *user; 
+Bot *bot;
+TimerController *timer;
+STATUS status;
+
 void setup() {
-  
-  // put your setup code here, to run once:
+  user = new User();
+  bot = new Bot(); 
+  status = (STATUS) 0;
+
 }
 
 void loop() {
