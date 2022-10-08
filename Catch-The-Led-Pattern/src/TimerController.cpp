@@ -5,12 +5,13 @@
 #define NORMAL 1
 #define MEDIUM 1.5
 #define HARD 2
+#define NOT_SET -1
 
 class TimerController{
     private :
-        float timer_t1 = 0;
-        float timer_t2 = 0;
-        float timer_t3 = 0;
+        float timer_t1 = NOT_SET;
+        float timer_t2 = NOT_SET;
+        float timer_t3 = NOT_SET;
         float factor = 0;
     
     public:
@@ -39,12 +40,14 @@ class TimerController{
         }
         float showPattern(){
             //manage the timer t2 : the leds are then turned on according to some  random pattern, for some time T2 and then turned off again 
-            this->timer_t2 =  ((rand() % 10) + 1);
+            if(this->timer_t2 == NOT_SET)
+                this->timer_t2 =  ((rand() % 10) + 1);
             return this->timer_t2;
         }
         float beginGame(){
             //manage the timer t3 : the player has max T3 time for recreating the pattern by pressing the buttons T1…T4 
-            this->timer_t3 =  ((rand() % 10) + 1);
+            if(this->timer_t3 == NOT_SET)
+                this->timer_t3 =  ((rand() % 10) + 1);
             return this->timer_t3;
         }
         void reduceTimers(){
