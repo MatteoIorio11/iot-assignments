@@ -19,7 +19,6 @@ class Bot{
         */
 
         void generateSequence(){
-            int count = 1;
             srand((unsigned) time(NULL));
             for(int i = 0; i < NLED; i++){
                 //If the random number generated is even, then the led is setted to TRUE ( LIGHT ON ), in the other case the led is off.
@@ -40,8 +39,17 @@ class Bot{
         */
 
 
-        bool validate(int position, int val){
+        bool validate(int position, bool val){
             return this->positions[position] == val;
+        }
+
+        bool validate(bool* input_array){
+            for(int i = 0; i < NLED; i++){
+                if(this->positions[i] != input_array[i]){
+                    return false;
+                }
+            }
+            return true;
         }
 
         /*
