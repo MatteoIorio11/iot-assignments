@@ -71,9 +71,9 @@
 #define POTENTIOMETER_INPUT_PIN A0;
 /*---- BUTTONS -----*/
 #define PIN_BUTTON_1 2
-#define PIN_BUTTON_1 3
-#define PIN_BUTTON_1 4
-#define PIN_BUTTON_1 5
+#define PIN_BUTTON_2 3
+#define PIN_BUTTON_3 4
+#define PIN_BUTTON_4 5
 
 User *user; 
 Bot *bot;
@@ -84,9 +84,25 @@ void setup() {
   user = new User();
   bot = new Bot(); 
   status = (STATUS) 0;
-
+  Serial.begin(9600);
+  /*--SET LEDS--*/
+  pinMode(PIN_LED_1_GREEN, OUTPUT);
+  pinMode(PIN_LED_2_GREEN, OUTPUT);
+  pinMode(PIN_LED_3_GREEN, OUTPUT);
+  pinMode(PIN_LED_4_GREEN, OUTPUT);
+  /*--SET BUTTONS--*/
+  pinMode(PIN_BUTTON_1, INPUT);
+  pinMode(PIN_BUTTON_2, INPUT);
+  pinMode(PIN_BUTTON_3, INPUT);
+  pinMode(PIN_BUTTON_4, INPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  switch (status)
+  {
+  case /* constant-expression */:
+    /* code */
+    break;
+  }
 }
