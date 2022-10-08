@@ -15,13 +15,13 @@ class Bot{
     public:
 
         /*  builds the light pattern
-        *
+        * 
         */
 
         void generateSequence(){
             srand((unsigned) time(NULL));
             for(int i = 0; i < NLED; i++){
-                //If the random number generated is even, then the led is setted to TRUE ( LIGHT ON ), in the other case the led is off.
+                //If the random number generated is even, then the led will be setted to TRUE ( LIGHT ON ), in the other case the led is off.
                 this->positions[i] = ((rand() % 10) + 1) % 2 == 0 ? true : false;
             }
         }
