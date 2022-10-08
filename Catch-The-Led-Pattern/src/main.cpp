@@ -83,7 +83,7 @@ STATUS status;
 void setup() {
   user = new User();
   bot = new Bot(); 
-  status = (STATUS) 0;
+  status = (STATUS) -1;
   Serial.begin(9600);
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
