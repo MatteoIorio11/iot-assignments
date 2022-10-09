@@ -80,7 +80,7 @@
 #define PIN_BUTTON_3 4
 #define PIN_BUTTON_4 5
 
-volatile int begin_game_cont = 0;
+volatile int begin_game_cont = 0, timer_deep_sleep = 0;
 int penalties = 0;
 bool first_time = true, first_time2 = true, penalty = false, time_finish = false;
 User *user; 
@@ -92,12 +92,17 @@ int score = 0;
 
 
 void startGame(){
+  redLed->setOff();
+  status = GAME_START;
   if(status == INPUT_WAIT){
-    Serial.println("B1 is pressed, the game starts..");
-    status = GAME_START;
-    redLed->setOff();
-    Timer1.detachInterrupt();
+    Serial.println("-> B1 is pressed, the game starts..");
+    detachInterrupt(PIN_BUTTON_1);
+  }else{
+    Serial.println("==> Just wake up, the game is now starting...");
+    Serial.flush();
     sleep_disable();
+    detachInterrupt(PIN_BUTTON_2);
+    Timer1.detachInterrupt();
   }
 }
 
@@ -133,21 +138,21 @@ void checkPatterns(){
 }
 
 void deepSleep(){
-  delay(10000);
-  if(status == INPUT_WAIT){
-    redLed->setFade();
-    delay(100);
-    /*
-    Serial.println("Going to sleep");
-    Serial.flush();
-    redLed->setOff();
-    set_sleep_mode(SLEEP_MODE_IDLE);
-    sleep_enable();
-    sleep_mode();
-    Serial.println("Now up");
-    Serial.flush();
-    redLed->setFade();
-    */
+  timer_deep_sleep++;
+  if(timer_deep_sleep == 2){
+    if(status == INPUT_WAIT){
+      Serial.println("=> Going to sleep");
+      Serial.flush();
+      sleep_enable();
+      status = DEEP_SLEEP;
+      redLed->setOff();
+      delay(100);
+      //power_spi_enable();
+      set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+      //sleep_cpu();
+      //sleep_mode();
+      //sleep_disable();
+   }
   }
 }
 
@@ -173,16 +178,16 @@ void setup() {
   pinMode(PIN_BUTTON_4, INPUT);
   /* */
 
-  /*MANAGE INTERRUPTS */
-  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, CHANGE);
 
   /*SLEEP MODE */
   timer->ledsOff();
   //Timer1.setPeriod(10000000);
-  //Timer1.initialize(TEN_SECONDS);
-  //Timer1.attachInterrupt(deepSleep);
+  Timer1.initialize(TEN_SECONDS);
+  Timer1.attachInterrupt(deepSleep);
 
-  attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
+  /*MANAGE INTERRUPTS */
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, RISING);     
+  //attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
 
@@ -205,7 +210,8 @@ void loop() {
       delay(50);
       break;
     case GAME_START:
-      //Timer1.detachInterrupt();
+      timer_deep_sleep = 0;
+      Timer1.detachInterrupt();
       Serial.println("The game is starting..");
       Serial.flush();
       bot->generateSequence();
