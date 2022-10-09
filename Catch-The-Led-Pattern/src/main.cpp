@@ -5,7 +5,6 @@
 #include "User.cpp"
 #include "Bot.cpp"
 #include "TimerController.cpp"
-
 /*
 
   CLASSI : 
@@ -79,12 +78,15 @@ User *user;
 Bot *bot;
 TimerController *timer;
 STATUS status;
+RedLed *redLed;
 
 void setup() {
+
   user = new User();
   bot = new Bot(); 
-  status = (STATUS) -1;
+  status = INPUT_WAIT;
   Serial.begin(9600);
+  redLed = new RedLed(PIN_RED_LED);
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
   pinMode(PIN_LED_2_GREEN, OUTPUT);
@@ -95,14 +97,18 @@ void setup() {
   pinMode(PIN_BUTTON_2, INPUT);
   pinMode(PIN_BUTTON_3, INPUT);
   pinMode(PIN_BUTTON_4, INPUT);
+
+
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   switch (status)
   {
-  case /* constant-expression */:
-    /* code */
+  case INPUT_WAIT:
+    redLed->setFade();
+    delay(100);
     break;
   }
 }
