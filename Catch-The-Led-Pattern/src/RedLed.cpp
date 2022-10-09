@@ -14,6 +14,13 @@ class RedLed{
         RedLed(int input_pin){
             this->pin = input_pin;
         }
+
+        void invert(){
+            
+        }
+        void setBrightness(){
+            this->brightness = this->brightness + this->fadeAmount;
+        }
         
         void setFade(){
             if(on){

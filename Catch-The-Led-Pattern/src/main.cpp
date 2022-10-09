@@ -99,16 +99,12 @@ volatile STATUS status;
 RedLed *redLed;
 int score = 0;
 
-void fading(){
-    redLed->setFade();
-    delay(100);
-}
-
 void wakeUp(){
   if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
     status = INPUT_WAIT;
     Serial.flush();
-    fading();
+    redLed->setFade();
+    delay(50); 
     bounceTime = millis();
     Serial.println("==> Just wake up...");
     Serial.flush();
@@ -170,13 +166,12 @@ void deepSleep(){
       Serial.flush();
       sleep_enable();    
       status = DEEP_SLEEP;
+      noInterrupts();
       redLed->setOff();
+      interrupts();
       delay(100);
       set_sleep_mode(SLEEP_MODE_PWR_DOWN);
    }
-  }else{
-    redLed->setFade();
-    delay(50);
   }
 }
 
@@ -184,7 +179,7 @@ void setup() {
   redLed = new RedLed(PIN_RED_LED);
   user = new User();
   bot = new Bot(); 
-    timer = new TimerController();
+  timer = new TimerController();
   status = SELECT_DIFFICULTY;
   Serial.begin(9600);
   Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
@@ -195,6 +190,7 @@ void setup() {
   pinMode(PIN_LED_2_GREEN, OUTPUT);
   pinMode(PIN_LED_3_GREEN, OUTPUT);
   pinMode(PIN_LED_4_GREEN, OUTPUT);
+  pinMode(PIN_RED_LED, OUTPUT);
   /*--SET BUTTONS--*/
   pinMode(PIN_BUTTON_1, INPUT);
   pinMode(PIN_BUTTON_2, INPUT);
@@ -228,7 +224,8 @@ void loop() {
       break;
     case INPUT_WAIT:
       Serial.flush();
-    fading();
+      redLed->setFade();
+      delay(50);
       break;
     case GAME_START:
       timer_deep_sleep = 0;
