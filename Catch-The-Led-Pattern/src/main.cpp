@@ -82,7 +82,7 @@
 
 volatile int begin_game_cont = 0;
 int penalties = 0;
-bool first_time = true, first_time2 = true, penalty = false;;
+bool first_time = true, first_time2 = true, penalty = false, time_finish = false;
 User *user; 
 Bot *bot;
 TimerController *timer;
@@ -102,24 +102,14 @@ void startGame(){
 }
 
 void selectLeds(){
-  Serial.println("Recreate the pattern....");
-  Serial.flush();
   begin_game_cont++;
-  if(begin_game_cont == 1){
-    if(digitalRead(PIN_BUTTON_1) == HIGH){
-      user->addPos(0);
-    }
-    if(digitalRead(PIN_BUTTON_2) == HIGH){
-      user->addPos(1);
-    }
-    if(digitalRead(PIN_BUTTON_3) == HIGH){
-      user->addPos(2);
-    }
-    if(digitalRead(PIN_BUTTON_4) == HIGH){
-      user->addPos(3);
-    }
+  if(begin_game_cont == 2){
+    status = GAME_SCORE; 
+    Serial.println("The time is over");
+    Serial.flush();
+    time_finish = true;
   }else{
-    status = GAME_SCORE;
+    Serial.println("Recreate the pattern....");
   }
 }
 
@@ -242,13 +232,29 @@ void loop() {
         break;
       case RECREATE_PATTERN:
         timer->beginGame();
-        Serial.println(timer->getTimer3());
-        Timer1.detachInterrupt();
+        //Serial.println(timer->getTimer3());
+        //Timer1.detachInterrupt();
         Timer1.initialize(timer->getTimer3() * 1000000);
         Timer1.attachInterrupt(selectLeds);
+        if(!time_finish){
+          if(digitalRead(PIN_BUTTON_1) == HIGH){
+            user->addPos(0);
+          }
+          if(digitalRead(PIN_BUTTON_2) == HIGH){
+            user->addPos(1);
+          }
+          if(digitalRead(PIN_BUTTON_3) == HIGH){
+            user->addPos(2);
+          }
+          if(digitalRead(PIN_BUTTON_4) == HIGH){
+            user->addPos(3);
+          }
+        }
         break;
       case GAME_SCORE:
         Timer1.detachInterrupt();
+        time_finish = false;
+        begin_game_cont = 0;
         checkPatterns();
         if(!penalty){
           Serial.println("YOU ARE NOT WRONG DIO PORCO ");

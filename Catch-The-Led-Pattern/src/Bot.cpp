@@ -10,18 +10,18 @@
 class Bot{
     private:
         bool positions[NLED] = {false};
-
+        
     public:
-
         /*  builds the light pattern
         * 
         */
 
         void generateSequence(){
-            srand((unsigned) time(NULL));
+            srand( (unsigned)time(NULL) );
             for(int i = 0; i < NLED; i++){
+                //srand(time(NULL));
                 //If the random number generated is even, then the led will be setted to TRUE ( LIGHT ON ), in the other case the led is off.
-                this->positions[i] = ((rand() % 100) + 1) % 2 == 0 ? true : false;
+                this->positions[i] = ((rand() % 100) + 1) % 2 == 0;
             }
         }
 

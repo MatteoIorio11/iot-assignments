@@ -13,6 +13,7 @@ class TimerController{
         float timer_t2 = NOT_SET;
         float timer_t3 = NOT_SET;
         float factor = 0;
+        int offset = 5;
         int difficulty = 0;
     
     public:
@@ -37,18 +38,19 @@ class TimerController{
         float ledsOff(){
             // manage the timer t1 : the leds L1…L4 are turned off for some random time T1 
             this->timer_t1 = ((rand() % 20) + 1);
+            this->timer_t1+=this->offset;
             return this->timer_t1;
         }
         float showPattern(){
             //manage the timer t2 : the leds are then turned on according to some  random pattern, for some time T2 and then turned off again 
             if(this->timer_t2 == NOT_SET)
-                this->timer_t2 =  ((rand() % 20) + 1);
+                this->timer_t2 =  ((rand() % 20) + 1) + this->offset;
             return this->timer_t2;
         }
         float beginGame(){
             //manage the timer t3 : the player has max T3 time for recreating the pattern by pressing the buttons T1…T4 
             if(this->timer_t3 == NOT_SET)
-                this->timer_t3 =  ((rand() % 20) + 1);
+                this->timer_t3 =  ((rand() % 20) + 1) + this->offset;
             return this->timer_t3;
         }
 
