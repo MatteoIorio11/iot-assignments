@@ -95,30 +95,16 @@ void startGame(){
 }
 
 void deepSleep(){
-  if(!first_time2){
     Serial.println("---- going to sleep ----- ");
-    delay(100);    
-    Serial.flush();
-    redLed->setOff();
-    set_sleep_mode(SLEEP_MODE_IDLE);
-    sleep_enable();
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-    sleep_mode();
-    redLed->setOn();
-    first_time2 = true;
-  }
-  first_time2 = false;
-
 }
 
 void setup() {
   redLed = new RedLed(PIN_RED_LED);
   user = new User();
   bot = new Bot(); 
-  status = INPUT_WAIT;
-  Serial.begin(11200);
+  status = SELECT_DIFFICULTY;
+  Serial.begin(9600);
   Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
-  Serial.flush();
   delay(100);
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
@@ -132,8 +118,7 @@ void setup() {
   pinMode(PIN_BUTTON_4, INPUT);
 
   /*SLEEP MODE */
-  Timer1.initialize(TEN_SECONDS);
-  Timer1.attachInterrupt(deepSleep);
+  //Timer1.initialize(TEN_SECONDS);
   /*MANAGE INTERRUPTS */
   attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, CHANGE);
   attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_2), NULL, CHANGE);
@@ -148,13 +133,17 @@ void loop() {
   // put your main code here, to run repeatedly:
   switch (status)
   {
+  case SELECT_DIFFICULTY:
+    timer = new TimerController(analogRead(A0));
+    Serial.println(analogRead(A0));
+    status = INPUT_WAIT;
   case INPUT_WAIT:
     if(first_time){
-
+      //Timer1.attachInterrupt(deepSleep);
       first_time = false;
     }
     redLed->setFade();
-    delay(100);
+    delay(50);
     break;
   }
 }
