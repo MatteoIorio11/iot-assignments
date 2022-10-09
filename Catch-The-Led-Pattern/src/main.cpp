@@ -1,13 +1,16 @@
 #include <Arduino.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
+#define EI_ARDUINO_INTERRUPTED_PIN // to enable pin states functionality 
+#include <EnableInterrupt.h>
+#include <TimerOne.h>
+
 #include "GreenLed.cpp"
 #include "RedLed.cpp"
 #include "Status.cpp"
 #include "User.cpp"
 #include "Bot.cpp"
 #include "TimerController.cpp"
-#include "TimerOne.h"
 
 /*
 
@@ -64,6 +67,8 @@
   3)  The main is views has a big switch, in different case we have different option to do. 
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
+#define pinToInterrupt(p) ((p) <= 5 ? 0 : NOT_AN_INTERRUPT) 
+#define BOUNCE_DURATION 100
 #define TEN_SECONDS 10000000
 #define NLEDS 4
 /*---- LEDS -----*/
@@ -80,29 +85,44 @@
 #define PIN_BUTTON_3 4
 #define PIN_BUTTON_4 5
 
-volatile int begin_game_cont = 0, timer_deep_sleep = 0;
+volatile int begin_game_cont = 0, timer_deep_sleep = 0, bounceTime = 0;
 int penalties = 0;
 bool first_time = true, first_time2 = true, penalty = false, time_finish = false;
 User *user; 
 Bot *bot;
 TimerController *timer;
-STATUS status;
+volatile STATUS status;
 RedLed *redLed;
 int score = 0;
 
+void wakeUp(){
+  if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
+    status = INPUT_WAIT;
+    Serial.flush();
+    redLed->setFade();
+    delay(50);
+    bounceTime = millis();
+    Serial.println("==> Just wake up...");
+    Serial.flush();
+    delay(50);
+    timer_deep_sleep = 0;
+    sleep_disable();
+  }
+}
 
 void startGame(){
-  redLed->setOff();
-  status = GAME_START;
-  if(status == INPUT_WAIT){
+Serial.println("AOO MA SOPRA ");
+  if(status == INPUT_WAIT and abs(millis() - bounceTime) > BOUNCE_DURATION){
+    bounceTime = millis();
     Serial.println("-> B1 is pressed, the game starts..");
-    detachInterrupt(PIN_BUTTON_1);
-  }else{
-    Serial.println("==> Just wake up, the game is now starting...");
-    Serial.flush();
-    sleep_disable();
-    detachInterrupt(PIN_BUTTON_2);
+    status = GAME_START;
     Timer1.detachInterrupt();
+    detachInterrupt(PIN_BUTTON_2);
+    detachInterrupt(PIN_BUTTON_3);
+    detachInterrupt(PIN_BUTTON_4);
+  }else if(status == DEEP_SLEEP){
+    Serial.println("AOO");
+    wakeUp();
   }
 }
 
@@ -143,16 +163,15 @@ void deepSleep(){
     if(status == INPUT_WAIT){
       Serial.println("=> Going to sleep");
       Serial.flush();
-      sleep_enable();
+      sleep_enable();    
       status = DEEP_SLEEP;
       redLed->setOff();
       delay(100);
-      //power_spi_enable();
       set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-      //sleep_cpu();
-      //sleep_mode();
-      //sleep_disable();
    }
+  }else{
+    redLed->setFade();
+    delay(50);
   }
 }
 
@@ -180,13 +199,15 @@ void setup() {
 
 
   /*SLEEP MODE */
-  timer->ledsOff();
   //Timer1.setPeriod(10000000);
   Timer1.initialize(TEN_SECONDS);
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
-  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, RISING);     
+  enableInterrupt(PIN_BUTTON_1,startGame,RISING);
+  enableInterrupt(PIN_BUTTON_2,wakeUp,RISING);
+  enableInterrupt(PIN_BUTTON_3,wakeUp,RISING);
+  enableInterrupt(PIN_BUTTON_4,wakeUp,RISING);
   //attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
@@ -206,6 +227,7 @@ void loop() {
       status = INPUT_WAIT;
       break;
     case INPUT_WAIT:
+      Serial.flush();
       redLed->setFade();
       delay(50);
       break;
