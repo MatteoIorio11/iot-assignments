@@ -5,6 +5,8 @@
 #include "User.cpp"
 #include "Bot.cpp"
 #include "TimerController.cpp"
+#include "TimerOne.h"
+#include "avr/sleep.h"
 /*
 
   CLASSI : 
@@ -60,6 +62,7 @@
   3)  The main is views has a big switch, in different case we have different option to do. 
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
+#define TEN_SECONDS 10000000
 /*---- LEDS -----*/
 #define PIN_LED_1_GREEN 13
 #define PIN_LED_2_GREEN 12
@@ -74,19 +77,51 @@
 #define PIN_BUTTON_3 4
 #define PIN_BUTTON_4 5
 
+
+bool first_time = true, first_time2 = true;
 User *user; 
 Bot *bot;
 TimerController *timer;
 STATUS status;
 RedLed *redLed;
 
-void setup() {
 
+void startGame(){
+  if(status == INPUT_WAIT){
+    status = GAME_START;
+    redLed->setOff();
+    Timer1.detachInterrupt();
+  }
+}
+
+void deepSleep(){
+  digitalWrite(PIN_LED_1_GREEN, HIGH);
+  digitalWrite(PIN_LED_2_GREEN, HIGH);
+  digitalWrite(PIN_LED_3_GREEN, HIGH);
+  digitalWrite(PIN_LED_4_GREEN, HIGH);
+    delay(100);
+  if(!first_time2){
+    Serial.println("---- going to sleep ----- ");
+    
+    Serial.flush();
+    redLed->setOff();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    sleep_enable();
+    sleep_mode();
+    redLed->setOn();
+  }
+    first_time2 = false;
+}
+
+void setup() {
+  redLed = new RedLed(PIN_RED_LED);
   user = new User();
   bot = new Bot(); 
   status = INPUT_WAIT;
-  Serial.begin(9600);
-  redLed = new RedLed(PIN_RED_LED);
+  Serial.begin(11200);
+  Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
+  Serial.flush();
+  delay(100);
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
   pinMode(PIN_LED_2_GREEN, OUTPUT);
@@ -98,15 +133,28 @@ void setup() {
   pinMode(PIN_BUTTON_3, INPUT);
   pinMode(PIN_BUTTON_4, INPUT);
 
+  /*SLEEP MODE */
+  Timer1.initialize(TEN_SECONDS);
+  Timer1.attachInterrupt(deepSleep);
+  /*MANAGE INTERRUPTS */
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_2), NULL, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
 
 
 }
+
 
 void loop() {
   // put your main code here, to run repeatedly:
   switch (status)
   {
   case INPUT_WAIT:
+    if(first_time){
+
+      first_time = false;
+    }
     redLed->setFade();
     delay(100);
     break;

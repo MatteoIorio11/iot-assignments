@@ -22,4 +22,12 @@ class RedLed{
             }
         }
 
+        void setOff(){
+            digitalWrite(this->pin, LOW);
+        }
+
+        void setOn(){
+            digitalWrite(this->pin, HIGH);
+        }
+
 };
