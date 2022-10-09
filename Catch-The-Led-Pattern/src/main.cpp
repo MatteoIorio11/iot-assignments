@@ -77,7 +77,7 @@
 #define PIN_LED_2_GREEN 12
 #define PIN_LED_3_GREEN 11
 #define PIN_LED_4_GREEN 10
-#define PIN_RED_LED 9
+#define PIN_RED_LED 6
 
 #define ENABLE_INT_IN_PIN 2
 
@@ -89,6 +89,10 @@
 #define PIN_BUTTON_3 4
 #define PIN_BUTTON_4 5
 
+
+int brightness;
+int fadeAmount;
+int currIntensity;
 volatile int begin_game_cont = 0, timer_deep_sleep = 0, bounceTime = 0;
 int penalties = 0;
 bool first_time = true, first_time2 = true, penalty = false, time_finish = false;
@@ -102,14 +106,9 @@ int score = 0;
 void wakeUp(){
   if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
     status = INPUT_WAIT;
-    Serial.flush();
-    redLed->setFade();
-    delay(50); 
     bounceTime = millis();
     Serial.println("==> Just wake up...");
     Serial.flush();
-    delay(50);
-    redLed->setOn();
     timer_deep_sleep = 0;
     sleep_disable();
     power_all_enable();
@@ -122,7 +121,6 @@ void startGame(){
     Serial.println("-> B1 is pressed, the game starts..");
     status = GAME_START;
     Timer1.detachInterrupt();
-    redLed->setOff();
   }else if(status == DEEP_SLEEP){
     wakeUp();
   }
@@ -133,7 +131,6 @@ void selectLeds(){
   if(begin_game_cont == 2){
     status = GAME_SCORE; 
     Serial.println("The time is over");
-    Serial.flush();
     time_finish = true;
   }else{
     Serial.println("Recreate the pattern....");
@@ -164,10 +161,9 @@ void deepSleep(){
   if(timer_deep_sleep == 2){
     if(status == INPUT_WAIT){
       Serial.println("=> Going to sleep");
-      Serial.flush();
+      status = DEEP_SLEEP;
       set_sleep_mode(SLEEP_MODE_IDLE);
       sleep_enable();    
-      status = DEEP_SLEEP;
       redLed->setOff();
       delay(100);
    }
@@ -177,15 +173,19 @@ void deepSleep(){
 }
 
 void setup() {
+  currIntensity = 0;
+  fadeAmount = 5;
   redLed = new RedLed(PIN_RED_LED);
   user = new User();
   bot = new Bot(); 
   timer = new TimerController();
   status = SELECT_DIFFICULTY;
-  Serial.begin(9600);
+  Serial.begin(32600);
   Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
   Serial.flush();
   delay(100);
+
+ // redLed->setOn();
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
   pinMode(PIN_LED_2_GREEN, OUTPUT);
@@ -198,11 +198,11 @@ void setup() {
   pinMode(PIN_BUTTON_3, INPUT);
   pinMode(PIN_BUTTON_4, INPUT);
   /* */
-
+  //redLed->setOn();
 
   /*SLEEP MODE */
-  //Timer1.setPeriod(10000000);
-  Timer1.initialize(1000000000);
+  //Timer1.setPeriod(10000000000);
+  Timer1.initialize((10 * pow(10, 6)));
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
@@ -210,6 +210,15 @@ void setup() {
   enableInterrupt(PIN_BUTTON_2,wakeUp,CHANGE);
   enableInterrupt(PIN_BUTTON_3,wakeUp,CHANGE);
   enableInterrupt(PIN_BUTTON_4,wakeUp,CHANGE);
+}
+
+void fade(){
+    analogWrite(PIN_RED_LED, currIntensity);   
+    currIntensity = currIntensity + fadeAmount;
+    if (currIntensity == 0 || currIntensity == 255) {
+      fadeAmount = -fadeAmount ; 
+    }     
+    delay(15); 
 }
 
 
@@ -221,14 +230,13 @@ void loop() {
       timer->selectDifficulty(analogRead(A0));
       Serial.print("Difficolta selezionata : "); 
       Serial.println(timer->difficultySelected());
+      Serial.flush();
       status = INPUT_WAIT;
       break;
     case INPUT_WAIT:
-      Serial.flush();
-      noInterrupts();
-      redLed->setFade();
-      interrupts();
-      delay(50);
+      //redLed->setFade();
+      fade();
+      delay(20);                               
       break;
     case GAME_START:
       timer_deep_sleep = 0;

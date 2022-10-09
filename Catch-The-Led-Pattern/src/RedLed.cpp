@@ -5,29 +5,28 @@ class RedLed{
     private :
         int pin = 0;
         int status = LOW; 
-        int fade = 0;
         int brightness = 0;
         int fadeAmount = 5;
-        bool on = true;
+        bool on;
     
     public : 
         RedLed(int input_pin){
             this->pin = input_pin;
+            this->on = true;
         }
 
-        void invert(){
-            
-        }
         void setBrightness(){
             this->brightness = this->brightness + this->fadeAmount;
         }
         
         void setFade(){
-            if(on){
+            if(this->on){
                 analogWrite(this->pin, this->brightness);
+                delay(20);
                 this->brightness = this->brightness + this->fadeAmount;
-                if (this->brightness == 0 or this->brightness == 255){
+                if (this->brightness <= 0 or this->brightness >= 255){
                     this->fadeAmount = -fadeAmount;
+                    Serial.println("FADE");
                 }
             }
         }
@@ -46,10 +45,12 @@ class RedLed{
 
         void setOff(){
             on = false;
+            analogWrite(this->pin, 0);
         }
 
         void setOn(){
             on = true;
+            analogWrite(this->pin, 255);
         }
 
 };
