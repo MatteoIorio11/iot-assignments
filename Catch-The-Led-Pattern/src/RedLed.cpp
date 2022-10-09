@@ -8,6 +8,7 @@ class RedLed{
         int fade = 0;
         int brightness = 0;
         int fadeAmount = 5;
+        bool on = true;
     
     public : 
         RedLed(int input_pin){
@@ -15,19 +16,33 @@ class RedLed{
         }
         
         void setFade(){
-            analogWrite(this->pin, this->brightness);
-            this->brightness = this->brightness + this->fadeAmount;
-            if (this->brightness == 0 or this->brightness == 255){
-                this->fadeAmount = -fadeAmount;
+            if(on){
+                analogWrite(this->pin, this->brightness);
+                this->brightness = this->brightness + this->fadeAmount;
+                if (this->brightness == 0 or this->brightness == 255){
+                    this->fadeAmount = -fadeAmount;
+                }
             }
         }
 
+        int getPin(){
+            return this->pin;
+        }
+
+        int getBrightness(){
+            return this->brightness;
+        }
+
+        int getFade(){
+            return this->fadeAmount;
+        }
+
         void setOff(){
-            digitalWrite(this->pin, LOW);
+            on = false;
         }
 
         void setOn(){
-            digitalWrite(this->pin, HIGH);
+            on = true;
         }
 
 };

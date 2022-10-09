@@ -68,7 +68,6 @@
   3)  The main is views has a big switch, in different case we have different option to do. 
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
-#define pinToInterrupt(p) ((p) <= 5 ? 0 : NOT_AN_INTERRUPT) 
 #define BOUNCE_DURATION 100
 #define TEN_SECONDS 10000000
 #define NLEDS 4
@@ -100,33 +99,34 @@ volatile STATUS status;
 RedLed *redLed;
 int score = 0;
 
+void fading(){
+    redLed->setFade();
+    delay(100);
+}
+
 void wakeUp(){
   if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
     status = INPUT_WAIT;
     Serial.flush();
-    redLed->setFade();
-    delay(50);
+    fading();
     bounceTime = millis();
     Serial.println("==> Just wake up...");
     Serial.flush();
     delay(50);
+    redLed->setOn();
     timer_deep_sleep = 0;
     sleep_disable();
   }
 }
 
 void startGame(){
-Serial.println("AOO MA SOPRA ");
   if(status == INPUT_WAIT and abs(millis() - bounceTime) > BOUNCE_DURATION){
     bounceTime = millis();
     Serial.println("-> B1 is pressed, the game starts..");
     status = GAME_START;
     Timer1.detachInterrupt();
-    disableInterrupt(PIN_BUTTON_2);
-    disableInterrupt(PIN_BUTTON_3);
-    disableInterrupt(PIN_BUTTON_4);
+    redLed->setOff();
   }else if(status == DEEP_SLEEP){
-    Serial.println("AOO");
     wakeUp();
   }
 }
@@ -205,7 +205,7 @@ void setup() {
 
   /*SLEEP MODE */
   //Timer1.setPeriod(10000000);
-  Timer1.initialize(TEN_SECONDS);
+  Timer1.initialize(TEN_SECONDS*10);
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
@@ -213,15 +213,6 @@ void setup() {
   enableInterrupt(PIN_BUTTON_2,wakeUp,CHANGE);
   enableInterrupt(PIN_BUTTON_3,wakeUp,CHANGE);
   enableInterrupt(PIN_BUTTON_4,wakeUp,CHANGE);
-
-  //enableInterrupt(PIN_BUTTON_2,wakeUp,RISING);
-  //enableInterrupt(PIN_BUTTON_3,wakeUp,RISING);
-  //enableInterrupt(PIN_BUTTON_4,wakeUp,RISING);
-  //attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
-  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
-  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
-
-
 }
 
 
@@ -237,8 +228,7 @@ void loop() {
       break;
     case INPUT_WAIT:
       Serial.flush();
-      redLed->setFade();
-      delay(50);
+    fading();
       break;
     case GAME_START:
       timer_deep_sleep = 0;
