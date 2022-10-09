@@ -69,7 +69,7 @@
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
 #define BOUNCE_DURATION 100
-#define TEN_SECONDS 10000000
+#define TEN_SECONDS 1000000000
 #define NLEDS 4
 /*---- LEDS -----*/
 
@@ -112,6 +112,7 @@ void wakeUp(){
     redLed->setOn();
     timer_deep_sleep = 0;
     sleep_disable();
+    power_all_enable();
   }
 }
 
@@ -164,14 +165,14 @@ void deepSleep(){
     if(status == INPUT_WAIT){
       Serial.println("=> Going to sleep");
       Serial.flush();
+      set_sleep_mode(SLEEP_MODE_IDLE);
       sleep_enable();    
       status = DEEP_SLEEP;
-      noInterrupts();
       redLed->setOff();
-      interrupts();
       delay(100);
-      set_sleep_mode(SLEEP_MODE_PWR_DOWN);
    }
+  }else{
+    redLed->setOff();
   }
 }
 
@@ -201,7 +202,7 @@ void setup() {
 
   /*SLEEP MODE */
   //Timer1.setPeriod(10000000);
-  Timer1.initialize(TEN_SECONDS*10);
+  Timer1.initialize(1000000000);
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
@@ -224,7 +225,9 @@ void loop() {
       break;
     case INPUT_WAIT:
       Serial.flush();
+      noInterrupts();
       redLed->setFade();
+      interrupts();
       delay(50);
       break;
     case GAME_START:
