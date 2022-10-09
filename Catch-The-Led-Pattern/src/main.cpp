@@ -1,8 +1,9 @@
+
+#define EI_ARDUINO_INTERRUPTED_PIN // to enable pin states functionality 
+#include <EnableInterrupt.h>
 #include <Arduino.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
-#define EI_ARDUINO_INTERRUPTED_PIN // to enable pin states functionality 
-#include <EnableInterrupt.h>
 #include <TimerOne.h>
 
 #include "GreenLed.cpp"
@@ -72,11 +73,15 @@
 #define TEN_SECONDS 10000000
 #define NLEDS 4
 /*---- LEDS -----*/
+
 #define PIN_LED_1_GREEN 13
 #define PIN_LED_2_GREEN 12
 #define PIN_LED_3_GREEN 11
 #define PIN_LED_4_GREEN 10
 #define PIN_RED_LED 9
+
+#define ENABLE_INT_IN_PIN 2
+
 /*---- POTENTIOMETER -----*/
 #define POTENTIOMETER_INPUT_PIN A0;
 /*---- BUTTONS -----*/
@@ -117,9 +122,9 @@ Serial.println("AOO MA SOPRA ");
     Serial.println("-> B1 is pressed, the game starts..");
     status = GAME_START;
     Timer1.detachInterrupt();
-    detachInterrupt(PIN_BUTTON_2);
-    detachInterrupt(PIN_BUTTON_3);
-    detachInterrupt(PIN_BUTTON_4);
+    disableInterrupt(PIN_BUTTON_2);
+    disableInterrupt(PIN_BUTTON_3);
+    disableInterrupt(PIN_BUTTON_4);
   }else if(status == DEEP_SLEEP){
     Serial.println("AOO");
     wakeUp();
@@ -204,10 +209,14 @@ void setup() {
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
-  enableInterrupt(PIN_BUTTON_1,startGame,RISING);
-  enableInterrupt(PIN_BUTTON_2,wakeUp,RISING);
-  enableInterrupt(PIN_BUTTON_3,wakeUp,RISING);
-  enableInterrupt(PIN_BUTTON_4,wakeUp,RISING);
+  enableInterrupt(PIN_BUTTON_1,startGame,CHANGE);
+  enableInterrupt(PIN_BUTTON_2,wakeUp,CHANGE);
+  enableInterrupt(PIN_BUTTON_3,wakeUp,CHANGE);
+  enableInterrupt(PIN_BUTTON_4,wakeUp,CHANGE);
+
+  //enableInterrupt(PIN_BUTTON_2,wakeUp,RISING);
+  //enableInterrupt(PIN_BUTTON_3,wakeUp,RISING);
+  //enableInterrupt(PIN_BUTTON_4,wakeUp,RISING);
   //attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
   //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
