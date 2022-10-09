@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <avr/power.h>
+#include <avr/sleep.h>
 #include "GreenLed.cpp"
 #include "RedLed.cpp"
 #include "Status.cpp"
@@ -6,7 +8,7 @@
 #include "Bot.cpp"
 #include "TimerController.cpp"
 #include "TimerOne.h"
-#include "avr/sleep.h"
+
 /*
 
   CLASSI : 
@@ -63,6 +65,7 @@
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
 #define TEN_SECONDS 10000000
+#define NLEDS 4
 /*---- LEDS -----*/
 #define PIN_LED_1_GREEN 13
 #define PIN_LED_2_GREEN 12
@@ -77,34 +80,96 @@
 #define PIN_BUTTON_3 4
 #define PIN_BUTTON_4 5
 
-
-bool first_time = true, first_time2 = true;
+volatile int begin_game_cont = 0;
+int penalties = 0;
+bool first_time = true, first_time2 = true, penalty = false;;
 User *user; 
 Bot *bot;
 TimerController *timer;
 STATUS status;
 RedLed *redLed;
+int score = 0;
 
 
 void startGame(){
   if(status == INPUT_WAIT){
+    Serial.println("B1 is pressed, the game starts..");
     status = GAME_START;
     redLed->setOff();
     Timer1.detachInterrupt();
+    sleep_disable();
   }
 }
 
+void selectLeds(){
+  Serial.println("Recreate the pattern....");
+  Serial.flush();
+  begin_game_cont++;
+  if(begin_game_cont == 1){
+    if(digitalRead(PIN_BUTTON_1) == HIGH){
+      user->addPos(0);
+    }
+    if(digitalRead(PIN_BUTTON_2) == HIGH){
+      user->addPos(1);
+    }
+    if(digitalRead(PIN_BUTTON_3) == HIGH){
+      user->addPos(2);
+    }
+    if(digitalRead(PIN_BUTTON_4) == HIGH){
+      user->addPos(3);
+    }
+  }else{
+    status = GAME_SCORE;
+  }
+}
+
+void allLedsOff(){
+    digitalWrite(PIN_LED_1_GREEN, LOW);
+    digitalWrite(PIN_LED_2_GREEN, LOW);
+    digitalWrite(PIN_LED_3_GREEN, LOW);
+    digitalWrite(PIN_LED_4_GREEN, LOW);
+}
+
+void checkPatterns(){
+  Serial.println("Check the pattern ");
+  Serial.flush();
+  for(int i = 0; i < NLEDS; i++){
+    if(bot->getSequence()[i] != user->getPositions()[i]){
+      penalty = true;
+      break;
+    }
+  }
+  status = GAME_SCORE;
+}
+
 void deepSleep(){
-    Serial.println("---- going to sleep ----- ");
+  delay(10000);
+  if(status == INPUT_WAIT){
+    redLed->setFade();
+    delay(100);
+    /*
+    Serial.println("Going to sleep");
+    Serial.flush();
+    redLed->setOff();
+    set_sleep_mode(SLEEP_MODE_IDLE);
+    sleep_enable();
+    sleep_mode();
+    Serial.println("Now up");
+    Serial.flush();
+    redLed->setFade();
+    */
+  }
 }
 
 void setup() {
   redLed = new RedLed(PIN_RED_LED);
   user = new User();
   bot = new Bot(); 
+    timer = new TimerController();
   status = SELECT_DIFFICULTY;
   Serial.begin(9600);
   Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
+  Serial.flush();
   delay(100);
   /*--SET LEDS--*/
   pinMode(PIN_LED_1_GREEN, OUTPUT);
@@ -116,14 +181,20 @@ void setup() {
   pinMode(PIN_BUTTON_2, INPUT);
   pinMode(PIN_BUTTON_3, INPUT);
   pinMode(PIN_BUTTON_4, INPUT);
+  /* */
 
-  /*SLEEP MODE */
-  //Timer1.initialize(TEN_SECONDS);
   /*MANAGE INTERRUPTS */
   attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_1), startGame, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_2), NULL, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
+
+  /*SLEEP MODE */
+  timer->ledsOff();
+  //Timer1.setPeriod(10000000);
+  //Timer1.initialize(TEN_SECONDS);
+  //Timer1.attachInterrupt(deepSleep);
+
+  attachInterrupt((PIN_BUTTON_2), NULL, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_3), NULL, CHANGE);
+  //attachInterrupt(digitalPinToInterrupt(PIN_BUTTON_4), NULL, CHANGE);
 
 
 }
@@ -133,17 +204,67 @@ void loop() {
   // put your main code here, to run repeatedly:
   switch (status)
   {
-  case SELECT_DIFFICULTY:
-    timer = new TimerController(analogRead(A0));
-    Serial.println(analogRead(A0));
-    status = INPUT_WAIT;
-  case INPUT_WAIT:
-    if(first_time){
-      //Timer1.attachInterrupt(deepSleep);
-      first_time = false;
-    }
-    redLed->setFade();
-    delay(50);
-    break;
+    case SELECT_DIFFICULTY:
+      timer->selectDifficulty(analogRead(A0));
+      Serial.print("Difficolta selezionata : "); 
+      Serial.println(timer->difficultySelected());
+      status = INPUT_WAIT;
+      break;
+    case INPUT_WAIT:
+      redLed->setFade();
+      delay(50);
+      break;
+    case GAME_START:
+      //Timer1.detachInterrupt();
+      Serial.println("The game is starting..");
+      Serial.flush();
+      bot->generateSequence();
+      allLedsOff();
+      delay(timer->ledsOff()*1000);
+
+      for(int i = 0; i < NLEDS; i++){
+        if(bot->getSequence()[i]){
+          Serial.println(i);
+          if(i == 0){
+            digitalWrite(PIN_LED_1_GREEN, HIGH);
+          }else if(i == 1){
+            digitalWrite(PIN_LED_2_GREEN, HIGH);
+          } else if(i == 2){
+            digitalWrite(PIN_LED_3_GREEN, HIGH);
+          }else if(i == 3){
+            digitalWrite(PIN_LED_4_GREEN, HIGH);
+          }
+        }
+      }
+        status = RECREATE_PATTERN;
+        delay(timer->showPattern()*1000);
+        allLedsOff();
+        break;
+      case RECREATE_PATTERN:
+        timer->beginGame();
+        Serial.println(timer->getTimer3());
+        Timer1.detachInterrupt();
+        Timer1.initialize(timer->getTimer3() * 1000000);
+        Timer1.attachInterrupt(selectLeds);
+        break;
+      case GAME_SCORE:
+        Timer1.detachInterrupt();
+        checkPatterns();
+        if(!penalty){
+          Serial.println("YOU ARE NOT WRONG DIO PORCO ");
+          score++;
+        }else if(penalties == 3){
+          status = GAME_OVER;
+          Serial.println("HAI PERSON ADDDIO ");
+          return;
+        }else{
+          penalties++;
+          Serial.println("HAI SBAGLIATO.");
+        }
+        Serial.flush();
+        timer->reduceTimers();
+        status = GAME_START;
+        //Timer1.attachInterrupt(deepSleep);
+        break;
   }
 }

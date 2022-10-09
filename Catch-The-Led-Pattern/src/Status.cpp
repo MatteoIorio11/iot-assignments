@@ -4,5 +4,7 @@ enum STATUS{
     GAME_START = 2,
     DEEP_SLEEP = 3, 
     GAME_OVER = 4,
+    RECREATE_PATTERN = 5,
+    GAME_SCORE = 6,
     VOID = -1
 };

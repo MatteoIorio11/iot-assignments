@@ -23,11 +23,11 @@ class RedLed{
         }
 
         void setOff(){
-            digitalWrite(this->pin, LOW);
+            analogWrite(this->pin, 0);
         }
 
         void setOn(){
-            digitalWrite(this->pin, HIGH);
+            analogWrite(this->pin, brightness);
         }
 
 };
