@@ -95,22 +95,20 @@ void startGame(){
 }
 
 void deepSleep(){
-  digitalWrite(PIN_LED_1_GREEN, HIGH);
-  digitalWrite(PIN_LED_2_GREEN, HIGH);
-  digitalWrite(PIN_LED_3_GREEN, HIGH);
-  digitalWrite(PIN_LED_4_GREEN, HIGH);
-    delay(100);
   if(!first_time2){
     Serial.println("---- going to sleep ----- ");
-    
+    delay(100);    
     Serial.flush();
     redLed->setOff();
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+    set_sleep_mode(SLEEP_MODE_IDLE);
     sleep_enable();
+    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
     sleep_mode();
     redLed->setOn();
+    first_time2 = true;
   }
-    first_time2 = false;
+  first_time2 = false;
+
 }
 
 void setup() {
