@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include <time.h>
 
-#define EASY 0.5
-#define NORMAL 1
-#define MEDIUM 1.5
-#define HARD 2
+#define EASY 1
+#define NORMAL 0.8
+#define MEDIUM 0.6
+#define HARD 0.4
 #define NOT_SET -1
 
 class TimerController{
@@ -38,7 +38,7 @@ class TimerController{
         float ledsOff(){
             randomSeed(analogRead(1));
             // manage the timer t1 : the leds L1…L4 are turned off for some random time T1 
-            this->timer_t1 = random(5,20);
+            this->timer_t1 = random(5,10);
             return this->timer_t1;
         }
         float showPattern(){
@@ -46,7 +46,7 @@ class TimerController{
             //manage the timer t2 : the leds are then turned on according to some  random pattern, for some time T2 and then turned off again 
             if(this->timer_t2 == NOT_SET){
                 randomSeed(analogRead(1));
-                this->timer_t2 =  random(5,20);
+                this->timer_t2 =  random(5,10);
             }
             return this->timer_t2;
         }
@@ -54,7 +54,7 @@ class TimerController{
             //manage the timer t3 : the player has max T3 time for recreating the pattern by pressing the buttons T1…T4 
             if(this->timer_t3 == NOT_SET){
                 randomSeed(analogRead(1));
-                this->timer_t3 =  random(5,20);
+                this->timer_t3 =  random(5,10);
             }
             return this->timer_t3;
         }
@@ -65,8 +65,8 @@ class TimerController{
         }
 
         void reduceTimers(){
-            this->timer_t2 = this->timer_t2 - this->factor > 0 ? this->timer_t2 - this->factor : 0;
-            this->timer_t3 = this->timer_t3 - this->factor > 0 ? this->timer_t3 - this->factor : 0;
+            this->timer_t2 = this->timer_t2*this->factor;
+            this->timer_t3 = this->timer_t3*this->factor;
         }
 
         float getTimer1(){
