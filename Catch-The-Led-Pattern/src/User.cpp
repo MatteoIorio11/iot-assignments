@@ -6,7 +6,7 @@ class User{
     
     public : 
         void addPos(int selected_pos){
-            if(selected_pos < NLED && selected_pos > 0){
+            if(selected_pos < NLED && selected_pos >= 0){
                 positions[selected_pos]=true;
             }
         }
