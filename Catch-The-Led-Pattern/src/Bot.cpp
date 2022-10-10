@@ -4,7 +4,6 @@
 #include<Arduino.h>
 
 
-
 #define NLED 4
 
 class Bot{
@@ -17,11 +16,11 @@ class Bot{
         */
 
         void generateSequence(){
-            srand( (unsigned)time(NULL) );
+            randomSeed(analogRead(1));
             for(int i = 0; i < NLED; i++){
                 //srand(time(NULL));
                 //If the random number generated is even, then the led will be setted to TRUE ( LIGHT ON ), in the other case the led is off.
-                this->positions[i] = ((rand() % 100) + 1) % 2 == 0;
+                this->positions[i] = (random()) % 2 == 0;
             }
         }
 

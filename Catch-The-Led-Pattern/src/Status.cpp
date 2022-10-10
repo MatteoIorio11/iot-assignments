@@ -6,5 +6,7 @@ enum STATUS{
     GAME_OVER = 4,
     RECREATE_PATTERN = 5,
     GAME_SCORE = 6,
+    PENALTY = 7,
+    SHOW_PATTERN = 8,
     VOID = -1
 };
