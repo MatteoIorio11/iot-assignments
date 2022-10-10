@@ -84,10 +84,10 @@
 /*---- POTENTIOMETER -----*/
 #define POTENTIOMETER_INPUT_PIN A0;
 /*---- BUTTONS -----*/
-#define PIN_BUTTON_1 2
-#define PIN_BUTTON_2 3
-#define PIN_BUTTON_3 4
-#define PIN_BUTTON_4 5
+#define PIN_BUTTON_1 5
+#define PIN_BUTTON_2 4
+#define PIN_BUTTON_3 3
+#define PIN_BUTTON_4 2
 
 
 int brightness;
@@ -118,6 +118,7 @@ void allLedsOff(){
     digitalWrite(PIN_LED_3_GREEN, LOW);
     digitalWrite(PIN_LED_4_GREEN, LOW);
     analogWrite(PIN_RED_LED, 0);
+    delay(10);
 }
 
 void wakeUp(){
@@ -133,15 +134,16 @@ void wakeUp(){
 }
 
 void gameScore(){
-   status = GAME_SCORE;
-  Timer1.detachInterrupt();
-  allLedsOff();
-        timer->beginGame();
-        Serial.println(timer->getTimer3());
-        Timer1.initialize(timer->getTimer3() * pow(10,6));
-        Timer1.attachInterrupt(selectLeds);
-        Serial.println("==> Recreate the pattern....");
-        status = RECREATE_PATTERN;
+    status = GAME_SCORE;
+    Timer1.detachInterrupt();
+    allLedsOff();
+    timer->beginGame();
+    Serial.println(timer->getTimer3());
+    Timer1.initialize(timer->getTimer3() * pow(10,6));
+    Timer1.attachInterrupt(selectLeds);
+    Serial.println("==> Recreate the pattern....");
+    user->resetAllPositions();
+    status = RECREATE_PATTERN;
 }
 void showPattern(){
   timer_show_pattern++;
@@ -179,13 +181,11 @@ void showPenalty(){
 }
 
 void continueGame(){
-    allLedsOff();
     user->resetAllPositions();
     Serial.println("--> The game is starting..");
     Serial.flush();
     /*Generate the bot sequence for the input */
     /*Shut all the leds */
-    status = GAME_START;
     /*Detach of deep sleep interrupt*/
     Timer1.detachInterrupt();
     float T2 = timer->showPattern();
@@ -204,8 +204,10 @@ void startGame(){
     Serial.println(timer->difficultySelected());
     Serial.flush();
     Serial.println("-> B1 is pressed, the game starts..");
-    continueGame();
-    
+    allLedsOff();
+    status = GAME_START;
+    Timer1.initialize(timer->ledsOff()*pow(10, 6));
+    Timer1.attachInterrupt(continueGame);
 }
 
 
@@ -235,79 +237,113 @@ void deepSleep(){
 }
 
 void button_1_handler(){
-  switch (status)
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  // If interrupts come faster than 200ms, assume it's a bounce and ignore
+  if (interrupt_time - last_interrupt_time > 200) 
   {
-    case INPUT_WAIT:
-      /*Manage the bouncing problem */
-      if(abs(millis() - bounceTime) > BOUNCE_DURATION){
-        bounceTime = millis();
-        startGame();
-      }
+     switch (status)
+    {
+      case INPUT_WAIT:
+        /*Manage the bouncing problem */
+        if(abs(millis() - bounceTime) > BOUNCE_DURATION){
+          bounceTime = millis();
+          startGame();
+        }
+        break;
+      case DEEP_SLEEP:
+        wakeUp();
+        break;
+      case GAME_START:
+        status = PENALTY;
+        break;
+      case SHOW_PATTERN:
+        status = PENALTY;
+        break;
+      case RECREATE_PATTERN:
+      Serial.println("btn1");
+        user->addPos(0);
       break;
-    case DEEP_SLEEP:
-      wakeUp();
-      break;
-    case GAME_START:
-      status = PENALTY;
-      break;
-    case SHOW_PATTERN:
-      status = PENALTY;
-      break;
-    case RECREATE_PATTERN:
-      user->addPos(1);
-    break;
+    }
   }
+  last_interrupt_time = interrupt_time;
+ 
 }
 void button_2_handler(){
-  switch (status)
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  // If interrupts come faster than 200ms, assume it's a bounce and ignore
+  if (interrupt_time - last_interrupt_time > 200) 
   {
-    case DEEP_SLEEP:
-      wakeUp();
-      break;
-    case GAME_START:
+    switch (status)
+    {
+      case DEEP_SLEEP:
+        wakeUp();
+        break;
+      case GAME_START:
+          status = PENALTY;
+        break;
+      case SHOW_PATTERN:
         status = PENALTY;
+        break;
+      case RECREATE_PATTERN:
+        user->addPos(1);
       break;
-    case SHOW_PATTERN:
-      status = PENALTY;
-      break;
-    case RECREATE_PATTERN:
-      user->addPos(2);
-    break;
+    }
   }
+  last_interrupt_time = interrupt_time;
+  
 }
 void button_3_handler(){
-  switch (status)
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  // If interrupts come faster than 200ms, assume it's a bounce and ignore
+  if (interrupt_time - last_interrupt_time > 200) 
   {
-    case DEEP_SLEEP:
-      wakeUp();
+    switch (status)
+    {
+      case DEEP_SLEEP:
+        wakeUp();
+        break;
+      case GAME_START:
+        status = PENALTY;
+        break;
+      case SHOW_PATTERN:
+        status = PENALTY;
       break;
-    case GAME_START:
-      status = PENALTY;
+      case RECREATE_PATTERN:
+        user->addPos(2);
       break;
-    case SHOW_PATTERN:
-      status = PENALTY;
-    break;
-    case RECREATE_PATTERN:
-      user->addPos(3);
-    break;
+    }
   }
+  last_interrupt_time = interrupt_time;
+  
 }
 void button_4_handler(){
-  switch (status)
+  static unsigned long last_interrupt_time = 0;
+  unsigned long interrupt_time = millis();
+  // If interrupts come faster than 200ms, assume it's a bounce and ignore
+  if (interrupt_time - last_interrupt_time > 200) 
   {
-    case DEEP_SLEEP:
-      wakeUp();
+    switch (status)
+    {
+      case DEEP_SLEEP:
+        wakeUp();
+        break;
+      case GAME_START:
+        status = PENALTY;
+        break;
+      case SHOW_PATTERN:
+        status = PENALTY;
+        break;
+      case RECREATE_PATTERN:
+      Serial.println("btn4");
+        user->addPos(3);
       break;
-    case GAME_START:
-      status = PENALTY;
-      break;
-    case SHOW_PATTERN:
-      status = PENALTY;
-      break;
-    case RECREATE_PATTERN:
-      user->addPos(4);
-    break;
+    }
   }
+  last_interrupt_time = interrupt_time;
+  
 }
 void setup() {
   currIntensity = 0;
@@ -372,7 +408,8 @@ void loop() {
       break;
     case PENALTY:
     /**WORKA**/
-      Serial.println("==> You click a button to early, a penalty is assigned :( ");
+      Serial.println("==> You click a button to early or you have chosen the wrong pattern, a penalty is assigned :( ");
+      allLedsOff();
       digitalWrite(PIN_RED_LED, HIGH);
       delay(1000);
       digitalWrite(PIN_RED_LED, LOW);
@@ -380,6 +417,8 @@ void loop() {
       if(penalties >= 3){
         status = GAME_OVER;
       }else{
+        status = GAME_START;
+        timer_show_pattern = 0;
         continueGame();
       }
       break;
@@ -387,20 +426,27 @@ void loop() {
         if(checkPatterns()){
           Serial.println("--> Correct, you recreate the original pattern :) ");
           score++;
+          timer->reduceTimers();
+          status = GAME_START; 
+          continueGame();
         }else{
           Serial.println("---> You have not recreate the same pattern....");
-          penalties++;
           if(penalties >= 3){
             status = GAME_OVER;
+          }else{
+            status = PENALTY;
+            //continueGame();
           }
         }        
-        timer->reduceTimers();
-        continueGame();
+
         break;
       case GAME_OVER:
-        Serial.print("::> The game is over, your socre is ==> ");
+        Serial.print("::> The game is over, your score is ==> ");
         Serial.println(score);
-        delay(1000000000000000);
+        status = VOID;
+        Timer1.detachInterrupt();
         break;
+      case VOID:
+      break;
   }
 }
