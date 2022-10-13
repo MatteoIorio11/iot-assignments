@@ -69,7 +69,8 @@
       -> Create some king of ENUM/CLASS where we have the variuos states of the GAME : [INPUT_WAIT, GAME_START << BEGINS WHEN X3 IS OVER >>, DEEP_SLEEP, GMAE_OVER]  
 */
 #define BOUNCE_DURATION 20
-#define TEN_SECONDS 1000000000
+#define TEN_SECONDS_SLEEP 10*pow(10, 6)
+#define TEN_SECONDS_DELAY 10*pow(10, 3)
 #define NLEDS 4
 /*---- LEDS -----*/
 
@@ -121,6 +122,32 @@ void allLedsOff(){
     delay(10);
 }
 
+void updateLeds(){
+  bool* leds = bot->getLeds();
+  int led;
+  for(int i = 0; i < NLEDS; i++){
+      switch (i)
+      {
+        case 0:
+          led = PIN_LED_1_GREEN;
+          break;
+        case 1 :
+          led = PIN_LED_2_GREEN;
+          break;
+        case 2 :
+          led = PIN_LED_3_GREEN;
+          break;
+        case 3 : 
+          led = PIN_LED_4_GREEN;
+          break;
+        default:
+          break;
+      }
+    digitalWrite(led, leds[i]?HIGH:LOW);
+  }
+}
+
+
 void wakeUp(){
   if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
     status = INPUT_WAIT;
@@ -157,19 +184,7 @@ void showPattern(){
     timer_show_pattern=0;
   }else{
     bot->generateSequence();
-    for(int i = 0; i < NLEDS; i++){
-        if(bot->getSequence()[i]){
-          if(i == 0){
-            digitalWrite(PIN_LED_1_GREEN, HIGH);
-          }else if(i == 1){
-            digitalWrite(PIN_LED_2_GREEN, HIGH);
-          } else if(i == 2){
-            digitalWrite(PIN_LED_3_GREEN, HIGH);
-          }else if(i == 3){
-            digitalWrite(PIN_LED_4_GREEN, HIGH);
-          }
-        }
-      }
+    updateLeds();
   }
 }
 
@@ -184,6 +199,7 @@ void continueGame(){
     /*Generate the bot sequence for the input */
     /*Shut all the leds */
     /*Detach of deep sleep interrupt*/
+    allLedsOff();
     Timer1.detachInterrupt();
     float T2 = timer->getTimer2();
 
@@ -207,18 +223,6 @@ void startGame(){
 }
 
 
-
-bool checkPatterns(){
-  Serial.println("==> Checking the pattern ");
-  for(int i = 0; i < NLEDS; i++){
-    if(bot->getSequence()[i] != user->getPositions()[i]){
-      return false ;
-    }
-  }
-  return true;
-}
-
-/*MUST FIX THIS*/
 void deepSleep(){
   timer_deep_sleep++;
   if(timer_deep_sleep == 2){
@@ -257,8 +261,9 @@ void button_1_handler(){
         status = PENALTY;
         break;
       case RECREATE_PATTERN:
+        digitalWrite(PIN_LED_1_GREEN, HIGH);
         user->addPos(0);
-      break;
+        break;
     }
   }
   last_interrupt_time = interrupt_time;
@@ -282,6 +287,7 @@ void button_2_handler(){
         status = PENALTY;
         break;
       case RECREATE_PATTERN:
+        digitalWrite(PIN_LED_2_GREEN, HIGH);
         user->addPos(1);
       break;
     }
@@ -307,6 +313,7 @@ void button_3_handler(){
         status = PENALTY;
       break;
       case RECREATE_PATTERN:
+        digitalWrite(PIN_LED_3_GREEN, HIGH);
         user->addPos(2);
       break;
     }
@@ -332,6 +339,7 @@ void button_4_handler(){
         status = PENALTY;
         break;
       case RECREATE_PATTERN:
+        digitalWrite(PIN_LED_4_GREEN, HIGH);
         user->addPos(3);
       break;
     }
@@ -365,7 +373,7 @@ void setup() {
   /* */
 
   /*SLEEP MODE */
-  Timer1.initialize((10 * pow(10, 6)));
+  Timer1.initialize(TEN_SECONDS_SLEEP);
   Timer1.attachInterrupt(deepSleep);
 
   /*MANAGE INTERRUPTS */
@@ -417,7 +425,7 @@ void loop() {
       }
       break;
       case GAME_SCORE:
-        if(checkPatterns()){
+        if(bot->validate(user->getPositions())){
 
           Serial.println("--> Correct, you recreate the original pattern :) ");
           Serial.println("----------------------------------------------------------");
@@ -430,7 +438,7 @@ void loop() {
             Serial.println(user->getPositions()[i]);
           }
           for (int i = 0; i < 4; i++){
-            Serial.println(bot->getSequence()[i]);
+            Serial.println(bot->getLeds()[i]);
           }
           if(penalties >= 3){
             status = GAME_OVER;
@@ -444,12 +452,14 @@ void loop() {
       case GAME_OVER:
         Serial.print("::> The game is over, your score is ==> ");
         Serial.println(score);
-        delay(10000);
+        Serial.println("----------------------------------------------------------");
+        Serial.flush();
+        delay(TEN_SECONDS_DELAY);
         Serial.println("THE GAME STARTS AGAIN -> ");
-        status = GAME_START;
-        startGame();
+        delay(50);
         penalties = 0;
         score = 0;
+        startGame();
         break;
       case VOID:
       break;
