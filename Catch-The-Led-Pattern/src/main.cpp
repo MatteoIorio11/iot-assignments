@@ -444,8 +444,12 @@ void loop() {
       case GAME_OVER:
         Serial.print("::> The game is over, your score is ==> ");
         Serial.println(score);
-        status = VOID;
-        Timer1.detachInterrupt();
+        delay(10000);
+        status = INPUT_WAIT;
+        penalties = 0;
+        score = 0;
+        Timer1.initialize((10 * pow(10, 6)));
+        Timer1.attachInterrupt(deepSleep);
         break;
       case VOID:
       break;
