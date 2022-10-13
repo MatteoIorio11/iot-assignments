@@ -453,6 +453,7 @@ void loop() {
         Serial.print("::> The game is over, your score is ==> ");
         Serial.println(score);
         Serial.println("----------------------------------------------------------");
+        Timer1.detachInterrupt();
         Serial.flush();
         delay(TEN_SECONDS_DELAY);
         Serial.println("THE GAME STARTS AGAIN -> ");
