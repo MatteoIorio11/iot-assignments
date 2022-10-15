@@ -1,3 +1,12 @@
+/*
+  AUTHORS : 
+    Vincenzi Fabio, fabio.vincenzi2@studio.unibo.it
+    Iorio Matteo, matteo.iorio2@studio.unibo.it
+    Rapolla Luca, luca.rapolla@studio.unibo.it
+  DESCRIPTION : 
+    First task, Catch The Led Pattern
+*/
+
 
 #define EI_ARDUINO_INTERRUPTED_PIN // to enable pin states functionality 
 #include <EnableInterrupt.h>
