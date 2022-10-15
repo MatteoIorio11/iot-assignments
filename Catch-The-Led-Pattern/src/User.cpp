@@ -1,23 +1,20 @@
+#include<stdlib.h>
+#include "User.h"
 #define NLED 4
-class User{
+using namespace std;
 
-    private : 
-        bool positions[NLED] = {false};
+void User::addPos(int selected_pos){
+    if(selected_pos < NLED && selected_pos >= 0){
+        positions[selected_pos]=true;
+    }
+}
     
-    public : 
-        void addPos(int selected_pos){
-            if(selected_pos < NLED && selected_pos >= 0){
-                positions[selected_pos]=true;
-            }
-        }
-    
-        void resetAllPositions(){
-            for(int i = 0; i < NLED; i++){
-                positions[i]=false;
-            }
-        }
+void User::resetAllPositions(){
+    for(int i = 0; i < NLED; i++){
+        positions[i]=false;
+    }
+}
 
-        bool* getPositions(){
-            return positions;
-        }
-};
+bool* User::getPositions(){
+    return positions;
+}

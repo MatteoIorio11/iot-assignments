@@ -1,84 +1,125 @@
 #include <Arduino.h>
 
-#include "GreenLed.cpp"
-#include "RedLed.cpp"
-#include "Status.cpp"
-#include "User.cpp"
-#include "Bot.cpp"
-#include "TimerController.cpp"
+#include "Status.h"
+#include "User.h"
+#include "Bot.h"
+#include "TimerController.h"
+
+using namespace std;
 
 class GameController{
     private:
         STATUS status;
-        User *user;
-        Bot *bot;
-        TimerController *timer;
+        User user;
+        Bot bot;
+        TimerController timer;
         int penalties;
         int score;
 
     public:
         GameController(){
-            user = new User();
-            bot = new Bot();
-            timer = new TimerController();
-            penalties = 0;
-            score = 0;
+            this->status = INPUT_WAIT;
+            this->penalties = 0;
+            this->score = 0;
         }
 
-
+        void phaseDeepSleep(){
+            this->status = DEEP_SLEEP;
+        }
 
         void phaseSelectLeds(){
-            status = GAME_SCORE; 
+            this->status = GAME_SCORE; 
         }
 
         void phaseWakeUp(){
-            status = INPUT_WAIT;
+            this->status = INPUT_WAIT;
         }
 
         void phaseGameScore(){
-            status = GAME_SCORE;
+            this->status = GAME_SCORE;
         }
 
         void phaseRecreatePattern(){
-            user->resetAllPositions();
-            status = RECREATE_PATTERN;
+            this->user.resetAllPositions();
+            this->status = RECREATE_PATTERN;
         }
 
         void botGenerateSequence(){
-            bot->generateSequence();
+            this->bot.generateSequence();
         }
 
         void phaseShowPattern(){
-            status = SHOW_PATTERN;
+            this->status = SHOW_PATTERN;
         }
 
         void phasePenalty(){
-            status = PENALTY;
+            this->status = PENALTY;
         }
 
         void phaseStartGame(){
-            status = GAME_START;
+            this->status = GAME_START;
         }
 
+        void phaseGameOver(){
+            this->status = GAME_OVER;
+        }
+
+
         void selectDifficulty(int difficulty){
-            timer->selectDifficulty(difficulty);
+            this->timer.selectDifficulty(difficulty);
         }
 
         int getSelectedDifficulty(){
-            return timer->difficultySelected();
+            return this->timer.difficultySelected();
         }
 
         void timerLedsOff(){
-            timer->ledsOff();
+            this->timer.ledsOff();
         }
 
-        void getTimerT1(){
-            return timer->getTimer1();
+        void timerShowPattern(){
+            this->timer.showPattern();
         }
 
-        bool checkSequence(bool* input){
+        void timerBeginGame(){
+            this->timer.beginGame();
+        }
+
+        float getTimerT1(){
+            return this->timer.getTimer1();
+        }
+
+        float getTimerT2(){
+            return this->timer.getTimer2();
+        }
+
+        float getTimerT3(){
+            return this->timer.getTimer3();
+        }
+
+        void timerReduceTimers(){
+            this->timer.reduceTimers();
+        }
+
+        bool* getBotLeds(){
+            return this->bot.getLeds();
+        }
+
+        bool* getUserLeds(){
+            return this->user.getPositions();
+        }
+
+        void userResetAllPositions(){
+            this->user.resetAllPositions();
+        }
+
+        void userAddPosition(int position){
+            this->user.addPos(position);
+        }
+
+        bool checkSequence(){
             for(int i = 0; i < NLED; i++){
-                if(bot->getSequence()[i] != input[i]){
+                if(this->user.getPositions()[i] != this->bot.getLeds()[i]){
                     return false;
                 }
             }
@@ -86,14 +127,29 @@ class GameController{
         }
         
         STATUS getStatus(){
-            return status;
+            return this->status;
         }
         
-        int getPenalties(){
-            return penalties; 
+        void addPenalty(){
+            this->penalties++;
+        }
+        void increaseScore(){
+            this->score++;
+        }
+
+        bool isGameOver(){
+            return this->penalties >= 3; 
         }
         
         int getScore(){
-            
+            return this->score;
         }
-}
+
+        void resetGame(){
+            this->score = 0;
+            this->penalties = 0;
+            this->timer.resetTimers();
+            this->timer.showPattern();
+            this->timer.beginGame();
+        }
+};

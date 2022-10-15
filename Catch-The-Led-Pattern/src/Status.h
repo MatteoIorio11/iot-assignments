@@ -1,3 +1,8 @@
+#ifndef STATUS_H
+#define STATUS_H
+
+using namespace std;
+
 enum STATUS{
     SELECT_DIFFICULTY = 0,
     INPUT_WAIT = 1,
@@ -10,3 +15,5 @@ enum STATUS{
     SHOW_PATTERN = 8,
     VOID = -1
 };
+
+#endif
