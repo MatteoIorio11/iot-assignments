@@ -8,7 +8,7 @@ class GreenLed {
             this->pin = input_led;   
         }
         void setStatus(){
-            this->status = !this->status;
+            this->status = this->status == LOW ? HIGH : LOW;
         }
         int getPin(){
             return this->pin;

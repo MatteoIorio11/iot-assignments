@@ -31,25 +31,6 @@ class Bot{
         bool* getSequence(){
             return this->positions;
         }
-
-        /*
-        *   Validates the choice
-        */
-
-
-        bool validate(int position, bool val){
-            return this->positions[position] == val;
-        }
-
-        bool validate(bool* input_array){
-            for(int i = 0; i < NLED; i++){
-                if(this->positions[i] != input_array[i]){
-                    return false;
-                }
-            }
-            return true;
-        }
-
         /*
         *   Resets the sequence
         */

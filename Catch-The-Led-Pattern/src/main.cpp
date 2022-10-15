@@ -12,6 +12,7 @@
 #include "User.cpp"
 #include "Bot.cpp"
 #include "TimerController.cpp"
+#include "GameController.cpp"
 
 /*
 
@@ -102,11 +103,12 @@ TimerController *timer;
 volatile STATUS status;
 RedLed *redLed;
 int score = 0;
+GameController controller;
 
 void selectLeds(){
   timer_select_leds++;
   if(timer_select_leds == 2){
-    status = GAME_SCORE; 
+    controller.phaseSelectLeds();
     Serial.println("===> The time is over");
     Timer1.detachInterrupt();
     timer_select_leds = 0;
@@ -123,7 +125,7 @@ void allLedsOff(){
 
 void wakeUp(){
   if(status == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
-    status = INPUT_WAIT;
+    controller.phaseWakeUp();
     bounceTime = millis();
     Serial.println("==> Just wake up...");
     Serial.flush();
@@ -134,21 +136,20 @@ void wakeUp(){
 }
 
 void gameScore(){
-    status = GAME_SCORE;
+    controller.phaseGameScore();
     Timer1.detachInterrupt();
     allLedsOff();
     timer->beginGame();
     Timer1.initialize(timer->getTimer3() * pow(10,6));
     Timer1.attachInterrupt(selectLeds);
     Serial.println("==> Recreate the pattern....");
-    user->resetAllPositions();
-    status = RECREATE_PATTERN;
+    controller.phaseRecreatePattern();
 }
 
 void showPattern(){
   timer_show_pattern++;
   if(timer_show_pattern == 2){
-    status = SHOW_PATTERN;
+    controller.phaseShowPattern();
     Timer1.detachInterrupt();
     allLedsOff();
     /*Show all the bot led pattern*/
@@ -156,7 +157,7 @@ void showPattern(){
     Timer1.attachInterrupt(gameScore);
     timer_show_pattern=0;
   }else{
-    bot->generateSequence();
+    controller.botGenerateSequence();
     for(int i = 0; i < NLEDS; i++){
         if(bot->getSequence()[i]){
           if(i == 0){
@@ -174,7 +175,7 @@ void showPattern(){
 }
 
 void showPenalty(){
-    status = PENALTY;
+    controller.phasePenalty();
 }
 
 void continueGame(){
@@ -194,14 +195,14 @@ void continueGame(){
 
 void startGame(){
     //selecting the difficulty from the potentiometer
-    timer->selectDifficulty(analogRead(A0));
+    controller.selectDifficulty(analogRead(A0));
     /*Plot on the serial line*/
     Serial.print("-> Difficulty selected : "); 
-    Serial.println(timer->difficultySelected());
+    Serial.println(controller.getSelectedDifficulty());
     Serial.flush();
     Serial.println("-> B1 is pressed, the game starts..");
     allLedsOff();
-    status = GAME_START;
+    controller.phaseStartGame();
     Timer1.initialize(timer->ledsOff()*pow(10, 6));
     Timer1.attachInterrupt(continueGame);
 }
