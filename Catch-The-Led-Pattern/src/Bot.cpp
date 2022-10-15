@@ -8,7 +8,7 @@
 
 class Bot{
     private:
-        bool positions[NLED] = {false};
+        bool leds[NLED] = {false};
         
     public:
         /*  builds the light pattern
@@ -20,7 +20,7 @@ class Bot{
             for(int i = 0; i < NLED; i++){
                 //srand(time(NULL));
                 //If the random number generated is even, then the led will be setted to TRUE ( LIGHT ON ), in the other case the led is off.
-                this->positions[i] = (random()) % 2 == 0;
+                this->leds[i] = (random()) % 2 == 0;
             }
         }
 
@@ -28,16 +28,38 @@ class Bot{
         *   returns the sequence
         */
 
-        bool* getSequence(){
-            return this->positions;
+        bool* getLeds(){
+            return this->leds;
         }
+<<<<<<< HEAD
+=======
+
+        /*
+        *   Validates the choice
+        */
+
+
+        bool validate(int position, bool val){
+            return this->leds[position] == val;
+        }
+
+        bool validate(bool* input_array){
+            for(int i = 0; i < NLED; i++){
+                if(this->leds[i] != input_array[i]){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+>>>>>>> 94e8514a810ba7f1307ea2b9d9ce4e0683644bbe
         /*
         *   Resets the sequence
         */
 
-        void resetSequence(){
+        void allLedsOff(){
             for(int i = 0; i < NLED; i++){
-                this->positions[i] = false;
+                this->leds[i] = false;
             }
         }
 };

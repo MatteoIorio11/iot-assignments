@@ -35,28 +35,25 @@ class TimerController{
                     break;
             }
         }
-        float ledsOff(){
+        void ledsOff(){
             randomSeed(analogRead(1));
             // manage the timer t1 : the leds L1…L4 are turned off for some random time T1 
             this->timer_t1 = random(5,10);
-            return this->timer_t1;
         }
-        float showPattern(){
+        void showPattern(){
             
             //manage the timer t2 : the leds are then turned on according to some  random pattern, for some time T2 and then turned off again 
             if(this->timer_t2 == NOT_SET){
                 randomSeed(analogRead(1));
                 this->timer_t2 =  random(5,10);
             }
-            return this->timer_t2;
         }
-        float beginGame(){
+        void beginGame(){
             //manage the timer t3 : the player has max T3 time for recreating the pattern by pressing the buttons T1…T4 
             if(this->timer_t3 == NOT_SET){
                 randomSeed(analogRead(1));
                 this->timer_t3 =  random(5,10);
             }
-            return this->timer_t3;
         }
 
         int difficultySelected(){
