@@ -297,6 +297,49 @@ void setup() {
   controller->timerBeginGame();
 }
 
+void leftToRight(int *leds){
+  for(int i = 0; i < NLEDS; i++){
+      if(i > 0 and i != NLED-1){
+        digitalWrite(leds[i-1], LOW);
+        digitalWrite(leds[i], HIGH);
+      }else if(i == 0){
+        digitalWrite(leds[i], HIGH);
+        digitalWrite(leds[NLEDS-1], LOW);
+      }else if(i == NLEDS-1){
+        digitalWrite(leds[i], HIGH);
+        digitalWrite(leds[0], LOW);
+      }
+      delay(250);
+
+  }
+}
+
+void rightToLeft(int* leds){
+  for(int i = NLEDS-1; i >= 0; i--){
+      if(i > 0 and i != NLED-1){
+        digitalWrite(leds[i+1], LOW);
+        digitalWrite(leds[i], HIGH);
+      }else if(i == 0){
+        digitalWrite(leds[i], HIGH);
+        digitalWrite(leds[i+1], LOW);
+      }else if(i == NLEDS-1){
+        digitalWrite(leds[i], HIGH);
+        digitalWrite(leds[i-1], LOW);
+      }
+      delay(250);
+  }
+}
+
+void rightAnswer(){
+  allLedsOff();
+  int leds[] = {PIN_LED_1_GREEN, PIN_LED_2_GREEN, PIN_LED_3_GREEN, PIN_LED_4_GREEN};
+  for(int i = 0; i < 2; i++){
+      leftToRight(leds);
+      rightToLeft(leds);
+  }
+  allLedsOff();
+}
+
 void fade(){
     analogWrite(PIN_RED_LED, currIntensity);   
     currIntensity = currIntensity + fadeAmount;
@@ -342,6 +385,7 @@ void loop() {
         if(controller->checkSequence()){
 
           Serial.println("--> Correct, you recreate the original pattern :) ");
+          rightAnswer();
           controller->increaseScore();
           controller->timerReduceTimers();
           controller->phaseStartGame();
