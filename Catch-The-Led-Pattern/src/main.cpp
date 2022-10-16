@@ -24,6 +24,10 @@
 #define TEN_SECONDS_DELAY 10*pow(10, 3)
 #define NLEDS 4
 
+#define SEPARATION_LINE Serial.println("----------------------------------------------------------");
+#define PENALTY_LINE Serial.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+
+
 /*---- LEDS -----*/
 #define PIN_LED_1_GREEN 13
 #define PIN_LED_2_GREEN 12
@@ -255,10 +259,12 @@ void button_4_handler(){
 }
 
 void setup() {
+  //Create the game controller, It will manage all the phase of the game
   controller = new GameController();
-
+  //Fade datas
   currIntensity = 0;
   fadeAmount = 5;
+
   Serial.begin(32600);
   Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
   Serial.flush();
@@ -307,23 +313,24 @@ bool anyInteraction(){
   digitalRead(PIN_BUTTON_4) == HIGH;
 }
 
-
-
 void loop() {
   switch (controller->getStatus())
   {
     case INPUT_WAIT:
-    /*Fade of the red led*/
+      /*Fade of the red led*/
       fade();
       break;
     case PENALTY:
+      //We enter in this case if the user commited a Penalty. 
       Serial.println("==> You click a button to early or you have chosen the wrong pattern, a penalty is assigned :( ");
+      PENALTY_LINE
       allLedsOff();
       digitalWrite(PIN_RED_LED, HIGH);
       delay(1000);
       digitalWrite(PIN_RED_LED, LOW);
       controller->addPenalty();
       if(controller->isGameOver()){
+        //Penalties == 3, the game must be over
         controller->phaseGameOver();
       }else{
         controller->phaseStartGame();
@@ -335,7 +342,6 @@ void loop() {
         if(controller->checkSequence()){
 
           Serial.println("--> Correct, you recreate the original pattern :) ");
-          Serial.println("----------------------------------------------------------");
           controller->increaseScore();
           controller->timerReduceTimers();
           controller->phaseStartGame();
@@ -352,7 +358,7 @@ void loop() {
       case GAME_OVER:
         Serial.print("::> The game is over, your score is ==> ");
         Serial.println(controller->getScore());
-        Serial.println("----------------------------------------------------------");
+        SEPARATION_LINE
         Timer1.detachInterrupt();
         Serial.flush();
         delay(TEN_SECONDS_DELAY);
