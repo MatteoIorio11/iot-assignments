@@ -18,18 +18,18 @@
 #include "Status.h"
 #include "GameController.cpp"
 
+/*HARDWARE DATAS*/
 #define BOUNCE_DURATION 20
 #define TEN_SECONDS_SLEEP 10*pow(10, 6)
 #define TEN_SECONDS_DELAY 10*pow(10, 3)
 #define NLEDS 4
-/*---- LEDS -----*/
 
+/*---- LEDS -----*/
 #define PIN_LED_1_GREEN 13
 #define PIN_LED_2_GREEN 12
 #define PIN_LED_3_GREEN 11
 #define PIN_LED_4_GREEN 10
 #define PIN_RED_LED 6
-
 #define ENABLE_INT_IN_PIN 2
 
 /*---- POTENTIOMETER -----*/
@@ -39,13 +39,21 @@
 #define PIN_BUTTON_2 4
 #define PIN_BUTTON_3 3
 #define PIN_BUTTON_4 2
-
+/*INFORMATION FOR THE HANDLERS*/
+#define FIRST_BUTTON 1
+#define SECOND_BUTTON 2
+#define THIRD_BUTTON 3
+#define FOURTH_BUTTON 4
 
 int brightness;
 int fadeAmount;
 int currIntensity;
 volatile int timer_select_leds = 0, timer_show_pattern = 0, timer_deep_sleep = 0, bounceTime = 0;
 GameController *controller;
+
+/// @brief this method is used in the selection of the leds that match the bot pattern. 
+/// It is called by a Timer interrupt. We use "timer_select_leds", because the Timer call this function immediately but we want 
+/// to call this function after the timer dispatch. 
 
 void selectLeds(){
   timer_select_leds++;
@@ -56,6 +64,7 @@ void selectLeds(){
     timer_select_leds = 0;
   }
 }
+/// @brief This method is used for shutting off all the leds in the breadboard
 void allLedsOff(){
     digitalWrite(PIN_LED_1_GREEN, LOW);
     digitalWrite(PIN_LED_2_GREEN, LOW);
@@ -64,7 +73,7 @@ void allLedsOff(){
     analogWrite(PIN_RED_LED, 0);
     delay(10);
 }
-
+/// @brief This method is used to turn on all the bot's leds, in order to show at the User the bot's pattern
 void updateLeds(){
   bool* leds = controller->getBotLeds();
   int led;
@@ -89,8 +98,8 @@ void updateLeds(){
     digitalWrite(led, leds[i]?HIGH:LOW);
   }
 }
-
-
+/// @brief This method is called when a button is pressed during the deep sleep status. With this method we wake up the Arduino, returning to the
+/// blinking phase of the Red Led.
 void wakeUp(){
   if(controller->getStatus() == DEEP_SLEEP and abs(millis() - bounceTime) > BOUNCE_DURATION){
     controller->phaseWakeUp();
