@@ -10,7 +10,7 @@
 using namespace std;
 
 void TimerController::selectDifficulty(int input){
-    this->difficulty = map(input, 0, 1023, 1, 5);
+    this->difficulty = map(input, 0, 1023, 1, 4);
     switch (this->difficulty)
     {
         case 1:
@@ -49,7 +49,6 @@ void TimerController::beginGame(){
 }
 
 int TimerController::difficultySelected(){
-    randomSeed(analogRead(1));
     return this->difficulty;
 }
 
