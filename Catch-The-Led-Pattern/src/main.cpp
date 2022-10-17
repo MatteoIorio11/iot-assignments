@@ -338,10 +338,10 @@ void loop() {
       break;
       case GAME_SCORE:
         if(controller->checkSequence()){
-
           Serial.print("--> New point! Score : ");
           controller->increaseScore();
-          Serial.print(controller->getScore());
+          Serial.println(controller->getScore());
+          SEPARATION_LINE
           controller->timerReduceTimers();
           controller->phaseStartGame();
           continueGame();

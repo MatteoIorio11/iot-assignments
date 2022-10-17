@@ -3,9 +3,9 @@
 #include "TimerController.h"
 
 #define EASY 1
-#define NORMAL 0.8
-#define MEDIUM 0.6
-#define HARD 0.4
+#define NORMAL 0.9
+#define MEDIUM 0.8
+#define HARD 0.7
 #define NOT_SET -1
 using namespace std;
 

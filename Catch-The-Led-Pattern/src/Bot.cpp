@@ -12,7 +12,7 @@ void Bot::generateSequence(){
     for(int i = 0; i < NLEDS; i++){
         //srand(time(NULL));
         //If the random number generated is even, then the led will be setted to TRUE ( LIGHT ON ), in the other case the led is off.
-        this->leds[i] = (random()) % 2 == 0;
+        this->leds[i] = (random(0,2)) == 0;
     }
 }
 
