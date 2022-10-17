@@ -148,7 +148,7 @@ void showPenalty(){
 /// @brief t
 void continueGame(){
     controller->userResetAllPositions();
-    Serial.println("--> The game is starting..");
+    Serial.println("--> The game is starting");
     Serial.flush();
     allLedsOff();//Shutting all leds off
     Timer1.detachInterrupt(); // Detach the deep_sleep interrupt
@@ -170,6 +170,7 @@ void startGame(){
     controller->phaseStartGame();
     controller->timerLedsOff();
     //All the leds are turned of for T1 seconds
+    Serial.println("-> Go!");
     Timer1.initialize(controller->getTimerT1()*pow(10, 6));
     Timer1.attachInterrupt(continueGame);
 }
@@ -222,7 +223,7 @@ void buttonPressed(int button){
           /*Manage the bouncing problem */
           if(abs(millis() - bounceTime) > BOUNCE_DURATION){
             bounceTime = millis();
-            Serial.println("-> B1 is pressed, the game starts..");
+            Serial.println("-> K1 is pressed, the game starts..");
             startGame();
           }
         }
@@ -266,7 +267,7 @@ void setup() {
   fadeAmount = 5;
 
   Serial.begin(32600);
-  Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS BUTTON 1 TO START THE GAME !!! -----");
+  Serial.println("----- WELCOME TO THE CATCH LED PATTERN GAME, PRESS KEY  T1 TO START -----");
   Serial.flush();
 
   /*--SET LEDS--*/
@@ -297,49 +298,6 @@ void setup() {
   controller->timerBeginGame();
 }
 
-void leftToRight(int *leds){
-  for(int i = 0; i < NLEDS; i++){
-      if(i > 0 and i != NLED-1){
-        digitalWrite(leds[i-1], LOW);
-        digitalWrite(leds[i], HIGH);
-      }else if(i == 0){
-        digitalWrite(leds[i], HIGH);
-        digitalWrite(leds[NLEDS-1], LOW);
-      }else if(i == NLEDS-1){
-        digitalWrite(leds[i], HIGH);
-        digitalWrite(leds[0], LOW);
-      }
-      delay(250);
-
-  }
-}
-
-void rightToLeft(int* leds){
-  for(int i = NLEDS-1; i >= 0; i--){
-      if(i > 0 and i != NLED-1){
-        digitalWrite(leds[i+1], LOW);
-        digitalWrite(leds[i], HIGH);
-      }else if(i == 0){
-        digitalWrite(leds[i], HIGH);
-        digitalWrite(leds[i+1], LOW);
-      }else if(i == NLEDS-1){
-        digitalWrite(leds[i], HIGH);
-        digitalWrite(leds[i-1], LOW);
-      }
-      delay(250);
-  }
-}
-
-void rightAnswer(){
-  allLedsOff();
-  int leds[] = {PIN_LED_1_GREEN, PIN_LED_2_GREEN, PIN_LED_3_GREEN, PIN_LED_4_GREEN};
-  for(int i = 0; i < 2; i++){
-      leftToRight(leds);
-      rightToLeft(leds);
-  }
-  allLedsOff();
-}
-
 void fade(){
     analogWrite(PIN_RED_LED, currIntensity);   
     currIntensity = currIntensity + fadeAmount;
@@ -365,7 +323,7 @@ void loop() {
       break;
     case PENALTY:
       //We enter in this case if the user commited a Penalty. 
-      Serial.println("==> You click a button to early or you have chosen the wrong pattern, a penalty is assigned :( ");
+      Serial.println("==> Penalty! ");
       PENALTY_LINE
       allLedsOff();
       digitalWrite(PIN_RED_LED, HIGH);
@@ -384,9 +342,9 @@ void loop() {
       case GAME_SCORE:
         if(controller->checkSequence()){
 
-          Serial.println("--> Correct, you recreate the original pattern :) ");
-          rightAnswer();
+          Serial.print("--> New point! Score : ");
           controller->increaseScore();
+          Serial.print(controller->getScore());
           controller->timerReduceTimers();
           controller->phaseStartGame();
           continueGame();
@@ -400,14 +358,14 @@ void loop() {
 
         break;
       case GAME_OVER:
-        Serial.print("::> The game is over, your score is ==> ");
+        Serial.print("==> Game Over, Final score : ");
         Serial.println(controller->getScore());
         SEPARATION_LINE
         allLedsOff();
         Timer1.detachInterrupt();
         Serial.flush();
         delay(TEN_SECONDS_DELAY);
-        Serial.println("THE GAME STARTS AGAIN -> ");
+        Serial.println("THE GAME STARTS AGAIN! ");
         delay(50);
         controller->resetGame();
         startGame();
