@@ -25,7 +25,7 @@
 #define NLEDS 4
 
 #define SEPARATION_LINE Serial.println("----------------------------------------------------------");
-#define PENALTY_LINE Serial.println("_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-");
+#define PENALTY_LINE Serial.println("__________________________________________________________");
 
 
 /*---- LEDS -----*/
@@ -145,11 +145,9 @@ void showPattern(){
 void showPenalty(){
     controller->phasePenalty();
 }
-/// @brief t
+/// @brief This method is called when between the phase of recreate the pattern from the user and the when the bot creates the pattern
 void continueGame(){
     controller->userResetAllPositions();
-    Serial.println("--> The game is starting");
-    Serial.flush();
     allLedsOff();//Shutting all leds off
     Timer1.detachInterrupt(); // Detach the deep_sleep interrupt
     controller->timerShowPattern();
@@ -223,7 +221,6 @@ void buttonPressed(int button){
           /*Manage the bouncing problem */
           if(abs(millis() - bounceTime) > BOUNCE_DURATION){
             bounceTime = millis();
-            Serial.println("-> K1 is pressed, the game starts..");
             startGame();
           }
         }
