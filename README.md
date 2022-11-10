@@ -26,3 +26,17 @@
 
 
   Ogni componente ha un proprio stato, verrà rappresentato attraverso l'implementazione di Tasks. Per ogni componente è obbligatorio avere il proprio diagramma di stato
+  
+  
+  
+  CLASSI : 
+   * led
+   * servo-motore
+   * pir
+   * sonar 
+   * display-lcd
+   * button 
+   * ?? fotoresistore ?? 
+  
+  
+  
