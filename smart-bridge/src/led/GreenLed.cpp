@@ -2,7 +2,11 @@
 #include "Arduino.h"
 
 GreenLed::GreenLed(int pin) : Led(pin){
-    //Calling the father constructor
+    this->pin = pin;
+}
+void GreenLed::init(){
+    this->led = new Led(this->pin);
+    this->state = OFF;  
 }
 
 void GreenLed::tick(){
@@ -18,6 +22,3 @@ void GreenLed::tick(){
     }
 }
 
-void GreenLed::init(){
-
-}

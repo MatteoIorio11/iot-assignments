@@ -4,6 +4,7 @@
 #include "task/Task.h"
 
 class Led{
+    private:
         int pin;
     public:
         Led(int pin);
