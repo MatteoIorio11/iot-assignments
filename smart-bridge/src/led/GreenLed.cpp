@@ -18,7 +18,9 @@ void GreenLed::tick(){
         case OFF:
             this->led->ledOff();
             break;
-    
+        case ALERT:
+            this->led->ledOff();
+            break;
     }
 }
 

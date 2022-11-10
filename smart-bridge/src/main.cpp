@@ -5,7 +5,6 @@ GreenLed* greenLed;
 
 void setup() {
   greenLed = new GreenLed(1);
-  greenLed->init();
   // put your setup code here, to run once:
 }
 
