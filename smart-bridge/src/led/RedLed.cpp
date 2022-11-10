@@ -6,6 +6,7 @@
 RedLed::RedLed(int pin){
     this->pin = pin;
     this->state = OFF;
+    pinMode(this->pin, OUTPUT);
 }
 
 void RedLed::init(){

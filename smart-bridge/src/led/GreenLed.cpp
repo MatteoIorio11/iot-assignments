@@ -1,8 +1,9 @@
 #include "GreenLed.h"
 #include "Arduino.h"
 
-GreenLed::GreenLed(int pin) : Led(pin){
+GreenLed::GreenLed(int pin){
     this->pin = pin;
+    pinMode(this->pin, OUTPUT);
 }
 void GreenLed::init(){
     this->led = new Led(this->pin);
