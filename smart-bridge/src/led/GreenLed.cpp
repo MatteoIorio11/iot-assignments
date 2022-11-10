@@ -13,10 +13,10 @@ void GreenLed::tick(){
     switch (this->state)
     {
         case ON:
-            this->ledOn();
+            this->led->ledOn();
             break;
         case OFF:
-            this->ledOff();
+            this->led->ledOff();
             break;
     
     }

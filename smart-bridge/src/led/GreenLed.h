@@ -3,14 +3,14 @@
 #ifndef __GREENLED__
 #define __GREENLED__
 
-class GreenLed : public Led, public Task{
+class GreenLed : public Task{
     private:
         int pin;
         Led* led;
         enum {ON, OFF, ALERT} state;
     public:
         //Call the father's constructor 
-        GreenLed(int pin) : Led(pin){}
+        GreenLed(int pin);
         void init();
         void tick();
 };
