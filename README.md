@@ -16,7 +16,7 @@
   livello dell'acqua, per esempio WL2 angolo = 0, se siamo nel caso di WLMAX l'angolo = 180. Sul display verrà visualizzato l'angolo di apertura del nostro motore.
 
   Durante lo stato di allarme, si può premere il pulsante ed utilizzare il potenziometro per regolare l'angolo del servomotore, e ricliccando il bottone questa funzionalità si 
-  blocca. 
+  blocca. Se passo successivamente allo stato di pre allarme oppure nello stato di non allarme si potrebbe successivamente chiudere totalente la valvola.
 
 
   Il nostro arduino è conneso attraverso una linea seriale ad un altro PC, bisogna leggere lo stato del nostro ponte.
