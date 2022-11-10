@@ -1,18 +1,16 @@
 #include "Led.h"
-#include "task/Task.h"
 #ifndef __GREENLED__
 #define __GREENLED__
 
-class GreenLed : public Task{
+class GreenLed : public Led{
     private:
         int pin;
-        Led* led;
         enum {ON, OFF, ALERT} state;
     public:
         //Call the father's constructor 
         GreenLed(int pin);
-        void init();
-        void tick();
+        void ledOn();
+        void ledOff();
 };
 
 #endif
