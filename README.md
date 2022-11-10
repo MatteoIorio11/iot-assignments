@@ -29,7 +29,7 @@
   
   
   
-  CLASSI : 
+  CLASSI: 
    * led
    * servo-motore
    * pir
@@ -38,5 +38,5 @@
    * button 
    * ?? fotoresistore ?? 
   
-  
+  Ogni classe modifica il proprio stato, lavorando sul concetto di Task. Attraverso il metodo 'tick'
   
