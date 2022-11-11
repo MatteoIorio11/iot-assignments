@@ -10,6 +10,8 @@ class RedLed: public Led{
         enum {ON, OFF, BLINKING, ALERT} state;
     public:
         RedLed(int pin);
+        void ledOn();
+        void ledOff();
         void blink();
         int getPin();
         int readValue();

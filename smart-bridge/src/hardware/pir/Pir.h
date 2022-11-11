@@ -1,7 +1,9 @@
 #ifndef __PIR__
 #define __PIR__
 
-class Pir{
+#include "hardware/component/Component.h"
+
+class Pir: public Component{
     private:
         int pin;
     public:

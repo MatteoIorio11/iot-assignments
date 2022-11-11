@@ -1,7 +1,9 @@
 #ifndef __PHOTORESISTOR__
 #define __PHOTORESISTOR__
 
-class PhotoResistor{
+#include "hardware/component/Component.h"
+
+class PhotoResistor: public Component{
     private:
         int pin;
     public:

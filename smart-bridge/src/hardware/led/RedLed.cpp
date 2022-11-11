@@ -15,6 +15,18 @@ void RedLed::blink(){
     this->ledOff();
 }
 
+void RedLed::ledOn(){
+    digitalWrite(this->pin, HIGH);
+}
+
+void RedLed::ledOff(){
+    digitalWrite(this->pin, LOW);
+}
+
 int RedLed::getPin(){
     return this->pin;
+}
+
+int RedLed::readValue(){
+  return digitalRead(this->pin);
 }

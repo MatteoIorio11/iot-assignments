@@ -1,7 +1,7 @@
 #include <TimerOne.h>
 #include <EnableInterrupt.h>
 #include "LogicSLS.h"
-#include "SmartLightSystem/SmartLightSystem.h"
+#include "smartlightsystem/SmartLightSystem.h"
 
 #define THREESHOLD_LUMINOSITY 0
 #define TIMER_T1 2*pow(10,6)
