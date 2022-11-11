@@ -4,7 +4,7 @@
 
 Sonar::Sonar(int trigPin, int echoPin){
     this->trigPin = trigPin;
-    this->echoPin = echoPin;
+    this->pin = echoPin;
 }
 
 void Sonar::sendImpulse(){
@@ -15,9 +15,9 @@ void Sonar::sendImpulse(){
     digitalWrite(trigPin, LOW);
 }
 
-int Sonar::getDistance(){
+int Sonar::readValue(){
     this->sendImpulse();
-    float tUS = pulseIn(this->echoPin, HIGH);
+    float tUS = pulseIn(this->pin, HIGH);
     float t = tUS / 1000.0 / 1000.0 / 2;
     float d = t * VS;
     return d;
