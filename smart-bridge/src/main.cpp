@@ -9,7 +9,7 @@ SmartLightSystem* sls;
 
 void setup() {
   sls = new SmartLightSystem(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR);
-  initSLS(sls);  
+  initSLS(sls);
   // put your setup code here, to run once:
 }
 

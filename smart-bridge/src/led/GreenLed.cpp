@@ -17,3 +17,7 @@ void GreenLed::ledOff(){
 int GreenLed::getPin(){
     return this->pin;
 }
+
+int GreenLed::readValue(){
+  return digitalRead(this->pin);
+}

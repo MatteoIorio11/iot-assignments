@@ -12,6 +12,7 @@ class GreenLed : public Led{
         void ledOn();
         void ledOff();
         int getPin();
+        int readValue();
 };
 
 #endif

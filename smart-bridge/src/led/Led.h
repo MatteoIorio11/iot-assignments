@@ -2,8 +2,9 @@
 #define __LED__
 
 #include "task/Task.h"
+#include "component/Component.h"
 
-class Led{
+class Led: public Component{
     private:
         int pin;
     public:
@@ -11,6 +12,7 @@ class Led{
         void ledOn();
         void ledOff();
         int getPin();
+        int readValue();
 };
 
 #endif
