@@ -9,14 +9,10 @@ RedLed::RedLed(int pin){
     pinMode(this->pin, OUTPUT);
 }
 
-void RedLed::init(){
-    this->led = new Led(this->pin);
-}
-
 void RedLed::blink(){
-    this->led->ledOn();
+    this->ledOn();
     delay(TIME);
-    this->led->ledOff();
+    this->ledOff();
 }
 
 int RedLed::getPin(){

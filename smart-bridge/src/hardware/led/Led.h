@@ -2,7 +2,7 @@
 #define __LED__
 
 #include "task/Task.h"
-#include "component/Component.h"
+#include "hardware/component/Component.h"
 
 class Led: public Component{
     private:

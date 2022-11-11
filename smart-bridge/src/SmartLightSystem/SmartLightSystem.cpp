@@ -1,7 +1,7 @@
 #include "SmartLightSystem.h"
-#include "pir/Pir.h"
-#include  "photoresistor/PhotoResistor.h"
-#include "led/GreenLed.h"
+#include "hardware/pir/Pir.h"
+#include "hardware/photoresistor/PhotoResistor.h"
+#include "hardware/led/GreenLed.h"
 #include "State.h"
 #include "Arduino.h"
 
