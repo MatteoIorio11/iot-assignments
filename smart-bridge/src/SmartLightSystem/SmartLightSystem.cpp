@@ -1,34 +1,36 @@
 #include "SmartLightSystem.h"
 #include "pir/Pir.h"
+#include  "photoresistor/PhotoResistor.h"
 #include "led/GreenLed.h"
+#include "State.h"
 #include "Arduino.h"
 
 
-SmartLightSystem::SmartLightSystem(int pin_pir, int pin_led){
+SmartLightSystem::SmartLightSystem(int pin_pir, int pin_led, int pin_photo){
     this->pin_pir = pin_pir;
     this->pin_led = pin_led;
+    this->pin_photo = pin_photo;
     this->state = NOT_DETECTED;
 }
 
 void SmartLightSystem::init(){
     this->pir = new Pir(this->pin_pir);
     this->greenled = new GreenLed(this->pin_led);
+    this->photoResistor = new PhotoResistor(this->pin_photo);
 }
 
-void SmartLightSystem::tick(){
-    this->checkPerson();
-    switch (this->state)
-    {
-        case DETECTED:
-            this->greenled->ledOn();
-        break;
-    
-        case NOT_DETECTED:
-            this->greenled->ledOff();
-        break;
-    }
+State SmartLightSystem::getState(){
+    return this->state;
 }
 
 void SmartLightSystem::checkPerson(){
     this->state = this->pir->readValue() == HIGH ? DETECTED : NOT_DETECTED;
+}
+
+void SmartLightSystem::turnOnLed(){
+    this->greenled->ledOn();
+}
+
+void SmartLightSystem::turnOffLed(){
+    this->greenled->ledOff();
 }

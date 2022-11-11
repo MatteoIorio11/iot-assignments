@@ -1,9 +1,7 @@
 #ifndef __PHOTORESISTOR__
 #define __PHOTORESISTOR__
 
-#include "task/Task.h"
-
-class PhotoResistor : public Task{
+class PhotoResistor{
     private:
         int pin;
     public:

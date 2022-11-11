@@ -7,19 +7,25 @@
 #include "task/Task.h"
 #include "pir/Pir.h"
 #include "led/GreenLed.h"
+#include "photoresistor/PhotoResistor.h"
+#include "State.h"
 
-class SmartLightSystem : public Task{
+class SmartLightSystem{
     private:
         int pin_pir;
         int pin_led;
+        int pin_photo;
         Pir* pir;
         GreenLed* greenled;
-        enum {DETECTED, NOT_DETECTED, ALERT} state;
+        PhotoResistor* photoResistor;
+        State state;
         
     public:
-        SmartLightSystem(int pin_pir, int pin_led);
+        SmartLightSystem(int pin_pir, int pin_led, int pin_photo);
         void init();
-        void tick();
+        State getState();
+        void turnOnLed();
+        void turnOffLed();
         void checkPerson();
 };
 
