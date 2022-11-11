@@ -26,7 +26,11 @@ class SmartLightSystem{
         State getState();
         void turnOnLed();
         void turnOffLed();
+        int getLuminosity();
+        void detected();
+        void notDetected();
         void checkPerson();
+        PhotoResistor getPhotoresistor();
 };
 
 #endif

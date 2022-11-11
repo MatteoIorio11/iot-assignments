@@ -34,3 +34,19 @@ void SmartLightSystem::turnOnLed(){
 void SmartLightSystem::turnOffLed(){
     this->greenled->ledOff();
 }
+
+int SmartLightSystem::getLuminosity(){
+    return this->photoResistor->readValue();
+}
+
+void SmartLightSystem::detected(){
+    this->state = DETECTED;
+}
+
+void SmartLightSystem::notDetected(){
+    this->state = NOT_DETECTED;
+}
+
+PhotoResistor SmartLightSystem::getPhotoresistor(){
+    return *this->photoResistor;
+}

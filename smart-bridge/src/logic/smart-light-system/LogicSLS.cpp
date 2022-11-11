@@ -5,23 +5,68 @@
 
 #define PIN_LED 0
 #define PIN_PIR 0
-#define PIR_PHOTORESISTOR 0
+#define PIN_PHOTORESISTOR 0
+#define THREESHOLD_LUMINOSITY 0
+#define TIMER_T1 2*pow(10,6)
 
 SmartLightSystem* sls;
+bool another_detected = false;
+int shutLedCounter = 0;
 
-void init(int pin_pir, int pin_led, int pin_photo){
-    sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
+void shutLedTimer(){
+    if(shutLedCounter == 0){
+        shutLedCounter++;
+    }else{
+        shutLedCounter = 0;
+        if(!another_detected){
+            sls->notDetected();
+            Timer1.detachInterrupt();
+        }else{
+            another_detected = false; // A person is detected.
+            personDetected();
+        }
+    }
 }
+
+void shutLed(){
+    sls->turnOffLed();
+}
+
+void personDetected(){
+    another_detected = true;
+    sls->detected(); // change the status of the Smart Light System, because a person is detected
+    Timer1.detachInterrupt();
+    Timer1.initialize(TIMER_T1);
+    Timer1.attachInterrupt(shutLedTimer);
+}
+
+void init(){
+    sls = new SmartLightSystem(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR);
+    enableInterrupt(PIN_PIR, personDetected, HIGH);
+    //If the luminosity is too high, I do not have to turn on the led.
+    enableInterrupt(PIN_PHOTORESISTOR, shutLed, sls->getPhotoresistor().readValue() >= THREESHOLD_LUMINOSITY);
+}
+
 
 void tick(){
     switch (sls->getState())
     {
-    case DETECTED:
+        case DETECTED:
+            if(sls->getLuminosity() < THREESHOLD_LUMINOSITY){
+                sls->turnOnLed();
+            }else{
+                sls->turnOffLed();
+            }
+            break;
+        case NOT_DETECTED:
+
+            break;
         
-        break;
-    
-    default:
-        break;
+        case ALERT:
+
+        
+        default:
+            break;
     }
 }
 
