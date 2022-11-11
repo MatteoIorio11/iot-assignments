@@ -4,16 +4,16 @@
 #include "task/Task.h"
 #include "Led.h"
 
-class RedLed : public Task{
+class RedLed{
     private:
         Led* led;
         int pin;
         enum {ON, OFF, BLINKING, ALERT} state;
-        void blink();
     public:
         RedLed(int pin);
         void init();
-        void tick();
+        void blink();
+        int getPin();
 };
 
 #endif

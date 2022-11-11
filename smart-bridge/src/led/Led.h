@@ -10,6 +10,7 @@ class Led{
         Led(int pin);
         void ledOn();
         void ledOff();
+        int getPin();
 };
 
 #endif

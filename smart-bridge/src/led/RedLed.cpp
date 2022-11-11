@@ -19,23 +19,6 @@ void RedLed::blink(){
     this->led->ledOff();
 }
 
-void RedLed::tick(){
-    switch (this->state)
-    {
-        case ON:
-            this->led->ledOn();
-            break;
-        case OFF:
-            this->led->ledOff();
-            break;
-        case BLINKING:
-            this->blink();
-            break;
-        case ALERT:
-            this->led->ledOn();
-            break;
-            
-    
-    }
+int RedLed::getPin(){
+    return this->pin;
 }
-

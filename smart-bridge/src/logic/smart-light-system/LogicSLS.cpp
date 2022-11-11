@@ -3,9 +3,6 @@
 #include "LogicSLS.h"
 #include "SmartLightSystem/SmartLightSystem.h"
 
-#define PIN_LED 0
-#define PIN_PIR 0
-#define PIN_PHOTORESISTOR 0
 #define THREESHOLD_LUMINOSITY 0
 #define TIMER_T1 2*pow(10,6)
 
@@ -40,13 +37,12 @@ void personDetected(){
     Timer1.attachInterrupt(shutLedTimer);
 }
 
-void init(){
-    sls = new SmartLightSystem(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR);
-    enableInterrupt(PIN_PIR, personDetected, HIGH);
+void initSLS(SmartLightSystem *smartlightsystem){
+    sls = smartlightsystem;
+    enableInterrupt(sls->getPinPir(), personDetected, HIGH);
     //If the luminosity is too high, I do not have to turn on the led.
-    enableInterrupt(PIN_PHOTORESISTOR, shutLed, sls->getPhotoresistor().readValue() >= THREESHOLD_LUMINOSITY);
+    enableInterrupt(sls->getPinPhotoresistor(), shutLed, sls->getPhotoresistor().readValue() >= THREESHOLD_LUMINOSITY);
 }
-
 
 void tick(){
     switch (sls->getState())
@@ -59,11 +55,10 @@ void tick(){
             }
             break;
         case NOT_DETECTED:
-
             break;
-        
         case ALERT:
-
+            sls->turnOffLed();
+            break;
         
         default:
             break;

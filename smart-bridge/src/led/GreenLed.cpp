@@ -13,3 +13,7 @@ void GreenLed::ledOn(){
 void GreenLed::ledOff(){
     digitalWrite(this->pin, LOW);
 }
+
+int GreenLed::getPin(){
+    return this->pin;
+}

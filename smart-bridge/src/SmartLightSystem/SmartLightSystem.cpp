@@ -50,3 +50,16 @@ void SmartLightSystem::notDetected(){
 PhotoResistor SmartLightSystem::getPhotoresistor(){
     return *this->photoResistor;
 }
+
+int SmartLightSystem::getPinPir(){
+    return this->pir->pin_pir;
+}
+
+int SmartLightSystem::getPinLed(){
+    return this->greenled->getPin();
+}
+
+int SmartLightSystem::getPinPhotoresistor(){
+    return this->photoResistor->pin_photo;
+}
+

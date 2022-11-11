@@ -11,6 +11,7 @@ class GreenLed : public Led{
         GreenLed(int pin);
         void ledOn();
         void ledOff();
+        int getPin();
 };
 
 #endif

@@ -23,14 +23,21 @@ class SmartLightSystem{
     public:
         SmartLightSystem(int pin_pir, int pin_led, int pin_photo);
         void init();
-        State getState();
+        //Set the led
         void turnOnLed();
         void turnOffLed();
-        int getLuminosity();
+        //State
         void detected();
         void notDetected();
+        void alert();
         void checkPerson();
+        //Getters
+        State getState();
         PhotoResistor getPhotoresistor();
+        int getPinPir();
+        int getPinLed();
+        int getPinPhotoresistor();
+        int getLuminosity();
 };
 
 #endif

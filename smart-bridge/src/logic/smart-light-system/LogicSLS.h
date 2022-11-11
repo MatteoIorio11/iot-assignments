@@ -1,7 +1,7 @@
 #ifndef __LOGICSLS__
 #define __LOGICSLS__
 
-void init();
+void initSLS(SmartLightSystem *smartlightsystem);
 void tick();
 
 #endif __LOGICSLS__

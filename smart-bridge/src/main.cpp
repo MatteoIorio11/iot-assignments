@@ -1,10 +1,15 @@
 #include <Arduino.h>
-#include "led/GreenLed.h"
+#include "SmartLightSystem/SmartLightSystem.h"
+#include "logic/smart-light-system/LogicSLS.h"
+#define PIN_LED 0
+#define PIN_PIR 0
+#define PIN_PHOTORESISTOR 0
 
-GreenLed* greenLed;
+SmartLightSystem* sls;
 
 void setup() {
-  greenLed = new GreenLed(1);
+  sls = new SmartLightSystem(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR);
+  initSLS(sls);  
   // put your setup code here, to run once:
 }
 
