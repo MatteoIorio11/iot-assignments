@@ -17,3 +17,7 @@ void Pir::calibrate(){
 int Pir::readValue(){
     return digitalRead(this->pin);
 }
+
+int Pir::getPin(){
+    return this->pin;
+}

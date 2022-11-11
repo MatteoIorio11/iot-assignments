@@ -8,6 +8,7 @@ class Pir{
         Pir(int pin);
         void calibrate();
         int readValue();
+        int getPin();
 };
 
 #endif

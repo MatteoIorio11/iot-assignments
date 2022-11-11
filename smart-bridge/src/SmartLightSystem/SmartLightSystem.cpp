@@ -52,7 +52,7 @@ PhotoResistor SmartLightSystem::getPhotoresistor(){
 }
 
 int SmartLightSystem::getPinPir(){
-    return this->pir->pin_pir;
+    return this->pir->getPin();
 }
 
 int SmartLightSystem::getPinLed(){
@@ -60,6 +60,6 @@ int SmartLightSystem::getPinLed(){
 }
 
 int SmartLightSystem::getPinPhotoresistor(){
-    return this->photoResistor->pin_photo;
+    return this->photoResistor->getPin();
 }
 

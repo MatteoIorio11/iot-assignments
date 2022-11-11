@@ -11,3 +11,7 @@ int PhotoResistor::readValue(){
     int value = analogRead(this->pin);
     double valueInVolt = ((double) value) * 5/1024;
 }
+
+int PhotoResistor::getPin(){
+    return this->pin;
+}

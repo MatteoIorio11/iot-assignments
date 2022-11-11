@@ -7,6 +7,7 @@ class PhotoResistor{
     public:
         PhotoResistor(int pin);
         int readValue();
+        int getPin();
 };
 
 #endif
