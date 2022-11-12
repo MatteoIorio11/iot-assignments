@@ -47,6 +47,10 @@ void SmartLightSystem::notDetected(){
     this->state = NOT_DETECTED;
 }
 
+void SmartLightSystem::anotherDetected(){
+    this->state = ANOTHER_DETECTED;
+}
+
 void SmartLightSystem::alert(){
     this->state = ALERT;    
 }
@@ -55,8 +59,8 @@ PhotoResistor SmartLightSystem::getPhotoresistor(){
     return *this->photoResistor;
 }
 
-Led SmartLightSystem::getLed(){
-    return *this->greenled();
+GreenLed SmartLightSystem::getLed(){
+    return *this->greenled;
 }
 
 int SmartLightSystem::getPinPir(){
@@ -71,3 +75,6 @@ int SmartLightSystem::getPinPhotoresistor(){
     return this->photoResistor->getPin();
 }
 
+int SmartLightSystem::checkTheBridge(){
+    return this->pir->readValue();
+}

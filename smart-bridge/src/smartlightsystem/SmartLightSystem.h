@@ -30,15 +30,17 @@ class SmartLightSystem{
         void detected();
         void notDetected();
         void alert();
+        void anotherDetected();
         void checkPerson();
         //Getters
         State getState();
         PhotoResistor getPhotoresistor();
-        Led getLed();
+        GreenLed getLed();
         int getPinPir();
         int getPinLed();
         int getPinPhotoresistor();
         int getLuminosity();
+        int checkTheBridge();
 };
 
 #endif

@@ -11,7 +11,6 @@
 //to 1 sec and every second I check the light and decide if the led must be on or off
 
 SmartLightSystem* sls;
-bool not_detected = false;
 int shutLedCounter = 0;
 
 void shutLedTimer(){
@@ -19,40 +18,20 @@ void shutLedTimer(){
         shutLedCounter++;
     }else{
         shutLedCounter = 0;
-        if(!not_detected){
-            sls->notDetected();
-            sls->turnOffLed();
-            Timer1.detachInterrupt();
-        }else{
-            not_detected = false; // A person is detected.
-            personDetected();
-        }
+        sls->notDetected();
+        sls->turnOffLed();
+        Timer1.detachInterrupt();
     }
 }
+
 
 void shutLed(){
     Timer1.detachInterrupt();
     sls->turnOffLed();
 }
 
-void personDetected(){
-    if(sls->getState() != ALERT){
-        not_detected = false;
-        sls->detected(); // change the status of the Smart Light System, because a person is detected
-        if(sls->getLuminosity() < THREESHOLD_LUMINOSITY){
-            //If there is not much luminosity the led must be ON
-            sls->turnOnLed();
-        }
-        Timer1.detachInterrupt();
-        Timer1.initialize(TIMER_T1);
-        Timer1.attachInterrupt(shutLedTimer);
-    }
-}
-
 void initSLS(SmartLightSystem *smartlightsystem){
     sls = smartlightsystem;
-    enableInterrupt(sls->getPinPir(), personDetected, HIGH);
-    //If the luminosity is too high, I do not have to turn on the led.
 }
 
 void setAlert(){
@@ -64,6 +43,12 @@ void resetStatus(){
     sls->notDetected();
 }
 
+void setTimerT1(){
+    Timer1.detachInterrupt();
+    Timer1.initialize(TIMER_T1);
+    Timer1.attachInterrupt(shutLedTimer);
+}
+
 void tick(){
     switch (sls->getState())
     {
@@ -73,18 +58,20 @@ void tick(){
             }else{
                 sls->turnOffLed();
             }
+            if(sls->checkTheBridge() == HIGH){
+                //Another person have been detected, I have to re-initialize the timer T1.
+                setTimerT1();
+            }
             break;
         case NOT_DETECTED:
-            if(sls->getLed().readValue() == HIGH){
-                sls->turnOffLed();
+            if(sls->checkTheBridge() == HIGH){
+                sls->detected();
+                setTimerT1();
             }
             break;
         case ALERT:
-            if(!not_detected){
-                not_detected = true;
-                if(sls->getLed().readValue() == HIGH){
-                    sls->turnOffLed();
-                }
+            if(sls->getLed().readValue() == HIGH){
+                sls->turnOffLed();
             }
             break;
         
