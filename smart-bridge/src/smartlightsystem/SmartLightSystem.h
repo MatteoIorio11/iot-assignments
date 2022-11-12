@@ -34,6 +34,7 @@ class SmartLightSystem{
         //Getters
         State getState();
         PhotoResistor getPhotoresistor();
+        Led getLed();
         int getPinPir();
         int getPinLed();
         int getPinPhotoresistor();

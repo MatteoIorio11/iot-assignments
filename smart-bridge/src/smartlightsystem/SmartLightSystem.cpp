@@ -47,8 +47,16 @@ void SmartLightSystem::notDetected(){
     this->state = NOT_DETECTED;
 }
 
+void SmartLightSystem::alert(){
+    this->state = ALERT;    
+}
+
 PhotoResistor SmartLightSystem::getPhotoresistor(){
     return *this->photoResistor;
+}
+
+Led SmartLightSystem::getLed(){
+    return *this->greenled();
 }
 
 int SmartLightSystem::getPinPir(){

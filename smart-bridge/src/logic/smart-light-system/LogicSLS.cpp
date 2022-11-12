@@ -4,10 +4,14 @@
 #include "smartlightsystem/SmartLightSystem.h"
 
 #define THREESHOLD_LUMINOSITY 0
-#define TIMER_T1 2*pow(10,6)
+#define TIMER_T1_SAMPLING 1*pow(10,6)
+#define TIMER_T1 10
+
+//If timer t1 == 5 secondi, I can have a sampling of the light inside the shut let timer. For instance, I can set the timer
+//to 1 sec and every second I check the light and decide if the led must be on or off
 
 SmartLightSystem* sls;
-bool another_detected = false;
+bool not_detected = false;
 int shutLedCounter = 0;
 
 void shutLedTimer(){
@@ -15,33 +19,49 @@ void shutLedTimer(){
         shutLedCounter++;
     }else{
         shutLedCounter = 0;
-        if(!another_detected){
+        if(!not_detected){
             sls->notDetected();
+            sls->turnOffLed();
             Timer1.detachInterrupt();
         }else{
-            another_detected = false; // A person is detected.
+            not_detected = false; // A person is detected.
             personDetected();
         }
     }
 }
 
 void shutLed(){
+    Timer1.detachInterrupt();
     sls->turnOffLed();
 }
 
 void personDetected(){
-    another_detected = true;
-    sls->detected(); // change the status of the Smart Light System, because a person is detected
-    Timer1.detachInterrupt();
-    Timer1.initialize(TIMER_T1);
-    Timer1.attachInterrupt(shutLedTimer);
+    if(sls->getState() != ALERT){
+        not_detected = false;
+        sls->detected(); // change the status of the Smart Light System, because a person is detected
+        if(sls->getLuminosity() < THREESHOLD_LUMINOSITY){
+            //If there is not much luminosity the led must be ON
+            sls->turnOnLed();
+        }
+        Timer1.detachInterrupt();
+        Timer1.initialize(TIMER_T1);
+        Timer1.attachInterrupt(shutLedTimer);
+    }
 }
 
 void initSLS(SmartLightSystem *smartlightsystem){
     sls = smartlightsystem;
     enableInterrupt(sls->getPinPir(), personDetected, HIGH);
     //If the luminosity is too high, I do not have to turn on the led.
-    enableInterrupt(sls->getPinPhotoresistor(), shutLed, sls->getPhotoresistor().readValue() >= THREESHOLD_LUMINOSITY);
+}
+
+void setAlert(){
+    sls->alert();
+    Timer1.detachInterrupt();
+}
+
+void resetStatus(){
+    sls->notDetected();
 }
 
 void tick(){
@@ -55,9 +75,17 @@ void tick(){
             }
             break;
         case NOT_DETECTED:
+            if(sls->getLed().readValue() == HIGH){
+                sls->turnOffLed();
+            }
             break;
         case ALERT:
-            sls->turnOffLed();
+            if(!not_detected){
+                not_detected = true;
+                if(sls->getLed().readValue() == HIGH){
+                    sls->turnOffLed();
+                }
+            }
             break;
         
         default:

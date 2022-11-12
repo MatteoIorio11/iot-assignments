@@ -12,7 +12,6 @@ class Led: public Component{
         void ledOn();
         void ledOff();
         int getPin();
-        int readValue();
 };
 
 #endif
