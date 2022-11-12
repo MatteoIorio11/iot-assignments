@@ -4,15 +4,16 @@
 #include "LogicSLS.h"
 
 #define THREESHOLD_LUMINOSITY 1.5
-#define TIMER_T1 10*pow(10,6)
+//#define TIMER_T1 10*pow(10,6)
 #define TIMER_TICK 100
-#define TIME_FOR_DETECTION 10
+#define TIME_FOR_DETECTION pow(10, 3)
+#define TIMER_PERIOD 100
+#define SAMPLING_FREQUENCE 50
 
 //If timer t1 == 5 secondi, I can have a sampling of the light inside the shut let timer. For instance, I can set the timer
 //to 1 sec and every second I check the light and decide if the led must be on or off
 
 SmartLightSystem* sls;
-int last_detection = 0;
 int timer_tick = 0;
 
 /*
@@ -62,16 +63,17 @@ void tickSLS(){
     {
         case DETECTED:
             checkForLuminosity();
-            if(timer_tick == 10){
+            if(timer_tick == TIMER_PERIOD){
+                timer_tick = 0;
                 sls->notDetected();
                 break;
-            }
-            if(sls->checkTheBridge() == HIGH and abs(millis() - last_detection) > TIME_FOR_DETECTION){
-                //Another person have been detected, I have to re-initialize the timer T1.
-                last_detection = millis();
-                Serial.println("Another person has been detected");
-                timer_tick = 0; // reset of the timer
-                //setTimerT1();
+            }else{
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE == 0){
+                    //Another person have been detected, I have to re-initialize the timer T1.
+                    Serial.println("Another person has been detected");
+                    timer_tick = 0; // reset of the timer
+                    //setTimerT1();
+                }
             }
             timer_tick+=1;
             break;

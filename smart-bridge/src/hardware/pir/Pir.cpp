@@ -1,7 +1,7 @@
 #include "Pir.h"
 #include "Arduino.h"
 
-#define CALIBRATION_TIME_SEC 10
+#define CALIBRATION_TIME_SEC 20
 
 Pir::Pir(int pin){
     this->pin = pin;
@@ -11,8 +11,10 @@ Pir::Pir(int pin){
 void Pir::calibrate(){
     Serial.println("Pir calibration : START");
     for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
-    delay(1000);
+        Serial.print(".");
+        delay(1000);
     }
+    Serial.println();
     Serial.println("Pir calibration : END");
 }
 
