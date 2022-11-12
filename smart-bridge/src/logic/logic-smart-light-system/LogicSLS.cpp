@@ -53,7 +53,6 @@ void checkForLuminosity(){
     if(sls->getLuminosity() >= THREESHOLD_LUMINOSITY){
         sls->turnOffLed();
     }else{
-        Serial.println("ao");
         sls->turnOnLed();
     }
 }
