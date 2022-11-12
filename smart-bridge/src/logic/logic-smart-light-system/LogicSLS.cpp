@@ -10,10 +10,10 @@
 #define TIMER_PERIOD period
 #define SAMPLING_FREQUENCE 50
 
-//If timer t1 == 5 secondi, I can have a sampling of the light inside the shut let timer. For instance, I can set the timer
-//to 1 sec and every second I check the light and decide if the led must be on or off
 
+//The smart light system
 SmartLightSystem* sls;
+//
 int timer_tick = 0;
 int period = 0;
 
@@ -33,7 +33,7 @@ void resetStatus(){
 
 void checkForLuminosity(){
     if(sls->getLuminosity() >= 0 and sls->getLuminosity() < LUMINOSITY_LOWERBOUND){
-        //There is not much light, so the led must be on
+        //There is no much light, so the led must be on
         sls->turnOnLed();
     }else{
         sls->turnOffLed();
