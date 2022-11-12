@@ -3,13 +3,13 @@
 #include "logic/timer/Timer.h"
 #define PIN_LED 12
 #define PIN_PIR 2
-#define PIN_PHOTORESISTOR 0
+#define PIN_PHOTORESISTOR A0
 
 Timer timer;
 
 void setup() {
   Serial.begin(9600);
-  initSLS(PIN_PIR, PIN_LED, A0);
+  initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR);
   timer.setupPeriod(100);
   // put your setup code here, to run once:
 }
