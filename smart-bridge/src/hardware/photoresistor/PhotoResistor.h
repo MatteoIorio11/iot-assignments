@@ -1,14 +1,14 @@
 #ifndef __PHOTORESISTOR__
 #define __PHOTORESISTOR__
 
-#include "hardware/component/Component.h"
+#include "hardware/component/SimpleComponent.h"
 
-class PhotoResistor: public Component{
+class PhotoResistor: public SimpleComponent{
     private:
         int pin;
     public:
         PhotoResistor(int pin);
-        int readValue();
+        double readValue();
         int getPin();
 };
 

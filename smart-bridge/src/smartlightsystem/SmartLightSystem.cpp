@@ -35,7 +35,7 @@ void SmartLightSystem::turnOffLed(){
     this->greenled->ledOff();
 }
 
-int SmartLightSystem::getLuminosity(){
+double SmartLightSystem::getLuminosity(){
     return this->photoResistor->readValue();
 }
 
@@ -45,10 +45,6 @@ void SmartLightSystem::detected(){
 
 void SmartLightSystem::notDetected(){
     this->state = NOT_DETECTED;
-}
-
-void SmartLightSystem::anotherDetected(){
-    this->state = ANOTHER_DETECTED;
 }
 
 void SmartLightSystem::alert(){

@@ -1,7 +1,9 @@
 #ifndef __COMPONENT__
 #define __COMPONENT__
 
-class Component{
+#include "SimpleComponent.h"
+
+class Component: public SimpleComponent{
     private:
         int pin;
     public:

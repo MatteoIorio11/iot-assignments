@@ -8,7 +8,6 @@ class Led: public Component{
     private:
         int pin;
     public:
-        Led(int pin);
         void ledOn();
         void ledOff();
         int getPin();

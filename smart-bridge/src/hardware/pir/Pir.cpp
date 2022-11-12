@@ -9,9 +9,11 @@ Pir::Pir(int pin){
 }
 
 void Pir::calibrate(){
+    Serial.println("Pir calibration : START");
     for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
     delay(1000);
-  }
+    }
+    Serial.println("Pir calibration : END");
 }
 
 int Pir::readValue(){
