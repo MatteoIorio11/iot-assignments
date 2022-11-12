@@ -1,6 +1,6 @@
 #include <TimerOne.h>
 #include <EnableInterrupt.h>
-#include "smartlightsystem/SmartLightSystem.h"
+#include "smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
 
 #define THREESHOLD_LUMINOSITY 1.5
@@ -58,7 +58,7 @@ void checkForLuminosity(){
     }
 }
 
-void tick(){
+void tickSLS(){
     switch (sls->getState())
     {
         case DETECTED:

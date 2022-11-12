@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include "logic/smart-light-system/LogicSLS.h"
+#include "logic/logic-smart-light-system/LogicSLS.h"
 #include "logic/timer/Timer.h"
 #define PIN_LED 12
 #define PIN_PIR 2
@@ -17,5 +17,5 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   timer.waitForNextTick();
-  tick();
+  tickSLS();
 }
