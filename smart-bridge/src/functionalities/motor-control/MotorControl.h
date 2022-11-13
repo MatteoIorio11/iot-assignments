@@ -6,7 +6,7 @@
 #include "hardware/servomotor/ServoMotor.h"
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
-#include "functionalities/water-flow-state/State.h"
+#include "State.h"
 
 class MotorControl{
     private:

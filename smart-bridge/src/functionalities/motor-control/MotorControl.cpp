@@ -2,7 +2,7 @@
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
 #include "hardware/servomotor/ServoMotor.h"
-#include "functionalities/water-flow-state/State.h"
+#include "State.h"
 #include "Arduino.h"
 
 MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
