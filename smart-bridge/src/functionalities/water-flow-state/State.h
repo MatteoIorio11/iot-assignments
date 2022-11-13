@@ -1,5 +1,5 @@
-#ifndef __STATE__
-#define __STATE__
+#ifndef __WATERSTATE__
+#define __WATERSTATE__
 
 enum State{
     OFF = 1,
