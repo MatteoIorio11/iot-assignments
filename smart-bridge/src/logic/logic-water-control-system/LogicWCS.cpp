@@ -1,5 +1,6 @@
 #include "functionalities/motor-control/MotorControl.h"
-#include "functionalities/waterflow-control-system/WaterflowContolSystem.h"
+#include "functionalities/water-flow-state/State.h"
+#include "functionalities/waterflow-control-system/WaterflowContolSystem.h"t
 #include "LogicWCS.h"
 
 MotorControl* mc;
