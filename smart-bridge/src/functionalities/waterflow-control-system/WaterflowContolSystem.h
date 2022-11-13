@@ -16,6 +16,7 @@ class WaterflowControlSystem{
         void init();
         void tick();
         void detectWarningState();
+        double getWaterLevel();
 };
 
 
