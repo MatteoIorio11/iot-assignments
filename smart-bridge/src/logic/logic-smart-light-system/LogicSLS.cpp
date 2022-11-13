@@ -10,8 +10,6 @@
 #define TIMER_T1(p) ((int)10000/p)
 #define SAMPLING_FREQUENCE(p) ((int)p/2)
 
-
-
 SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
 int period = 0;        //Period used inside the main's timer
@@ -22,8 +20,8 @@ void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls->init();
 }
 
-void setAlert(){
-    sls->alert();
+void setAlarm(){
+    sls->alarm();
 }
 
 void resetStatus(){
@@ -71,7 +69,7 @@ void tickSLS(){
                 sls->detected();
             }
             break;
-        case ALERT:
+        case ALARM:
             if(sls->getLed().readValue() == HIGH){
                 sls->turnOffLed();
                 timer_tick = 0;
@@ -82,4 +80,3 @@ void tickSLS(){
             break;
     }
 }
-

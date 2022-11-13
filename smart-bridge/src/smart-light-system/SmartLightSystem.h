@@ -29,7 +29,7 @@ class SmartLightSystem{
         //State
         void detected();
         void notDetected();
-        void alert();
+        void alarm();
         void checkPerson();
         //Getters
         State getState();

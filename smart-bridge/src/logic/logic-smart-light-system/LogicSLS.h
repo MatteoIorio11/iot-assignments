@@ -4,5 +4,6 @@
 
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per);
 void tickSLS();
+void setAlarm();
 
 #endif
