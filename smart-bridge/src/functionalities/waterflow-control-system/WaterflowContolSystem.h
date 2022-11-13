@@ -6,26 +6,39 @@
 #include "hardware/led/RedLed.h"
 #include "State.h"
 
-//Metti solo dei gran metodi per accedere ai dati letti, accedere e spegnere i led ecc ecc
-//Non mettere qua dentro la macchina a stati finiti, metti dei metodi per cambiare lo stato della variabile
-//Metti dei metodi per accedere alla copia delle classi
-
-
 class WaterflowControlSystem{
     private:
-        int echoPin;
-        int trigPin;
-        //Cambia warning levels con state
-        enum  { NORMAL, WL1, WL2} WarningLevels;
+        int sonar_echoPin;
+        int sonar_trigPin;
+        int red_pin_led;
+        int green_pin_led;
+        GreenLed* greenLed;
+        RedLed* redLed;
+        WaterState state;
         Sonar* sonar;
         
     public:
-        WaterflowControlSystem(int echoPin, int trigPin);
+        WaterflowControlSystem(int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led);
         void init();
-        void tick();
-        void detectWarningState();
+        //Led
+        void turnOnRedLed();
+        void turnOffRedLed();
+        void turnOnGreenLed();
+        void turnOffGreenLed();
+        //State
+        void refreshWaterState();
         double getWaterLevel();
+        //Getters
         WaterState getState();
+        Sonar* getSonar();
+        RedLed* getRedLed();
+        GreenLed* getGreenLed();
+        int getSonarEchoPin();
+        int getSonarTrigPin();
+        int getRedLedPin();
+        int getGreenLedPin();
+        
+        
 };
 
 
