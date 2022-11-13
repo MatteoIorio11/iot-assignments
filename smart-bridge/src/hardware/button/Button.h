@@ -1,15 +1,14 @@
 #ifndef __BUTTON__
 #define __BUTTON__
 
-#include "hardware/component/Button.h"
+#include "hardware/component/SimpleComponent.h"
 
-class Potentiometer: public Component{
+class Button: public SimpleComponent{
     private:
         int pin;
     public:
-        Potentiometer(int pin);
+        Button(int pin);
         int getPin();
-        int readValue();
 };
 
 #endif
