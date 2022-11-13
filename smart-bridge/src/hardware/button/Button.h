@@ -1,7 +1,7 @@
-#ifndef __POTENTIOMETER__
-#define __POTENTIOMETER__
+#ifndef __BUTTON__
+#define __BUTTON__
 
-#include "hardware/component/Component.h"
+#include "hardware/component/Button.h"
 
 class Potentiometer: public Component{
     private:
