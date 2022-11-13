@@ -21,4 +21,6 @@ void MotorControl::manualControl(){
     this->servoMotor->setAngle(this->potentiometer->readValue());
 }
 
-
+void MotorControl::automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel){
+    this->servoMotor->setAngle(map(waterLevel, minWaterLevel, maxWaterLevel, 0, 180));
+}
