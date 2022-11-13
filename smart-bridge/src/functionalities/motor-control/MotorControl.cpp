@@ -18,5 +18,7 @@ void MotorControl::init(){
 }
 
 void MotorControl::manualControl(){
-
+    this->servoMotor->setAngle(this->potentiometer->readValue());
 }
+
+
