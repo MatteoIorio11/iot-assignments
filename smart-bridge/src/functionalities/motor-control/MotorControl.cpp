@@ -27,5 +27,7 @@ void MotorControl::automaticControl(int minWaterLevel, int maxWaterLevel, int wa
 }
 
 void MotorControl::off(){
-    
+    this->state = OFF;
 }
+
+
