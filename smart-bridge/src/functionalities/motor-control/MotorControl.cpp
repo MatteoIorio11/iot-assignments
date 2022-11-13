@@ -11,7 +11,7 @@ MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
     this->pin_servo = pin_servo;
 }
 
-MotorControl::init(){
+void MotorControl::init(){
     this->potentiometer = new Potentiometer(this->pin_pot);
     this->button = new Button(this->pin_button);
     this->servoMotor = new ServoMotor(this->pin_servo);
