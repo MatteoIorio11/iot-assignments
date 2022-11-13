@@ -9,6 +9,7 @@ MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
     this->pin_button = pin_button;
     this->pin_pot = pin_pot;
     this->pin_servo = pin_servo;
+    this->state = OFF;
 }
 
 void MotorControl::init(){
@@ -23,4 +24,8 @@ void MotorControl::manualControl(){
 
 void MotorControl::automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel){
     this->servoMotor->setAngle(map(waterLevel, minWaterLevel, maxWaterLevel, 0, 180));
+}
+
+void MotorControl::off(){
+
 }
