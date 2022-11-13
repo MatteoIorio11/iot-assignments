@@ -30,6 +30,10 @@ void MotorControl::off(){
     this->state = OFF;
 }
 
+void MotorControl::automatic(){
+    this->state = AUTOMATIC;
+}
+
 State MotorControl::getState(){
     return this->state;
 }
