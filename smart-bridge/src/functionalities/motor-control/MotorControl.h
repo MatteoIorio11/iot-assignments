@@ -25,7 +25,6 @@ class MotorControl{
         void automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel);
         //State
         void off();
-        void on();
         void automatic();
         void manual();
         //Getters
