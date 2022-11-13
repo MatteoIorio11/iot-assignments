@@ -10,10 +10,13 @@ void initMC(){
 void tickMC(){
     switch (mc->getState())
     {
-    case ON:
-        break;
-    
-    default:
-        break;
+        case ON:
+            break;
+        case OFF:
+            break;
+        case AUTOMATIC:
+            break;
+        case MANUAL:
+            break;
     }
 }
