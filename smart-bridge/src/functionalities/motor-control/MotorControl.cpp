@@ -58,6 +58,9 @@ ServoMotor MotorControl::getServoMotor(){
     return *this->servoMotor;
 }
 
+Button MotorControl::getButton(){
+    return *this->button;
+}
 
 State MotorControl::getState(){
     return this->state;
