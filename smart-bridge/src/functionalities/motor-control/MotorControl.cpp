@@ -16,3 +16,7 @@ void MotorControl::init(){
     this->button = new Button(this->pin_button);
     this->servoMotor = new ServoMotor(this->pin_servo);
 }
+
+void MotorControl::manualControl(){
+
+}

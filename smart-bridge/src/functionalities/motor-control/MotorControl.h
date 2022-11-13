@@ -23,10 +23,10 @@ class MotorControl{
         void manualControl();
         void automaticControl();
         //State
-        void Off();
-        void On();
-        void Automatic();
-        void Manual();
+        void off();
+        void on();
+        void automatic();
+        void manual();
         //Getters
         int getPinServoMotor();
         int getPinPotentiometer();
