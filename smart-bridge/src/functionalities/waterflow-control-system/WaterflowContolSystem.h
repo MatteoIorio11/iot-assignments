@@ -4,11 +4,12 @@
 #include "hardware/sonar/Sonar.h"
 #include "hardware/led/GreenLed.h"
 #include "hardware/led/RedLed.h"
-#include "State.h"
+#include "functionalities/water-flow-state/State.h"
 
 //Metti solo dei gran metodi per accedere ai dati letti, accedere e spegnere i led ecc ecc
 //Non mettere qua dentro la macchina a stati finiti, metti dei metodi per cambiare lo stato della variabile
-//Metti dei metodi per accedere alla copia del
+//Metti dei metodi per accedere alla copia delle classi
+
 
 class WaterflowControlSystem{
     private:
@@ -24,6 +25,7 @@ class WaterflowControlSystem{
         void tick();
         void detectWarningState();
         double getWaterLevel();
+        State getState();
 };
 
 

@@ -15,19 +15,24 @@ void automatic(){
 }
 
 void tickWCS(){
-    switch (mc->getState())
+    switch (wcs->getState())
     {
         case NORMAL:
             break;
         case PRE_ALARM:
             break;
         case ALARM:
-            break;
-        case OFF:
-            break;
-        case AUTOMATIC:
-            break;
-        case MANUAL:
+            switch (mc->getState())
+            {
+                case OFF:
+                    /* code */
+                    break;
+                case AUTOMATIC:
+                    break;
+                case MANUAL:
+                    break;
+            
+            }
             break;
     }
 }
