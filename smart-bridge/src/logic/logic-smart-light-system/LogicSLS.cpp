@@ -1,6 +1,6 @@
 #include <TimerOne.h>
 #include <EnableInterrupt.h>
-#include "smart-light-system/SmartLightSystem.h"
+#include "functionalities/smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
 
 #define LUMINOSITY_LOWERBOUND 1
