@@ -51,8 +51,13 @@ int MotorControl::getPinServoMotor(){
 }
 
 Potentiometer MotorControl::getPotentiometer(){
-    return this->potentiometer;
+    return *this->potentiometer;
 }
+
+ServoMotor MotorControl::getServoMotor(){
+    return *this->servoMotor;
+}
+
 
 State MotorControl::getState(){
     return this->state;
