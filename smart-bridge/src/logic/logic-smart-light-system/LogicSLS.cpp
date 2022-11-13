@@ -8,7 +8,7 @@
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
 #define TIMER_T1(p) ((int)10000/p)
-#define SAMPLING_FREQUENCE 50
+#define SAMPLING_FREQUENCE(p) ((int)p/2)
 
 
 
@@ -55,7 +55,7 @@ void tickSLS(){
                 so in order to resolve this problem, I recognise another person when the signal is HIGH and 
                 the signal is sent after SAMPLING_FREQUENCE seconds 
                 */
-                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE == 0){
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE(TIMER_PERIOD) == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
                     Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"
