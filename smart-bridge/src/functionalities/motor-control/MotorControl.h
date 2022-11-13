@@ -6,6 +6,7 @@
 #include "hardware/servomotor/ServoMotor.h"
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
+#include "State.h"
 
 class MotorControl{
     private:
@@ -30,6 +31,10 @@ class MotorControl{
         int getPinServoMotor();
         int getPinPotentiometer();
         int getPinButton();
+        State getState();
+        Potentiometer getPotentiometer();
+        Button getButton();
+        ServoMotor getServoMotor();
 };
 
 #endif
