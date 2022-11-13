@@ -2,7 +2,7 @@
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
 #include "hardware/servomotor/ServoMotor.h"
-#include "State.h"
+#include "functionalities/water-flow-state/State.h"
 #include "Arduino.h"
 
 MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
@@ -27,5 +27,41 @@ void MotorControl::automaticControl(int minWaterLevel, int maxWaterLevel, int wa
 }
 
 void MotorControl::off(){
-    
+    this->state = OFF;
+}
+
+void MotorControl::automatic(){
+    this->state = AUTOMATIC;
+}
+
+void MotorControl::manual(){
+    this->state = MANUAL;
+}
+
+int MotorControl::getPinButton(){
+    return this->pin_button;
+}
+
+int MotorControl::getPinPotentiometer(){
+    return this->pin_pot;
+}
+
+int MotorControl::getPinServoMotor(){
+    return this->pin_servo;
+}
+
+Potentiometer MotorControl::getPotentiometer(){
+    return *this->potentiometer;
+}
+
+ServoMotor MotorControl::getServoMotor(){
+    return *this->servoMotor;
+}
+
+Button MotorControl::getButton(){
+    return *this->button;
+}
+
+State MotorControl::getState(){
+    return this->state;
 }

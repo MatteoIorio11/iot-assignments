@@ -6,7 +6,7 @@
 #include "hardware/servomotor/ServoMotor.h"
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
-#include "State.h"
+#include "functionalities/water-flow-state/State.h"
 
 class MotorControl{
     private:
@@ -25,7 +25,6 @@ class MotorControl{
         void automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel);
         //State
         void off();
-        void on();
         void automatic();
         void manual();
         //Getters
