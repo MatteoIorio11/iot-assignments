@@ -30,4 +30,6 @@ void MotorControl::off(){
     this->state = OFF;
 }
 
-
+State MotorControl::getState(){
+    return this->state;
+}
