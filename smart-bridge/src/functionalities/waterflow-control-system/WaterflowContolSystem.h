@@ -8,7 +8,7 @@
 
 //Metti solo dei gran metodi per accedere ai dati letti, accedere e spegnere i led ecc ecc
 //Non mettere qua dentro la macchina a stati finiti, metti dei metodi per cambiare lo stato della variabile
-
+//Metti dei metodi per accedere alla copia del
 
 class WaterflowControlSystem{
     private:

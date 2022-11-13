@@ -4,6 +4,7 @@
 
 MotorControl* mc;
 WaterflowControlSystem* wcs;
+
 void initWCS(int pin_servo, int pin_pot, int pin_button){
     mc = new MotorControl(pin_servo, pin_pot, pin_button);
 }
@@ -15,10 +16,15 @@ void automatic(){
 void tickWCS(){
     switch (mc->getState())
     {
+        case NORMAL:
+            break;
+        case PRE_ALARM:
+            break;
+        case ALARM:
+            break;
         case OFF:
             break;
         case AUTOMATIC:
-            
             break;
         case MANUAL:
             break;
