@@ -37,6 +37,8 @@
    * display-lcd
    * button 
    * ?? fotoresistore ?? 
+
+    <a href="https://docs.google.com/document/d/16s0wVOWBpKCq3FkitngOBmHusA-5NXOpND3bSOkZWyc/edit">Link Consegna</a>
   
   Ogni classe modifica il proprio stato, lavorando sul concetto di Task. Attraverso il metodo 'tick'
   
