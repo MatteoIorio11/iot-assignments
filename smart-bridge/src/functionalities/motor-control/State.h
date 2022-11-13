@@ -1,7 +1,7 @@
-#ifndef __STATE__
-#define __STATE__
+#ifndef __MOTORSTATE__
+#define __MOTORSTATE__
 
-enum State{
+enum MotorState{
     OFF = 1,
     AUTOMATIC = 2,
     MANUAL = 3

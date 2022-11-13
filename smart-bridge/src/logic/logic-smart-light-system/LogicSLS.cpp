@@ -1,13 +1,12 @@
-#include <TimerOne.h>
-#include <EnableInterrupt.h>
 #include "functionalities/smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
+#include "Arduino.h"
 
 #define LUMINOSITY_LOWERBOUND 1
 //tick of the timer inside the main, this value is used for the "timer_tick".
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
-#define TIMER_T1(p) ((int)10000/p)
+#define TIMER_T1_A(p) ((int)10000/p)
 #define SAMPLING_FREQUENCE(p) ((int)p/2)
 
 SmartLightSystem* sls; //The smart light system
@@ -42,7 +41,7 @@ void tickSLS(){
     {
         case DETECTED:
             checkForLuminosity();
-            if(timer_tick >= TIMER_T1(TIMER_PERIOD)){
+            if(timer_tick >= TIMER_T1_A(TIMER_PERIOD)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
                 sls->notDetected();

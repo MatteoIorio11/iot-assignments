@@ -1,7 +1,7 @@
 #ifndef __SONAR__
 #define __SONAR__
 
-#include "hardware/component/Component.h";
+#include "hardware/component/Component.h"
 
 #define VS 331.5 + 0.6*20;
 

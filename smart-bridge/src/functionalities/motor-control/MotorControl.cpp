@@ -62,6 +62,6 @@ Button MotorControl::getButton(){
     return *this->button;
 }
 
-State MotorControl::getState(){
+MotorState MotorControl::getState(){
     return this->state;
 }
