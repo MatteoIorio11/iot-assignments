@@ -21,7 +21,7 @@ class MotorControl{
         MotorControl(int pin_servo, int pin_pot, int pin_button);
         void init();
         void manualControl();
-        void automaticControl();
+        void automaticControl(int minWaterLevel, int maxWaterLevel, int wterLevel);
         //State
         void off();
         void on();
