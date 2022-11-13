@@ -47,8 +47,8 @@ void SmartLightSystem::notDetected(){
     this->state = NOT_DETECTED;
 }
 
-void SmartLightSystem::alert(){
-    this->state = ALERT;    
+void SmartLightSystem::alarm(){
+    this->state = ALARM;    
 }
 
 PhotoResistor SmartLightSystem::getPhotoresistor(){
