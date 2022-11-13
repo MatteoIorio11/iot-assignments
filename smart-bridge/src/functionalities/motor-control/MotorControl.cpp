@@ -34,6 +34,9 @@ void MotorControl::automatic(){
     this->state = AUTOMATIC;
 }
 
+void MotorControl::manual(){
+    this->state = MANUAL;
+}
 State MotorControl::getState(){
     return this->state;
 }
