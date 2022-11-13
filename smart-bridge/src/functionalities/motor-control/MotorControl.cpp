@@ -42,6 +42,10 @@ int MotorControl::getPinButton(){
     return this->pin_button;
 }
 
+int MotorControl::getPinPotentiometer(){
+    return this->pin_pot;
+}
+
 State MotorControl::getState(){
     return this->state;
 }
