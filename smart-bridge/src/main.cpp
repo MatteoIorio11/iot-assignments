@@ -11,7 +11,11 @@ Timer timer;
 void setup() {
   Serial.begin(9600);
   initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, PERIOD);
-  timer.setupPeriod(PERIOD);
+  if(PERIOD > 0){
+    timer.setupPeriod(PERIOD);
+  }else{
+    timer.setupPeriod(100);
+  }
   // put your setup code here, to run once:
 }
 

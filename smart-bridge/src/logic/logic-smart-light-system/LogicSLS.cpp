@@ -4,18 +4,17 @@
 #include "LogicSLS.h"
 
 #define LUMINOSITY_LOWERBOUND 1
-#define TIMER_TICK 100
-#define TIME_FOR_DETECTION pow(10, 3)
-//The tick of the timer is 
+//tick of the timer inside the main, this value is used for the "timer_tick".
 #define TIMER_PERIOD period
+//The timer1 is ten seconds based on the period
+#define TIMER_T1(p) ((int)10000/p)
 #define SAMPLING_FREQUENCE 50
 
 
-//The smart light system
-SmartLightSystem* sls;
-//
-int timer_tick = 0;
-int period = 0;
+
+SmartLightSystem* sls; //The smart light system
+int timer_tick = 0;    //Timer for the light 
+int period = 0;        //Period used inside the main's timer
 
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
@@ -45,7 +44,7 @@ void tickSLS(){
     {
         case DETECTED:
             checkForLuminosity();
-            if(timer_tick >= TIMER_PERIOD){
+            if(timer_tick >= TIMER_T1(TIMER_PERIOD)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
                 sls->notDetected();
