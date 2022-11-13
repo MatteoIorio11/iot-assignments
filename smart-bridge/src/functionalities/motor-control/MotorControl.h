@@ -16,12 +16,13 @@ class MotorControl{
         ServoMotor* servoMotor;
         Potentiometer* potentiometer;
         Button* button;
+        State state;
         
     public:
         MotorControl(int pin_servo, int pin_pot, int pin_button);
         void init();
         void manualControl();
-        void automaticControl();
+        void automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel);
         //State
         void off();
         void on();
