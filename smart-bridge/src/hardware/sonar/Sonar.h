@@ -13,6 +13,8 @@ class Sonar : public Component{
     public:
         Sonar(int trigPin, int echoPin);
         int readValue();
+        int getEchoPin();
+        int getTrigPin();
 };
 
 #endif
