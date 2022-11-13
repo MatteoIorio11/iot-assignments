@@ -16,7 +16,7 @@ class MotorControl{
         ServoMotor* servoMotor;
         Potentiometer* potentiometer;
         Button* button;
-        MotorState state;
+        State state;
         
     public:
         MotorControl(int pin_servo, int pin_pot, int pin_button);
