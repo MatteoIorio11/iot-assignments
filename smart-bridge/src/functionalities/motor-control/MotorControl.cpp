@@ -37,6 +37,11 @@ void MotorControl::automatic(){
 void MotorControl::manual(){
     this->state = MANUAL;
 }
+
+int MotorControl::getPinButton(){
+    return this->pin_button;
+}
+
 State MotorControl::getState(){
     return this->state;
 }
