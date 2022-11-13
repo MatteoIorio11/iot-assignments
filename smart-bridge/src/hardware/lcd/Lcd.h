@@ -11,9 +11,10 @@ class Lcd{
         int cols;
     public:
         Lcd(int address, int rows, int cols);
-        void displayPreAlarm();
+        void displayPreAlarm(double level);
         void displayAlarm();
-        void shutLCD();
+        void displayON();
+        void displayOFF();
 };
 
 #endif
