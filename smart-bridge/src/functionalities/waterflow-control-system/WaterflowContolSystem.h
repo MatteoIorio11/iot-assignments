@@ -30,9 +30,9 @@ class WaterflowControlSystem{
         double getWaterLevel();
         //Getters
         WaterState getState();
-        Sonar* getSonar();
-        RedLed* getRedLed();
-        GreenLed* getGreenLed();
+        Sonar getSonar();
+        RedLed getRedLed();
+        GreenLed getGreenLed();
         int getSonarEchoPin();
         int getSonarTrigPin();
         int getRedLedPin();

@@ -47,16 +47,16 @@ WaterState WaterflowControlSystem::getState(){
     return this->state;
 }
 
-Sonar* WaterflowControlSystem::getSonar(){
-    return this->sonar;
+Sonar WaterflowControlSystem::getSonar(){
+    return *this->sonar;
 }
 
-RedLed* WaterflowControlSystem::getRedLed(){
-    return this->redLed;
+RedLed WaterflowControlSystem::getRedLed(){
+    return *this->redLed;
 }
 
-GreenLed* WaterflowControlSystem::getGreenLed(){
-    return this->greenLed;
+GreenLed WaterflowControlSystem::getGreenLed(){
+    return *this->greenLed;
 }
 
 int WaterflowControlSystem::getSonarEchoPin(){
