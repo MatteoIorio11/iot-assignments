@@ -65,3 +65,6 @@ Button MotorControl::getButton(){
 MotorState MotorControl::getState(){
     return this->state;
 }
+void MotorControl::closeValve(){
+    this->servoMotor->setAngle(0);
+}

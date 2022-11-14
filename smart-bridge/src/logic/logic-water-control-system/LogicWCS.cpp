@@ -24,11 +24,12 @@ void tickWCS(){
             switch (mc->getState())
             {
                 case OFF:
-                    /* code */
+                    mc->closeValve();
                     break;
                 case AUTOMATIC:
                     break;
                 case MANUAL:
+                    mc->manualControl();
                     break;
             
             }

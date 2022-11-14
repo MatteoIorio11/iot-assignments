@@ -35,6 +35,7 @@ class MotorControl{
         Potentiometer getPotentiometer();
         Button getButton();
         ServoMotor getServoMotor();
+        void closeValve();
 };
 
 #endif
