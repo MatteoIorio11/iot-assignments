@@ -18,7 +18,6 @@ class Timer{
     public:
         Timer(int period);
         void changePeriod(WaterState state);
-
 };
 
 #endif
