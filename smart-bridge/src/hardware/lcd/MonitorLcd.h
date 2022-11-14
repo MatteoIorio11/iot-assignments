@@ -1,9 +1,11 @@
 #ifndef __MONITORLCD__
 #define __MONITORLCD__
 
+#include <LiquidCrystal_I2C.h>
+
 class MonitorLcd{
     private:
-        //LiquidCrystal_I2C lcd;
+        LiquidCrystal_I2C* lcd;
         int address;
         int rows;
         int cols;
