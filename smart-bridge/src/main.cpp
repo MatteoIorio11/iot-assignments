@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <TimerOne.h>
+#include <library.json>
 
 #include "logic/logic-smart-light-system/LogicSLS.h"
 #define PIN_LED 12
@@ -7,13 +8,29 @@
 #define PIN_PHOTORESISTOR A0
 #define PERIOD 100
 
-enum {ON, OFF} state;
-
-void function(){
-  state = state == ON ? OFF:ON; 
-  Serial.flush();
+/*
+void setup() {
+ Serial.begin(115200);
+ Serial.setTimeout(1);
+}
+void loop() {
+ while (!Serial.available());
+ x = Serial.readString().toInt();
+ Serial.print(x + 1);
 }
 
+{ 
+  "degree":"X",
+  "message":"myMessage",
+  "":
+}
+
+A.setMessage("aaaaa")
+A.parse(); ==> {degree="VALORE_LETTO_INPUT", message"aaaaa", ...}
+
+
+
+*/
 
 
 void setup() {
