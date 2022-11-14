@@ -36,11 +36,18 @@ void WaterflowControlSystem::turnOffRedLed(){
 }
 
 void WaterflowControlSystem::refreshWaterState(){
-    //TODO
+    if(this->getWaterLevel() > 2 && this->getWaterLevel() <= 150){
+        this->state = NORMAL;
+    }
+    else if(this->getWaterLevel() > 150 && this->getWaterLevel() <= 300){
+        this->state = PRE_ALARM;
+    }else if(this->getWaterLevel() > 300){
+        this->state = ALARM;
+    }
 }
 
 double WaterflowControlSystem::getWaterLevel(){
-    //TODO
+    int distance = this->sonar->readValue();
 }
 
 WaterState WaterflowControlSystem::getState(){
