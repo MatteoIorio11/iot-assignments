@@ -5,6 +5,7 @@
 #include "Arduino.h"
 
 
+
 WaterflowControlSystem::WaterflowControlSystem(int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led, int address, int rows, int cols){
     this->sonar_echoPin = sonar_echoPin;
     this->sonar_trigPin = sonar_trigPin;
@@ -44,12 +45,12 @@ void WaterflowControlSystem::RedLedBlink(){
 }
 
 void WaterflowControlSystem::refreshWaterState(){
-    if(this->getWaterLevel() > 2 && this->getWaterLevel() <= 150){
+    if(this->getWaterLevel() > MINIMUM_SONAR_DISTANCE && this->getWaterLevel() <= WL1_BOUND){
         this->state = NORMAL;
     }
-    else if(this->getWaterLevel() > 150 && this->getWaterLevel() <= 300){
+    else if(this->getWaterLevel() > WL1_BOUND && this->getWaterLevel() <= WL2_BOUND){
         this->state = PRE_ALARM;
-    }else if(this->getWaterLevel() > 300){
+    }else if(this->getWaterLevel() > WL2_BOUND){
         this->state = ALARM;
     }
 }
