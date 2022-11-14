@@ -3,6 +3,8 @@
 Timer::Timer(int period){
     this->timer = new TimerOne();
     this->timer->initialize(NORMAL_STATE_SAMPLING);
+    this->timer->attachInterrupt(NULL);
+    
 }
 
 void Timer::changePeriod(WaterState state){
