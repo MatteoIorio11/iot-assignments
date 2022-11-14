@@ -9,6 +9,8 @@ WaterflowControlSystem* wcs;
 void buttonHandler(){
     switch(mc->getState())
     {
+        case OFF:
+            break;
         case AUTOMATIC:
             mc->manual();
             break;
