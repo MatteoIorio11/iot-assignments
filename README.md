@@ -36,7 +36,12 @@
    * sonar 
    * display-lcd
    * button 
-   * ?? fotoresistore ?? 
+   * fotoresistore 
+
+ 
+ [x] Smart light system
+ [x] Servo motor control
+ [ ] Waterflow System
 
     https://docs.google.com/document/d/16s0wVOWBpKCq3FkitngOBmHusA-5NXOpND3bSOkZWyc/edit
   
