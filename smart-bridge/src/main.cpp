@@ -7,15 +7,19 @@
 #define PIN_PHOTORESISTOR A0
 #define PERIOD 100
 
+enum {ON, OFF} state;
 
 void function(){
-
+  state = state == ON ? OFF:ON; 
+  Serial.flush();
 }
+
 
 
 void setup() {
   Serial.begin(9600);
-  initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, PERIOD);
+  //initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, PERIOD);
+  state = OFF;
   /*
   if(PERIOD > 0){
     timer.setupPeriod(PERIOD);
@@ -29,5 +33,5 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   //timer.waitForNextTick();
-  tickSLS();
+  //tickSLS();
 }

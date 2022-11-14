@@ -1,28 +1,37 @@
 #include "Timer.h"
 
 TimerOne* timer;
-TimerState state;
+volatile TimerState state = STOP;
 
+void changeState(){
+    state = state == STOP ? GO : STOP;
+}
 
 void initTimer(int period){
     timer = new TimerOne();
     timer->initialize(NORMAL_STATE_SAMPLING);
-    timer->attachInterrupt(NULL);
-    
+    timer->attachInterrupt(changeState);
 }
 
+void waitForTheNextTick(){
+    while(state == GO){}
+    state = STOP;
+}
 
 void changePeriod(WaterState state){
     timer->detachInterrupt();
     switch (state)
     {
-        case NORMAL:
-        /* code */
+        case NORMAL: 
+            timer->initialize(NORMAL_STATE_SAMPLING);
             break;
-    
-        default:
+        case PRE_ALARM:
+            timer->initialize(PREALARM_STATE_SAMPLING);
+            break;
+        case ALARM:
+            timer->initialize(ALARM_STATE_SAMPLING); 
             break;
     }
-    timer->initialize();
+    timer->attachInterrupt(changeState);
 }
 
