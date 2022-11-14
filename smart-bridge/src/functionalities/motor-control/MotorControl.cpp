@@ -18,7 +18,11 @@ void MotorControl::init(){
     this->potentiometer = new Potentiometer(this->pin_pot);
     this->button = new Button(this->pin_button);
     this->servoMotor = new ServoMotor(this->pin_servo);
-    //EnableInterrupt()
+    
+}
+
+void MotorControl::buttonHandler(){
+
 }
 
 void MotorControl::manualControl(){
