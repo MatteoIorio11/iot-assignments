@@ -1,14 +1,19 @@
 #include "Timer.h"
 
-Timer::Timer(int period){
-    this->timer = new TimerOne();
-    this->timer->initialize(NORMAL_STATE_SAMPLING);
-    this->timer->attachInterrupt(NULL);
+TimerOne* timer;
+TimerState state;
+
+
+void initTimer(int period){
+    timer = new TimerOne();
+    timer->initialize(NORMAL_STATE_SAMPLING);
+    timer->attachInterrupt(NULL);
     
 }
 
-void Timer::changePeriod(WaterState state){
-    this->timer->detachInterrupt();
+
+void changePeriod(WaterState state){
+    timer->detachInterrupt();
     switch (state)
     {
         case NORMAL:
@@ -18,6 +23,6 @@ void Timer::changePeriod(WaterState state){
         default:
             break;
     }
-    this->timer->initialize();
+    timer->initialize();
 }
 

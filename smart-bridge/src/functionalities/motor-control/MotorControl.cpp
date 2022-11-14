@@ -6,6 +6,7 @@
 #include <EnableInterrupt.h>
 #include "Arduino.h"
 
+
 MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
     this->pin_button = pin_button;
     this->pin_pot = pin_pot;
