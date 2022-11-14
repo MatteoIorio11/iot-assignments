@@ -41,7 +41,7 @@ void tickWCS(){
                     mc->closeValve();
                     break;
                 case AUTOMATIC:
-                    
+                    //mc->automaticControl(min,max,mc->getButton().getPin());
                     break;
                 case MANUAL:
                     mc->manualControl();
