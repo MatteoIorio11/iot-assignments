@@ -15,7 +15,7 @@ void buttonHandler(){
             mc->manual();
             break;
         case MANUAL:
-            mc->automatic();
+            mc->off();
             break;
     }
 }
@@ -41,6 +41,10 @@ void tickWCS(){
             {
                 case OFF:
                     mc->closeValve();
+                    wcs->refreshWaterState();
+                    if(wcs->getState() == ALARM){
+                        mc->automatic();
+                    }
                     break;
                 case AUTOMATIC:
                     //mc->automaticControl(min,max,mc->getButton().getPin());
