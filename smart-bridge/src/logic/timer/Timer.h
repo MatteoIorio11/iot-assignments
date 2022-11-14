@@ -10,7 +10,7 @@
 #define ALARM_STATE_SAMPLING pow(10, 4)/4
     
 void waitForTheNextTick();
-void initTimer(int period);
+void initTimer(int period, TimerOne* timer);
 void changePeriod(WaterState state);
 
 #endif

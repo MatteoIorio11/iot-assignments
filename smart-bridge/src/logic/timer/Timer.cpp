@@ -7,8 +7,8 @@ void changeState(){
     state = state == STOP ? GO : STOP;
 }
 
-void initTimer(int period){
-    timer = new TimerOne();
+void initTimer(int period, TimerOne* timer){
+    timer = timer;
     timer->initialize(NORMAL_STATE_SAMPLING);
     timer->attachInterrupt(changeState);
 }
