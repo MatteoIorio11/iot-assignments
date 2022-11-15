@@ -7,7 +7,7 @@
 #define OPENING_DEGREE(d) ("Opening degree:"+d)
 
 MonitorLcd::MonitorLcd(int address, int rows, int cols){
-    this->state = OFF;
+    this->state = MONITOR_OFF;
     this->address = address;
     this->rows = rows;
     this->cols = cols;
@@ -19,12 +19,12 @@ void MonitorLcd::init(){
 
 void MonitorLcd::displayON(){
     this->lcd->backlight();
-    this->state = ON;
+    this->state = MONITOR_ON;
 }
 
 void MonitorLcd::displayOFF(){
     this->lcd->noBacklight();
-    this->state = OFF;
+    this->state = MONITOR_OFF;
 }
 
 //The LCD is turned on, informing about the pre-alarm and displaying the current water level

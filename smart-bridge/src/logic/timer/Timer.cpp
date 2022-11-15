@@ -1,21 +1,29 @@
 #include "Timer.h"
+#include <avr/sleep.h>
 
 TimerOne* timer;
-volatile TimerState state = STOP;
+volatile bool flag;
+volatile TimerState state;
 
 void changeState(){
     state = state == STOP ? GO : STOP;
+    flag = true;
+    //sleep_disable();
 }
 
-void initTimer(int period, TimerOne* timer){
+void initTimer(TimerOne* timer){
     timer = timer;
-    timer->initialize(NORMAL_STATE_SAMPLING);
+    flag = false;
+    state = STOP;
+    timer->initialize(pow(10, 6));
     timer->attachInterrupt(changeState);
 }
 
 void waitForTheNextTick(){
-    while(state == STOP){}
-    state = GO;
+    //sleep_enable();
+    //sleep_mode();
+    while(state == STOP){Serial.println("STOP");}
+    state = STOP;
 }
 
 void changePeriod(WaterState state){

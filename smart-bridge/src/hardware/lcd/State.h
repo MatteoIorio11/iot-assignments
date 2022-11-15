@@ -2,8 +2,8 @@
 #define __MONITORSTATE__
 
 enum MonitorState{
-    ON = 1,
-    OFF = 2
+    MONITOR_ON = 1,
+    MONITOR_OFF = 2
 };
 
 #endif
