@@ -2,10 +2,7 @@
 #include <TimerOne.h>
 #include <ArduinoJson.h>
 #include "bridge/Bridge.h"
-#define PIN_LED 12
-#define PIN_PIR 2
-#define PIN_PHOTORESISTOR A0
-#define PERIOD 100
+
 
 Bridge* b;
 
