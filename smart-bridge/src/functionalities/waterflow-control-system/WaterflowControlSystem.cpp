@@ -70,12 +70,9 @@ void WaterflowControlSystem::refresh(){
     case PRE_ALARM:
         this->turnOnDisplay();
         this->turnOffGreenLed();
-        this->RedLedBlink();
-        this->displayPreAlarm(this->getWaterLevel());
         break;
     case ALARM:
         this->turnOnDisplay();
-        //Secondo me non e' da mettere qui ma va bene
         this->turnOffGreenLed();
         this->turnOnRedLed();
         break;
