@@ -5,7 +5,7 @@
 #include "logic/logic-water-control-system/LogicWCS.h"
 #include "logic/timer/Timer.h"
 #include "task/Task.h"
-// PIN OF THE HARDWARE 
+// PINS OF THE HARDWARE 
 #define PIN_LED 12
 #define PIN_PIR 2
 #define PIN_PHOTORESISTOR A0
