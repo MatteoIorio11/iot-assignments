@@ -72,7 +72,7 @@ void WaterflowControlSystem::turnOffDisplay(){
 }
 
 double WaterflowControlSystem::getWaterLevel(){
-    int distance = this->sonar->readValue();
+    return this->sonar->readValue();
 }
 
 WaterState WaterflowControlSystem::getState(){
@@ -92,18 +92,18 @@ GreenLed WaterflowControlSystem::getGreenLed(){
 }
 
 int WaterflowControlSystem::getSonarEchoPin(){
-    this->sonar->getEchoPin();
+    return this->sonar->getEchoPin();
 }
 
 int WaterflowControlSystem::getSonarTrigPin(){
-    this->sonar->getTrigPin();
+    return this->sonar->getTrigPin();
 }
 
 int WaterflowControlSystem::getRedLedPin(){
-    this->redLed->getPin();
+    return this->redLed->getPin();
 }
 
 int WaterflowControlSystem::getGreenLedPin(){
-    this->greenLed->getPin();
+    return this->greenLed->getPin();
 }
 
