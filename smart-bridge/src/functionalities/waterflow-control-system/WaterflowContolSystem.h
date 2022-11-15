@@ -7,13 +7,6 @@
 #include "hardware/lcd/MonitorLcd.h"
 #include "State.h"
 
-
-#define MINIMUM_SONAR_DISTANCE 2
-#define WL1_BOUND 150
-#define WL2_BOUND 300
-#define MAXIMUM_SONAR_DISTANCE 400
-
-
 class WaterflowControlSystem{
     private:
         int sonar_echoPin;
@@ -39,9 +32,8 @@ class WaterflowControlSystem{
         void turnOffGreenLed();
         void RedLedBlink();
         //State
-        void refreshWaterState();
+        void updateState(WaterState state);
         double getWaterLevel();
-        void refresh();
         //Lcd
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
