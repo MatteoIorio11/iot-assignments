@@ -14,8 +14,8 @@ void initTimer(int period, TimerOne* timer){
 }
 
 void waitForTheNextTick(){
-    while(state == GO){}
-    state = STOP;
+    while(state == STOP){}
+    state = GO;
 }
 
 void changePeriod(WaterState state){

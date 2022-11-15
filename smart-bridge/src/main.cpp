@@ -36,7 +36,6 @@ A.parse(); ==> {degree="VALORE_LETTO_INPUT", message"aaaaa", ...}
 void setup() {
   Serial.begin(9600);
   //initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, PERIOD);
-  state = OFF;
   /*
   if(PERIOD > 0){
     timer.setupPeriod(PERIOD);

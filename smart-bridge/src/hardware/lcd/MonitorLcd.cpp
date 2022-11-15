@@ -7,6 +7,7 @@
 #define OPENING_DEGREE(d) ("Opening degree:"+d)
 
 MonitorLcd::MonitorLcd(int address, int rows, int cols){
+    this->state = OFF;
     this->address = address;
     this->rows = rows;
     this->cols = cols;
@@ -14,11 +15,16 @@ MonitorLcd::MonitorLcd(int address, int rows, int cols){
 
 void MonitorLcd::init(){
     this->lcd = new LiquidCrystal_I2C(this->address, this->rows, this->cols); 
+}
+
+void MonitorLcd::displayON(){
     this->lcd->backlight();
+    this->state = ON;
 }
 
 void MonitorLcd::displayOFF(){
     this->lcd->noBacklight();
+    this->state = OFF;
 }
 
 //The LCD is turned on, informing about the pre-alarm and displaying the current water level
@@ -46,4 +52,8 @@ void MonitorLcd::displayAlarm(double level, int op_degree){
         this->lcd->print(OPENING_DEGREE(String(op_degree)));
     }
     
+}
+
+MonitorState MonitorLcd::getState(){
+    return this->state;
 }
