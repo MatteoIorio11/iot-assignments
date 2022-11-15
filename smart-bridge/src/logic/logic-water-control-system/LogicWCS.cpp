@@ -50,25 +50,23 @@ void tickWCS(){
     switch (wcs->getState())
     {
         case NORMAL:
-<<<<<<< HEAD
             tickSLS();
-            break;
-        case PRE_ALARM:
-            tickSLS();
-=======
             wcs->turnOffDisplay();
             wcs->turnOnGreenLed();
             wcs->turnOffRedLed();
             break;
         case PRE_ALARM:
+            tickSLS();
             wcs->turnOffGreenLed();
->>>>>>> b139c50 (Add methods)
             wcs->RedLedBlink();
             wcs->turnOnDisplay();
             wcs->displayPreAlarm(wcs->getWaterLevel());
             break;
         case ALARM:
-            //wcs->displayAlarm(wcs->getWaterLevel(), ) Need potentiometer alpha
+            wcs->turnOffGreenLed();
+            wcs->turnOffRedLed();
+            wcs->turnOnDisplay();
+            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); 
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted
                 setAlarm();
