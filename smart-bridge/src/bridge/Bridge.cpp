@@ -5,8 +5,8 @@ Bridge::Bridge(){
 }
 
 void Bridge::init(){
-    initSLS(this->timer);
-    initWCS(this->timer);
+    //initSLS(this->timer);
+    //initWCS(this->timer);
 }
 
 Timer* Bridge::getTimer(){
