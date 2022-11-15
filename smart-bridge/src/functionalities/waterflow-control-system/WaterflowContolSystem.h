@@ -5,7 +5,13 @@
 #include "hardware/led/GreenLed.h"
 #include "hardware/led/RedLed.h"
 #include "hardware/lcd/MonitorLcd.h"
+#include "logic/timer/Timer.h"
 #include "State.h"
+
+#define MINIMUM_SONAR_DISTANCE 2
+#define WL1_BOUND 150
+#define WL2_BOUND 300
+#define MAXIMUM_SONAR_DISTANCE 400
 
 class WaterflowControlSystem{
     private:
@@ -34,6 +40,7 @@ class WaterflowControlSystem{
         //State
         void updateState(WaterState state);
         double getWaterLevel();
+        void refreshWaterState(Timer* timer);
         //Lcd
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
