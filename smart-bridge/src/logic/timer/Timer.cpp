@@ -15,14 +15,14 @@ void initTimer(TimerOne* timer){
     timer = timer;
     flag = false;
     state = STOP;
-    timer->initialize(pow(10, 6));
+    timer->initialize(NORMAL_STATE_SAMPLING);
     timer->attachInterrupt(changeState);
 }
 
 void waitForTheNextTick(){
     //sleep_enable();
     //sleep_mode();
-    while(state == STOP){Serial.println("STOP");}
+    while(state == STOP){}
     state = STOP;
 }
 
