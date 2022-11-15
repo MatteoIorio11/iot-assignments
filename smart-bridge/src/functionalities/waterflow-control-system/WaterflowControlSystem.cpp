@@ -45,13 +45,40 @@ void WaterflowControlSystem::RedLedBlink(){
 }
 
 void WaterflowControlSystem::refreshWaterState(){
+    WaterState tmpState;
     if(this->getWaterLevel() > MINIMUM_SONAR_DISTANCE && this->getWaterLevel() <= WL1_BOUND){
-        this->state = NORMAL;
-    }
-    else if(this->getWaterLevel() > WL1_BOUND && this->getWaterLevel() <= WL2_BOUND){
-        this->state = PRE_ALARM;
+        tmpState = NORMAL;
+    }else if(this->getWaterLevel() > WL1_BOUND && this->getWaterLevel() <= WL2_BOUND){
+        tmpState = PRE_ALARM;
     }else if(this->getWaterLevel() > WL2_BOUND){
-        this->state = ALARM;
+        tmpState = ALARM;
+    }
+    if(this->state != tmpState){
+        this->state = tmpState;
+        this->refresh();
+    }
+}
+
+void WaterflowControlSystem::refresh(){
+    switch (this->state)
+    {
+    case NORMAL:
+        this->turnOnGreenLed();
+        this->turnOffRedLed();
+        this->turnOffDisplay();
+        break;
+    case PRE_ALARM:
+        this->turnOnDisplay();
+        this->turnOffGreenLed();
+        this->RedLedBlink();
+        this->displayPreAlarm(this->getWaterLevel());
+        break;
+    case ALARM:
+        this->turnOnDisplay();
+        //Secondo me non e' da mettere qui ma va bene
+        this->turnOffGreenLed();
+        this->turnOnRedLed();
+        break;
     }
 }
 
