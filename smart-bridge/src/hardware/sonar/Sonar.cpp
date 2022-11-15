@@ -22,7 +22,7 @@ int Sonar::readValue(){
     float d = t * VS;
     return d;
 }
-
+    
 int Sonar::getEchoPin(){
     return this->pin;
 }
