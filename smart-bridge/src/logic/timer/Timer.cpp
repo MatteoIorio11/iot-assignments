@@ -7,7 +7,7 @@ Timer::Timer(){
     this->state = STOP;
 }
 
-TimerOne* Timer::getTimer(){
+TimerOne* Timer::getTimerOne(){
     return this->timer;
 }
 

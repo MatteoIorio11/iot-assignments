@@ -15,7 +15,7 @@ class Timer{
         volatile TimerState state;
     public:
         Timer();
-        TimerOne* getTimer();
+        TimerOne* getTimerOne();
         void changePeriod(WaterState waterS);
         void waitForTheNextTick();
         void changeState();
