@@ -1,45 +1,40 @@
 #include "Timer.h"
-#include <avr/sleep.h>
 
-TimerOne* timer;
-volatile bool flag;
-volatile TimerState state;
 
-void changeState(){
-    state = state == STOP ? GO : STOP;
-    flag = true;
-    //sleep_disable();
+Timer::Timer(){
+    this->timer = new TimerOne();
+    this->timer->initialize(5*pow(10,6));
+    this->state = STOP;
 }
 
-void initTimer(TimerOne* timer){
-    timer = timer;
-    flag = false;
-    state = STOP;
-    timer->initialize(NORMAL_STATE_SAMPLING);
-    timer->attachInterrupt(changeState);
+TimerOne* Timer::getTimer(){
+    return this->timer;
 }
 
-void waitForTheNextTick(){
-    //sleep_enable();
-    //sleep_mode();
-    while(state == STOP){}
-    state = STOP;
+void Timer::waitForTheNextTick(){
+    while(this->state == STOP){}
+    this->state = STOP;
 }
 
-void changePeriod(WaterState state){
-    timer->detachInterrupt();
-    switch (state)
+void Timer::changeState(){
+    this->state = this->state == STOP ? GO : STOP;
+}
+
+TimerState Timer::getState(){
+    return this->state;
+}
+
+void Timer::changePeriod(WaterState waterS){
+    switch (waterS)
     {
         case NORMAL: 
-            timer->initialize(NORMAL_STATE_SAMPLING);
+            this->timer->setPeriod(NORMAL_STATE_SAMPLING);
             break;
         case PRE_ALARM:
-            timer->initialize(PREALARM_STATE_SAMPLING);
+            this->timer->setPeriod(PREALARM_STATE_SAMPLING);
             break;
         case ALARM:
-            timer->initialize(ALARM_STATE_SAMPLING); 
+            this->timer->setPeriod(ALARM_STATE_SAMPLING); 
             break;
     }
-    timer->attachInterrupt(changeState);
 }
-

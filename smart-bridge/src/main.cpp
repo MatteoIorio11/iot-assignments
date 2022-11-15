@@ -3,13 +3,14 @@
 #include <ArduinoJson.h>
 #include "logic/timer/Timer.h"
 
+#include "logic/timer/Timer.h"
 #include "logic/logic-smart-light-system/LogicSLS.h"
 #define PIN_LED 12
 #define PIN_PIR 2
 #define PIN_PHOTORESISTOR A0
 #define PERIOD 100
 
-TimerOne* t;
+Timer* t;
 
 /*
 void setup() {
@@ -35,25 +36,20 @@ A.parse(); ==> {degree="VALORE_LETTO_INPUT", message"aaaaa", ...}
 
 */
 
+void changeState(){
+  t->changeState(); 
+}
+
 
 void setup() {
   Serial.begin(9600);
-  t = new TimerOne();
-  initTimer(t);
-  //initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, PERIOD);
-  /*
-  if(PERIOD > 0){
-    timer.setupPeriod(PERIOD);
-  }else{
-    timer.setupPeriod(100);
-  }
-  */
-  // put your setup code here, to run once:
+  t = new Timer();
+  t->getTimer()->attachInterrupt(changeState);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  waitForTheNextTick();
+  t->waitForTheNextTick();
   //tickSLS();
-  //Serial.println("ESEGUO");
+  Serial.println("ESEGUO");
 }

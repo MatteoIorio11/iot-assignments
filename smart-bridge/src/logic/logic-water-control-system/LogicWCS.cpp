@@ -27,6 +27,7 @@ void refreshWaterState(){
         tmpState = NORMAL;
     }else if(wcs->getWaterLevel() > WL1_BOUND && wcs->getWaterLevel() <= WL2_BOUND){
         tmpState = PRE_ALARM;
+
     }else if(wcs->getWaterLevel() > WL2_BOUND){
         tmpState = ALARM;
     }
