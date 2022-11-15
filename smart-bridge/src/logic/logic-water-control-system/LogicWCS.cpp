@@ -31,22 +31,17 @@ void automatic(){
 }
 
 void tickWCS(){
+    wcs->refreshWaterState();
     switch (wcs->getState())
     {
         case NORMAL:
-            wcs->turnOnGreenLed();
-            wcs->turnOffRedLed();
-            wcs->turnOffDisplay();
-            mc->automatic();
             break;
         case PRE_ALARM:
-            wcs->turnOnDisplay();
-            wcs->turnOffGreenLed();
             wcs->RedLedBlink();
             wcs->displayPreAlarm(wcs->getWaterLevel());
             break;
         case ALARM:
-            wcs->turnOnDisplay();
+            //wcs->displayAlarm(wcs->getWaterLevel(), ) Need potentiometer alpha
             switch (mc->getState())
             {
                 case OFF:
@@ -58,11 +53,7 @@ void tickWCS(){
                 case MANUAL:
                     mc->manualControl();
                     break;
-            
             }
-            //wcs->displayAlarm(wcs->getWaterLevel(), ) Need potentiometer alpha
-            wcs->turnOffGreenLed();
-            wcs->turnOnRedLed();
             break;
     }
 }

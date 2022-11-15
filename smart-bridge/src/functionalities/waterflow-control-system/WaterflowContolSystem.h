@@ -41,6 +41,7 @@ class WaterflowControlSystem{
         //State
         void refreshWaterState();
         double getWaterLevel();
+        void refresh();
         //Lcd
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
