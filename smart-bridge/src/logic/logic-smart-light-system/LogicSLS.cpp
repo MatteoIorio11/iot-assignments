@@ -23,6 +23,10 @@ void setAlarm(){
     sls->alarm();
 }
 
+bool isInAlarmState(){
+    return sls->getState() == ALARM;
+}
+
 void changePeriod(int p){
     period = period;
 }

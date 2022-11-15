@@ -1,6 +1,7 @@
 #include "functionalities/motor-control/MotorControl.h"
 #include "functionalities/waterflow-control-system/WaterflowContolSystem.h"
 #include "LogicWCS.h"
+#include "logic/logic-smart-light-system/LogicSLS.h"
 #include <EnableInterrupt.h>
 
 MotorControl* mc;
@@ -35,13 +36,19 @@ void tickWCS(){
     switch (wcs->getState())
     {
         case NORMAL:
+            tickSLS();
             break;
         case PRE_ALARM:
+            tickSLS();
             wcs->RedLedBlink();
             wcs->displayPreAlarm(wcs->getWaterLevel());
             break;
         case ALARM:
             //wcs->displayAlarm(wcs->getWaterLevel(), ) Need potentiometer alpha
+            if(!isInAlarmState()){
+                //If the Smart light system is not in the alarm state It must be setted
+                setAlarm();
+            }
             switch (mc->getState())
             {
                 case OFF:
