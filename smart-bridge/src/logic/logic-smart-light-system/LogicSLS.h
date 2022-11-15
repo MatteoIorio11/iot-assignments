@@ -5,5 +5,7 @@
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per);
 void tickSLS();
 void setAlarm();
+void changePeriod(long p);//Period of the Timer
+bool isInAlarmState();
 
 #endif

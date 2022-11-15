@@ -3,7 +3,7 @@
 
 #include "hardware/component/Component.h"
 
-#define VS 331.5 + 0.6*20;
+#define VS 33 + 0.6*20;
 
 class Sonar : public Component{
     private: 

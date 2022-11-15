@@ -2,9 +2,10 @@
 #define __MONITORLCD__
 
 #include <LiquidCrystal_I2C.h>
-
+#include "State.h"
 class MonitorLcd{
     private:
+        MonitorState state;
         LiquidCrystal_I2C* lcd;
         int address;
         int rows;
@@ -16,6 +17,7 @@ class MonitorLcd{
         void displayAlarm(double level, int op_degree);
         void displayON();
         void displayOFF();
+        MonitorState getState();
 };
 
 #endif

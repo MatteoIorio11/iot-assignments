@@ -6,7 +6,7 @@
 //tick of the timer inside the main, this value is used for the "timer_tick".
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
-#define TIMER_T1_A(p) ((int)10000/p)
+#define TIMER_T1_A(p) ((int)pow(10,7)/p)
 #define SAMPLING_FREQUENCE(p) ((int)p/2)
 
 SmartLightSystem* sls; //The smart light system
@@ -21,6 +21,14 @@ void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
 
 void setAlarm(){
     sls->alarm();
+}
+
+bool isInAlarmState(){
+    return sls->getState() == ALARM;
+}
+
+void changePeriod(int p){
+    period = period;
 }
 
 void resetStatus(){
