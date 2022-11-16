@@ -9,16 +9,22 @@ WaterflowControlSystem* wcs;
 Timer* timer;
 
 void buttonHandler(){
-    switch(mc->getState())
+    static unsigned long last_interrupt_time = 0;
+     unsigned long interrupt_time = millis();
+  // If interrupts come faster than 200ms, assume it's a bounce and ignore
+    if (interrupt_time - last_interrupt_time > 200) 
     {
-        case OFF:
-            break;
-        case AUTOMATIC:
-            mc->manual();
-            break;
-        case MANUAL:
-            mc->off();
-            break;
+        switch(mc->getState())
+        {
+            case OFF:
+                break;
+            case AUTOMATIC:
+                mc->manual();
+                break;
+            case MANUAL:
+                mc->off();
+                break;
+        }
     }
 }
 
@@ -39,6 +45,8 @@ void tickWCS(){
     wcs->refreshWaterState(timer);
     switch (wcs->getState())
     {
+        case SHUT:
+            break;
         case NORMAL:
             tickSLS();
             break;
@@ -48,6 +56,7 @@ void tickWCS(){
             wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
             break;
         case ALARM:
+            Serial.println(mc->getState());
             wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); // non spostare 
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted
@@ -63,7 +72,7 @@ void tickWCS(){
                     }
                     break;
                 case AUTOMATIC:
-                    mc->automaticControl(WL2_BOUND, MAXIMUM_SONAR_DISTANCE, wcs->getWaterLevel());
+                    mc->automaticControl(MINIMUM_SONAR_DISTANCE, WL2_BOUND, wcs->getWaterLevel());
                     break;
                 case MANUAL:
                     mc->manualControl();

@@ -1,6 +1,8 @@
 #include "Sonar.h"
 #include "Arduino.h"
 
+const double VS =  331.45 + 0.62*20;
+
 
 Sonar::Sonar(int trigPin, int echoPin){
     this->trigPin = trigPin;
@@ -18,13 +20,11 @@ void Sonar::sendImpulse(){
 }
 
 float Sonar::readValue(){    
-    /* ricevi l’eco */
     this->sendImpulse();
     long tUS = pulseInLong(this->pin, HIGH);
-    Serial.println(tUS);
 
     double t = tUS / 1000.0 / 1000.0 / 2;
-    double d = t*this->VS;
+    double d = t*VS;
     return d;
 }
     

@@ -5,7 +5,6 @@
 
 class Sonar{
     private:
-        const double VS =  331.45 + 0.62*20;
         int trigPin;
         int pin;
         void sendImpulse();

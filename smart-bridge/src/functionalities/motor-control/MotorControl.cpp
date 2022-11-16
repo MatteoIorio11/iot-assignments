@@ -25,6 +25,7 @@ void MotorControl::buttonHandler(){
 }
 
 void MotorControl::manualControl(){
+    Serial.println(this->potentiometer->readValue());
     this->servoMotor->setAngle(this->potentiometer->readValue());
 }
 

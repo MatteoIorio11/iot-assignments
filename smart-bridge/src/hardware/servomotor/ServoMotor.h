@@ -2,13 +2,13 @@
 #define __MYSERVOMOTOR__
 
 #include "hardware/component/SimpleComponent.h"
-#include <Servo.h>
+#include "ServoTimer2.h"
 
 class ServoMotor: public SimpleComponent{
     private:
         int pin;
         int angle;
-        Servo* servoMotor;
+        ServoTimer2* servoMotor;
     public:
         ServoMotor(int pin);
         void setAngle(int angle);

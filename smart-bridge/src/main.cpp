@@ -25,7 +25,5 @@ void loop() {
   // put your main code here, to run repeatedly:
   b->getTimer()->waitForTheNextTick();
   b->tick();
-  //JsonSerializer::serialize(NORMAL, 100, 10);
-  //tickSLS();
-  //delay(10);
+  delay(100);
 }

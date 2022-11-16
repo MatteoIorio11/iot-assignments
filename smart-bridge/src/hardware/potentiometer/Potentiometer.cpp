@@ -7,7 +7,8 @@ Potentiometer::Potentiometer(int pin){
 }
 
 int Potentiometer::readValue(){
-    int value = analogRead(A0);
+    int value = analogRead(this->pin);
+    Serial.println(value);
     return map(value, 0, 1023, 0, 180);
 }
 

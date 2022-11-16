@@ -3,6 +3,7 @@
 
 #include <LiquidCrystal_I2C.h>
 #include "State.h"
+
 class MonitorLcd{
     private:
         MonitorState state;
