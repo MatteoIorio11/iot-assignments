@@ -69,7 +69,7 @@ void tickWCS(){
                     }
                     break;
                 case AUTOMATIC:
-                    mc->automaticControl(WL2_BOUND, MAXIMUM_SONAR_DISTANCE, mc->getButton().getPin());
+                    mc->automaticControl(WL2_BOUND, MAXIMUM_SONAR_DISTANCE, wcs->getWaterLevel());
                     break;
                 case MANUAL:
                     mc->manualControl();
