@@ -63,17 +63,13 @@ void tickWCS(){
             {
                 case OFF:
                     mc->closeValve();
-<<<<<<< HEAD
-                    refreshWaterState();
-=======
-                    //wcs->refreshWaterState(); TODO
->>>>>>> 53b0aec5f874d9b35efcd3a8fcb1a6fc4c192337
+                    wcs->refreshWaterState(timer);
                     if(wcs->getState() == ALARM){
                         mc->automatic();
                     }
                     break;
                 case AUTOMATIC:
-                    //mc->automaticControl(min,max,mc->getButton().getPin());
+                    mc->automaticControl(WL2_BOUND, MAXIMUM_SONAR_DISTANCE, mc->getButton().getPin());
                     break;
                 case MANUAL:
                     mc->manualControl();
