@@ -52,7 +52,7 @@ void tickWCS(){
             break;
         case ALARM:
             wcs->turnOffGreenLed();
-            wcs->turnOffRedLed();
+            wcs->turnOnRedLed();
             wcs->turnOnDisplay();
             wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); // non spostare 
             if(!isInAlarmState()){
