@@ -14,11 +14,11 @@ WaterflowControlSystem::WaterflowControlSystem(int sonar_echoPin, int sonar_trig
     this->address = address;
     this->rows = rows;
     this->cols = cols;
-    this->state = NORMAL;
+    this->state = SHUT;
 }
 
 void WaterflowControlSystem::init(){
-    this->sonar = new Sonar(this->sonar_echoPin, this->sonar_trigPin);
+    this->sonar = new Sonar(this->sonar_trigPin, this->sonar_echoPin);
     this->greenLed = new GreenLed(this->green_pin_led);
     this->redLed = new RedLed(this->red_pin_led); 
     this->lcd = new MonitorLcd(address, rows, cols);
@@ -101,6 +101,7 @@ int WaterflowControlSystem::getGreenLedPin(){
 }
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
+    Serial.println(this->getWaterLevel());
     if(this->getWaterLevel() < MAXIMUM_SONAR_DISTANCE && this->getWaterLevel() >= WL1_BOUND && this->state != NORMAL){
         this->state = NORMAL;
         this->turnOnDisplay();
@@ -108,6 +109,7 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
         this->turnOffRedLed();
         timer->changePeriod(NORMAL);
     }else if(this->getWaterLevel() < WL1_BOUND && this->getWaterLevel() >= WL2_BOUND && this->state != PRE_ALARM){
+        Serial.println("CIAO");
         this->state = PRE_ALARM;
         this->turnOffGreenLed();
         this->turnOnDisplay();
@@ -118,6 +120,8 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
         this->turnOnRedLed();
         this->turnOnDisplay();
         timer->changePeriod(ALARM);
+    }else{
+        this->state = NORMAL;
     }
 }
 

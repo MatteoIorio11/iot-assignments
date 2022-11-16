@@ -3,10 +3,9 @@
 
 #include "hardware/component/Component.h"
 
-#define VS 33 + 0.6*20;
-
-class Sonar : public Component{
-    private: 
+class Sonar{
+    private:
+        const double VS =  331.45 + 0.62*20;
         int trigPin;
         int pin;
         void sendImpulse();

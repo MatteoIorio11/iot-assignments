@@ -8,16 +8,16 @@
 
 Bridge* b;
 
-
-void changeState(){
+void c(){
   b->getTimer()->changeState();
 }
 
-
-void setup() {
+void setup()
+{
   Serial.begin(9600);
   b = new Bridge();
-  b->getTimer()->getTimerOne()->attachInterrupt(changeState);
+  b->init();
+  b->getTimer()->getTimerOne()->attachInterrupt(c); 
 }
 
 
@@ -27,6 +27,5 @@ void loop() {
   b->tick();
   //JsonSerializer::serialize(NORMAL, 100, 10);
   //tickSLS();
-  //Serial.println("HELLO WORLD");
   //delay(10);
 }

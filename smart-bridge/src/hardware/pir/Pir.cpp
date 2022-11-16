@@ -1,7 +1,7 @@
 #include "Pir.h"
 #include "Arduino.h"
 
-#define CALIBRATION_TIME_SEC 20
+#define CALIBRATION_TIME_SEC 1
 
 Pir::Pir(int pin){
     this->pin = pin;

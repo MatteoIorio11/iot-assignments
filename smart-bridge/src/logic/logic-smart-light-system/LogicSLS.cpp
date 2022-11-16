@@ -7,7 +7,7 @@
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
 #define TIMER_T1_A(p) ((int)pow(10,7)/p)
-#define SAMPLING_FREQUENCE(p) ((int)p/2)
+#define SAMPLING_FREQUENCE(p) ((int)p/4)
 #define MY_TIME pow(10,7)
 #define MY_SAMPLING 50
 
@@ -51,7 +51,7 @@ void tickSLS(){
     {
         case DETECTED:
             checkForLuminosity();
-            if(timer_tick >= MY_TIME){
+            if(timer_tick >= TIMER_T1_A(period)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
                 sls->notDetected();
@@ -62,7 +62,7 @@ void tickSLS(){
                 so in order to resolve this problem, I recognise another person when the signal is HIGH and 
                 the signal is sent after SAMPLING_FREQUENCE seconds 
                 */
-                if(sls->checkTheBridge() == HIGH and (timer_tick) % MY_SAMPLING == 0){
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE(period) == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
                     Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"

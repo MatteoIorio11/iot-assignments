@@ -5,21 +5,26 @@
 Sonar::Sonar(int trigPin, int echoPin){
     this->trigPin = trigPin;
     this->pin = echoPin;
+    pinMode(this->trigPin, OUTPUT);
+    pinMode(this->pin, INPUT);  
 }
 
 void Sonar::sendImpulse(){
     digitalWrite(this->trigPin, LOW);
     delayMicroseconds(3);
-    digitalWrite(trigPin, HIGH);   
+    digitalWrite(this->trigPin, HIGH);   
     delayMicroseconds(5);
-    digitalWrite(trigPin, LOW);
+    digitalWrite(this->trigPin, LOW);
 }
 
-float Sonar::readValue(){
+float Sonar::readValue(){    
+    /* ricevi l’eco */
     this->sendImpulse();
-    float tUS = pulseIn(this->pin, HIGH);
-    float t = tUS / 1000.0 / 1000.0 / 2;
-    float d = t * VS;
+    long tUS = pulseInLong(this->pin, HIGH);
+    Serial.println(tUS);
+
+    double t = tUS / 1000.0 / 1000.0 / 2;
+    double d = t*this->VS;
     return d;
 }
     
