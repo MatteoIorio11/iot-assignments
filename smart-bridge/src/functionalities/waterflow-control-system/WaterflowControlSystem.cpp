@@ -101,18 +101,18 @@ int WaterflowControlSystem::getGreenLedPin(){
 }
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
-    if(this->getWaterLevel() > MINIMUM_SONAR_DISTANCE && this->getWaterLevel() <= WL1_BOUND && this->state != NORMAL){
+    if(this->getWaterLevel() < MAXIMUM_SONAR_DISTANCE && this->getWaterLevel() >= WL1_BOUND && this->state != NORMAL){
         this->state = NORMAL;
         this->turnOnDisplay();
         this->turnOnGreenLed();
         this->turnOffRedLed();
         timer->changePeriod(NORMAL);
-    }else if(this->getWaterLevel() > WL1_BOUND && this->getWaterLevel() <= WL2_BOUND && this->state != PRE_ALARM){
+    }else if(this->getWaterLevel() < WL1_BOUND && this->getWaterLevel() >= WL2_BOUND && this->state != PRE_ALARM){
         this->state = PRE_ALARM;
         this->turnOffGreenLed();
         this->turnOnDisplay();
         timer->changePeriod(PRE_ALARM);
-    }else if(this->getWaterLevel() > WL2_BOUND && this->state != ALARM){
+    }else if(this->getWaterLevel() < WL2_BOUND && this->state != ALARM){
         this->state = ALARM;
         this->turnOffGreenLed();
         this->turnOnRedLed();
