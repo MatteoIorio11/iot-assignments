@@ -46,15 +46,15 @@ void tickWCS(){
         case PRE_ALARM:
             tickSLS();
             wcs->turnOffGreenLed();
-            wcs->RedLedBlink();
+            wcs->RedLedBlink(); // non spostare
             wcs->turnOnDisplay();
-            wcs->displayPreAlarm(wcs->getWaterLevel());
+            wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
             break;
         case ALARM:
             wcs->turnOffGreenLed();
             wcs->turnOffRedLed();
             wcs->turnOnDisplay();
-            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); 
+            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); // non spostare 
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted
                 setAlarm();
