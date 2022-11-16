@@ -14,11 +14,13 @@
 #define PIN_SONAR_TRG 8
 #define PIN_POTENTIOMETER 7
 #define PIN_BUTTON 6
-#define PIN_MONITORLCD 
 #define PIN_PIR 2
 #define PIN_PHOTORESISTOR A0
 #define PIN_SERVO_MOTOR A1
 #define PERIOD 100
+#define MONITOR_ADDRESS 0x27
+#define ROWS 20
+#define COLS 4
 class Bridge : public Task{
     private:
         Timer *timer;
