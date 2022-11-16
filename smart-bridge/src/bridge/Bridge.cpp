@@ -5,8 +5,8 @@ Bridge::Bridge(){
 }
 
 void Bridge::init(){
-    //initSLS(this->timer);
-    //initWCS(this->timer);
+    initSLS(PIN_PIR, PIN_LED, PIN_PHOTORESISTOR, NORMAL_STATE_SAMPLING);
+    initWCS(this->timer, );
 }
 
 Timer* Bridge::getTimer(){
