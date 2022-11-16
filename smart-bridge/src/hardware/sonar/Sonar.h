@@ -12,7 +12,7 @@ class Sonar : public Component{
         void sendImpulse();
     public:
         Sonar(int trigPin, int echoPin);
-        int readValue();
+        float readValue();
         int getEchoPin();
         int getTrigPin();
 };

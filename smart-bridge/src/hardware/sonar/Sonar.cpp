@@ -15,7 +15,7 @@ void Sonar::sendImpulse(){
     digitalWrite(trigPin, LOW);
 }
 
-int Sonar::readValue(){
+float Sonar::readValue(){
     this->sendImpulse();
     float tUS = pulseIn(this->pin, HIGH);
     float t = tUS / 1000.0 / 1000.0 / 2;
