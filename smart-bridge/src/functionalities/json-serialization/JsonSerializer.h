@@ -1,10 +1,13 @@
 #ifndef __JSONSERIALIZER__
 #define __JSONSERIALIZER__
+#include <ArduinoJson.h>
 
 class JsonSerializer{
+    private:
+        JsonSerializer();
     public:
-        void serializePreAlarm(double waterLevel);
-        void serializeAlarm(double waterLevel, int angle);
+        static void serializePreAlarm(double waterLevel);
+        static void serializeAlarm(double waterLevel, int angle);
 };
 
 #endif
