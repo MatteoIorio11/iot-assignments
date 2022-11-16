@@ -64,7 +64,7 @@ void WaterflowControlSystem::turnOffDisplay(){
     this->lcd->displayOFF();
 }
 
-double WaterflowControlSystem::getWaterLevel(){
+float WaterflowControlSystem::getWaterLevel(){
     return this->sonar->readValue();
 }
 
