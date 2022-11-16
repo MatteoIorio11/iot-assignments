@@ -8,10 +8,10 @@
 #include "logic/timer/Timer.h"
 #include "State.h"
 
-#define MINIMUM_SONAR_DISTANCE 2
-#define WL1_BOUND 150
-#define WL2_BOUND 300
-#define MAXIMUM_SONAR_DISTANCE 400
+#define MINIMUM_SONAR_DISTANCE 0.02
+#define WL1_BOUND 1.5
+#define WL2_BOUND 3.00
+#define MAXIMUM_SONAR_DISTANCE 4.00 
 
 class WaterflowControlSystem{
     private:
@@ -39,7 +39,7 @@ class WaterflowControlSystem{
         void RedLedBlink();
         //State
         void updateState(WaterState state);
-        double getWaterLevel();
+        float getWaterLevel();
         void refreshWaterState(Timer* timer);
         //Lcd
         void displayPreAlarm(double level);
