@@ -76,7 +76,7 @@ void tickWCS(){
             {
                 case OFF:
                     mc->closeValve();
-                    wcs->refreshWaterState();
+                    refreshWaterState();
                     if(wcs->getState() == ALARM){
                         mc->automatic();
                     }
