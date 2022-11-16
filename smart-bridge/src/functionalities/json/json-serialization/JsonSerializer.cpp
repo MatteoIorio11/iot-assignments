@@ -8,4 +8,7 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
     doc["angle"] = angle;
 
     serializeJson(doc, Serial);
+    String a = Serial.readString();
+    //serializeJson(doc, s, doc.size());
+    Serial.println(a);
 }
