@@ -49,7 +49,7 @@ void automatic(){
 }
 
 void tickWCS(){
-    //wcs->refreshWaterState(timer);
+    wcs->refreshWaterState(timer);
     //wcs->updateState(PRE_ALARM);
     //wcs->behaveAsNormal();
     //wcs->displayPreAlarm(100);
@@ -58,7 +58,7 @@ void tickWCS(){
         case SHUT:
             break;
         case NORMAL:
-            tickSLS(NORMAL_STATE_SAMPLING);
+            //tickSLS(NORMAL_STATE_SAMPLING);
             break;
         case PRE_ALARM:
             tickSLS(PREALARM_STATE_SAMPLING);

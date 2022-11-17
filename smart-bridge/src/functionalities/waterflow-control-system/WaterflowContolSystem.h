@@ -9,9 +9,9 @@
 #include "State.h"
 
 #define MINIMUM_SONAR_DISTANCE (float)0.02
-#define WL2_BOUND (float)1
-#define WL1_BOUND (float)1.1
-#define MAXIMUM_SONAR_DISTANCE (float)3.00 
+#define WL2_BOUND (float)0.05
+#define WL1_BOUND (float)0.1
+#define MAXIMUM_SONAR_DISTANCE (float)1.00
 
 class WaterflowControlSystem{
     private:

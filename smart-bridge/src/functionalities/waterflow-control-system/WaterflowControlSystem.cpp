@@ -124,27 +124,28 @@ void WaterflowControlSystem::behaveAsAlarm(Timer* timer){
 }
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
-    Serial.println(this->getWaterLevel());
-    if(this->getWaterLevel() > MINIMUM_SONAR_DISTANCE && this->getWaterLevel() < MAXIMUM_SONAR_DISTANCE){
-        if(this->getWaterLevel() < MAXIMUM_SONAR_DISTANCE && this->getWaterLevel() >= WL1_BOUND && this->state != NORMAL){
-            this->state = NORMAL;
-            this->turnOnDisplay();
-            this->turnOnGreenLed();
-            this->turnOffRedLed();
-            timer->changePeriod(NORMAL);
-
-        }else if(this->getWaterLevel() < WL1_BOUND && this->getWaterLevel() >= WL2_BOUND && this->state != PRE_ALARM){
-            this->state = PRE_ALARM;
-            this->turnOffGreenLed();
-            this->turnOnDisplay();
-            timer->changePeriod(PRE_ALARM);
-        }else{
+    if(this->getWaterLevel() > MINIMUM_SONAR_DISTANCE && this->getWaterLevel() <= WL2_BOUND && this->state != ALARM){
             this->state = ALARM;
             Serial.println("ALARM");
             this->turnOffGreenLed();
             this->turnOnRedLed();
             this->turnOnDisplay();
             timer->changePeriod(ALARM);
+    }else if(this->getWaterLevel() > WL2_BOUND && this->getWaterLevel() <= WL1_BOUND && this->state != PRE_ALARM){
+            this->state = PRE_ALARM;
+            Serial.println("PREALARM");
+            this->turnOffGreenLed();
+            this->turnOnDisplay();
+            timer->changePeriod(PRE_ALARM);
+    }else{
+        if(this->state != NORMAL && this->getWaterLevel() > WL1_BOUND){
+            this->state = NORMAL;
+            Serial.println("NORMAL");
+            this->turnOnDisplay();
+            this->turnOnGreenLed();
+            this->turnOffRedLed();
+            timer->changePeriod(NORMAL);
         }
     }
 }
+
