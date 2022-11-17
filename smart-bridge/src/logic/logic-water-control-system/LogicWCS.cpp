@@ -9,7 +9,7 @@
 MotorControl* mc;
 WaterflowControlSystem* wcs;
 Timer* timer;
-int t_s = 0;
+int timer_blinking = 0;
 
 void buttonHandler(){
     static unsigned long last_interrupt_time = 0;
@@ -40,7 +40,8 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     wcs->init();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
     //wcs->behaveAsAlarm(timer);
-    wcs->behaveAsNormal();
+    //wcs->behaveAsNormal();
+    wcs->behaveAsPreAlaram(timer);
 }
 
 void automatic(){
@@ -61,13 +62,13 @@ void tickWCS(){
             break;
         case PRE_ALARM:
             tickSLS(PREALARM_STATE_SAMPLING);
-            //Serial.println(t_s);
+            //Serial.println(timer_blinking);
             //Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
-            if(t_s >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
+            if(timer_blinking >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
                 wcs->RedLedBlink();
-                t_s = 0;
+                timer_blinking = 0;
             }else{
-                t_s++;
+                timer_blinking++;
             }
            // wcs->RedLedBlink(); 
             wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
