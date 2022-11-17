@@ -5,9 +5,9 @@
 #include "functionalities/waterflow-control-system/State.h"
 #include "State.h"
 
-#define NORMAL_STATE_SAMPLING pow(10, 5)
-#define PREALARM_STATE_SAMPLING pow(10, 5)/2
-#define ALARM_STATE_SAMPLING pow(10, 5)/4
+#define NORMAL_STATE_SAMPLING pow(10, 6)
+#define PREALARM_STATE_SAMPLING pow(10, 6)/2
+#define ALARM_STATE_SAMPLING pow(10, 6)/4
 
 class Timer{
     private:

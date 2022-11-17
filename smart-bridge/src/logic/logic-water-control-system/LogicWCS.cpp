@@ -58,9 +58,15 @@ void tickWCS(){
         case SHUT:
             break;
         case NORMAL:
-            //tickSLS(NORMAL_STATE_SAMPLING);
+            if(isInAlarmState()){
+                resetStatus();
+            }        
+            tickSLS(NORMAL_STATE_SAMPLING);
             break;
         case PRE_ALARM:
+            if(isInAlarmState()){
+                resetStatus();
+            }   
             tickSLS(PREALARM_STATE_SAMPLING);
             //Serial.println(timer_blinking);
             //Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
