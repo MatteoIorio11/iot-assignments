@@ -10,8 +10,8 @@ ServoMotor::ServoMotor(int pin){
 }
 
 void ServoMotor::setAngle(int angle){
-    float coeff = (2250.0-750.0)/180;
-    int newAngle = 750 + angle*coeff;
+    float coeff = (2300.0-550.0)/180;
+    int newAngle = 550 + angle*coeff;
     this->servoMotor->write(newAngle);    
 }
 
