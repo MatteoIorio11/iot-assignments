@@ -8,7 +8,7 @@ PhotoResistor::PhotoResistor(int pin){
 }
 
 double PhotoResistor::readValue(){
-    int value = analogRead(A0);
+    int value = analogRead(this->pin);
     return ((double) value) * 5/1024;
 }
 

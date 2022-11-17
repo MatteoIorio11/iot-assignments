@@ -2,7 +2,7 @@
 #include "LogicSLS.h"
 #include "Arduino.h"
 
-#define LUMINOSITY_LOWERBOUND (float)1.75
+#define LUMINOSITY_LOWERBOUND (float)2
 //tick of the timer inside the main, this value is used for the "timer_tick".
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
@@ -37,7 +37,6 @@ void resetStatus(){
 }
 
 void checkForLuminosity(){
-    Serial.println(sls->getLuminosity());
     if(sls->getLuminosity() >= 0 and sls->getLuminosity() < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         sls->turnOnLed();

@@ -108,9 +108,10 @@ void WaterflowControlSystem::behaveAsNormal(){
         this->turnOffRedLed();
 }
 
-void WaterflowControlSystem::behaveAsPreAlaram(){
+void WaterflowControlSystem::behaveAsPreAlaram(Timer* timer){
         this->state = PRE_ALARM;
         this->turnOffGreenLed();
+        timer->changePeriod(PRE_ALARM);
         this->turnOnDisplay();
 }
 

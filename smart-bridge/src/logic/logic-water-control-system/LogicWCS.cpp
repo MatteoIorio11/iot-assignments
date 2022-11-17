@@ -4,10 +4,12 @@
 #include "logic/logic-smart-light-system/LogicSLS.h"
 #include <EnableInterrupt.h>
 
+#define BLINK_2SEC(p) ((pow(10,6))/(p))
+
 MotorControl* mc;
-SmartLightSystem *d;
 WaterflowControlSystem* wcs;
 Timer* timer;
+int t_s = 0;
 
 void buttonHandler(){
     static unsigned long last_interrupt_time = 0;
@@ -46,8 +48,8 @@ void automatic(){
 void tickWCS(){
     //wcs->refreshWaterState(timer);
     //wcs->updateState(PRE_ALARM);
-    wcs->behaveAsNormal();
-    //wcs->behaveAsPreAlaram();
+    //wcs->behaveAsNormal();
+    wcs->behaveAsPreAlaram(timer);
     //wcs->displayPreAlarm(100);
     switch (wcs->getState())
     {
@@ -57,8 +59,21 @@ void tickWCS(){
             tickSLS();
             break;
         case PRE_ALARM:
-            tickSLS();
-            wcs->RedLedBlink(); // non spostare
+            //tickSLS();
+            Serial.println(t_s);
+            Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
+            if(t_s >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
+                Serial.println("CIAO");
+                if(wcs->getRedLed().readValue() == HIGH){
+                    wcs->turnOffRedLed();
+                }else{
+                    wcs->turnOnRedLed();
+                }
+                t_s = 0;
+            }else{
+                t_s++;
+            }
+           // wcs->RedLedBlink(); 
             wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
             break;
         case ALARM:

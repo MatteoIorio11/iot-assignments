@@ -58,7 +58,7 @@ class WaterflowControlSystem{
         int getGreenLedPin();
 
         void behaveAsNormal();
-        void behaveAsPreAlaram();
+        void behaveAsPreAlaram(Timer* timer);
         void behaveAsAlarm();
         
         
