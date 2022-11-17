@@ -39,6 +39,7 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     mc->init();
     wcs->init();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
+    wcs->behaveAsPreAlaram(timer);
 }
 
 void automatic(){
@@ -49,7 +50,6 @@ void tickWCS(){
     //wcs->refreshWaterState(timer);
     //wcs->updateState(PRE_ALARM);
     //wcs->behaveAsNormal();
-    wcs->behaveAsPreAlaram(timer);
     //wcs->displayPreAlarm(100);
     switch (wcs->getState())
     {
