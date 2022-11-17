@@ -3,7 +3,6 @@
 
 const double VS =  331.45 + 0.62*20;
 
-
 Sonar::Sonar(int trigPin, int echoPin){
     this->trigPin = trigPin;
     this->pin = echoPin;

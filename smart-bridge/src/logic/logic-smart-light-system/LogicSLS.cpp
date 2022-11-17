@@ -1,6 +1,7 @@
 #include "functionalities/smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
 #include "Arduino.h"
+#include <TimerOne.h>
 
 #define LUMINOSITY_LOWERBOUND 1
 //tick of the timer inside the main, this value is used for the "timer_tick".
@@ -13,7 +14,7 @@
 
 SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
-int period = 0;        //Period used inside the main's timer
+long period = 0;        //Period used inside the main's timer
 
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
@@ -79,6 +80,7 @@ void tickSLS(){
             }
             break;
         case ALARM:
+            
             if(sls->getLed().readValue() == HIGH){
                 sls->turnOffLed();
                 timer_tick = 0;

@@ -2,7 +2,6 @@
 #define __SONAR__
 
 #include "hardware/component/Component.h"
-
 class Sonar{
     private:
         int trigPin;

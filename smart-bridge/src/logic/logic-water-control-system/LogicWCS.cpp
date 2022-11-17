@@ -43,6 +43,8 @@ void automatic(){
 
 void tickWCS(){
     wcs->refreshWaterState(timer);
+    //wcs->updateState(NORMAL);
+    //wcs->displayPreAlarm(100);
     switch (wcs->getState())
     {
         case SHUT:
