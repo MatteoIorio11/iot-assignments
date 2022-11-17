@@ -7,8 +7,7 @@
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
 #define TIMER_T1_A(p) (pow(10,7)/(p))
-#define SAMPLING_FREQUENCE(p) ((p)/2)
-#define MY_SAMPLING 100
+#define SAMPLING_FREQUENCE 50
 
 SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
@@ -47,11 +46,14 @@ void checkForLuminosity(){
    // sls->turnOnLed();
 }
 
-void tickSLS(){
+void tickSLS(float p){
+    period = p;
+    //Serial.println(period);
     switch (sls->getState())
     {
         case DETECTED:
             checkForLuminosity();
+            //Serial.println(TIMER_T1_A(period));
             if(timer_tick >= TIMER_T1_A(period)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
@@ -63,9 +65,9 @@ void tickSLS(){
                 so in order to resolve this problem, I recognise another person when the signal is HIGH and 
                 the signal is sent after SAMPLING_FREQUENCE seconds 
                 */
-                if(sls->checkTheBridge() == HIGH and (timer_tick) % MY_SAMPLING == 0){
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
-                    Serial.println("Another person has been detected");
+                    //Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"
                 }
             }
@@ -75,7 +77,7 @@ void tickSLS(){
             sls->turnOffLed();
             if(sls->checkTheBridge() == HIGH){
                 timer_tick = 0;
-                Serial.println("A person has been detected");
+                //Serial.println("A person has been detected");
                 sls->detected();
             }
             break;

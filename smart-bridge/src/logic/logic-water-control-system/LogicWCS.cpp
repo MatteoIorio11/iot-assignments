@@ -39,7 +39,8 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     mc->init();
     wcs->init();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
-    wcs->behaveAsAlarm(timer);
+    //wcs->behaveAsAlarm(timer);
+    wcs->behaveAsNormal();
 }
 
 void automatic(){
@@ -56,10 +57,10 @@ void tickWCS(){
         case SHUT:
             break;
         case NORMAL:
-            tickSLS();
+            tickSLS(NORMAL_STATE_SAMPLING);
             break;
         case PRE_ALARM:
-            //tickSLS();
+            tickSLS(PREALARM_STATE_SAMPLING);
             //Serial.println(t_s);
             //Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
             if(t_s >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
