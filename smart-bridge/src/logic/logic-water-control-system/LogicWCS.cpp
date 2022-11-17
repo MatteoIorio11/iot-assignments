@@ -56,7 +56,6 @@ void tickWCS(){
             wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
             break;
         case ALARM:
-            Serial.println(mc->getState());
             wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); // non spostare 
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted

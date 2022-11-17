@@ -29,8 +29,16 @@ void MotorControl::manualControl(){
     this->servoMotor->setAngle(this->potentiometer->readValue());
 }
 
-void MotorControl::automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel){
-    this->servoMotor->setAngle(map(waterLevel, minWaterLevel, maxWaterLevel, 0, 180));
+int MotorControl::mapF(float x, float in_min, float in_max, float out_min, float out_max) {
+    int  result;
+    result = (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+    return result;
+}
+
+void MotorControl::automaticControl(float minWaterLevel, float maxWaterLevel, float waterLevel){
+    int angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
+    Serial.println(angle);
+    this->servoMotor->setAngle(angle);
 }
 
 void MotorControl::off(){

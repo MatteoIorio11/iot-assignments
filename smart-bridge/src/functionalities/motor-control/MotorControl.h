@@ -17,12 +17,13 @@ class MotorControl{
         Potentiometer* potentiometer;
         Button* button;
         MotorState state;
+        int mapF(float x, float in_min, float in_max, float out_min, float out_max);
         
     public:
         MotorControl(int pin_servo, int pin_pot, int pin_button);
         void init();
         void manualControl();
-        void automaticControl(int minWaterLevel, int maxWaterLevel, int waterLevel);
+        void automaticControl(float minWaterLevel, float maxWaterLevel, float waterLevel);
         //State
         void off();
         void automatic();

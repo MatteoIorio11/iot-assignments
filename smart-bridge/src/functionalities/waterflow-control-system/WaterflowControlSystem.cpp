@@ -102,7 +102,7 @@ int WaterflowControlSystem::getGreenLedPin(){
 }
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
-    //Serial.println(this->getWaterLevel());
+    Serial.println(this->getWaterLevel());
     if(this->getWaterLevel() < MAXIMUM_SONAR_DISTANCE && this->getWaterLevel() >= WL1_BOUND && this->state != NORMAL){
         this->state = NORMAL;
         this->turnOnDisplay();
