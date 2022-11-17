@@ -1,7 +1,6 @@
 #include "functionalities/smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
 #include "Arduino.h"
-#include <TimerOne.h>
 
 #define LUMINOSITY_LOWERBOUND 1
 //tick of the timer inside the main, this value is used for the "timer_tick".
@@ -16,10 +15,17 @@ SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
 long period = 0;        //Period used inside the main's timer
 
+void myF(){
+    if(sls->getState() != ALARM){
+        Serial.println("CIAO");
+        sls->detected();
+    }
+}
+
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
-    period = per;
     sls->init();
+    period = per;
 }
 
 void setAlarm(){
@@ -63,7 +69,7 @@ void tickSLS(){
                 so in order to resolve this problem, I recognise another person when the signal is HIGH and 
                 the signal is sent after SAMPLING_FREQUENCE seconds 
                 */
-                if(sls->checkTheBridge() == HIGH and (timer_tick) % SAMPLING_FREQUENCE(period) == 0){
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % MY_SAMPLING == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
                     Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"

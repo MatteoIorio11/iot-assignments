@@ -15,7 +15,7 @@ MonitorLcd::MonitorLcd(int address, int rows, int cols){
 }
 
 void MonitorLcd::init(){
-    this->lcd = new LiquidCrystal_I2C(0x27, this->rows, this->cols); 
+    this->lcd = new LiquidCrystal_I2C(this->address, this->rows, this->cols); 
     this->lcd->init();
     this->lcd->backlight();
     this->lcd->setCursor(2,1);

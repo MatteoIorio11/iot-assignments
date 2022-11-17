@@ -2,7 +2,6 @@
 #include "functionalities/waterflow-control-system/WaterflowContolSystem.h"
 #include "LogicWCS.h"
 #include "logic/logic-smart-light-system/LogicSLS.h"
-#include <EnableInterrupt.h>
 
 MotorControl* mc;
 WaterflowControlSystem* wcs;
@@ -42,8 +41,8 @@ void automatic(){
 }
 
 void tickWCS(){
-    wcs->refreshWaterState(timer);
-    //wcs->updateState(NORMAL);
+    //wcs->refreshWaterState(timer);
+    wcs->updateState(PRE_ALARM);
     //wcs->displayPreAlarm(100);
     switch (wcs->getState())
     {
