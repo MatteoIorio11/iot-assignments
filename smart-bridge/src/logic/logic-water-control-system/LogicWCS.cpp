@@ -5,6 +5,7 @@
 #include <EnableInterrupt.h>
 
 MotorControl* mc;
+SmartLightSystem *d;
 WaterflowControlSystem* wcs;
 Timer* timer;
 
@@ -28,6 +29,7 @@ void buttonHandler(){
     }
 }
 
+
 void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led, int address, int rows, int cols){
     timer = t;
     mc = new MotorControl(pin_servo, pin_pot, pin_button);
@@ -43,7 +45,9 @@ void automatic(){
 
 void tickWCS(){
     //wcs->refreshWaterState(timer);
-    wcs->updateState(PRE_ALARM);
+    //wcs->updateState(PRE_ALARM);
+    wcs->behaveAsNormal();
+    //wcs->behaveAsPreAlaram();
     //wcs->displayPreAlarm(100);
     switch (wcs->getState())
     {

@@ -102,12 +102,14 @@ int WaterflowControlSystem::getGreenLedPin(){
 }
 
 void WaterflowControlSystem::behaveAsNormal(){
+        this->state = NORMAL;
         this->turnOnDisplay();
         this->turnOnGreenLed();
         this->turnOffRedLed();
 }
 
 void WaterflowControlSystem::behaveAsPreAlaram(){
+        this->state = PRE_ALARM;
         this->turnOffGreenLed();
         this->turnOnDisplay();
 }

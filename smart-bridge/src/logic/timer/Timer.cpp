@@ -3,7 +3,7 @@
 
 Timer::Timer(){
     this->timer = new TimerOne();
-    this->timer->initialize(5*pow(10,6));
+    this->timer->initialize(NORMAL_STATE_SAMPLING);
     this->state = STOP;
 }
 

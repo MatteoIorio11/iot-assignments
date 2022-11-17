@@ -4,7 +4,7 @@
 enum State{
     DETECTED = 0,
     NOT_DETECTED = 1,
-    ALARM = 2
+    SLS_ALARM = 2
 };  
 
 #endif

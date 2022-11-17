@@ -50,7 +50,7 @@ void SmartLightSystem::notDetected(){
 }
 //Change the state of the system in ALARM, bcause of the water level
 void SmartLightSystem::alarm(){
-    this->state = ALARM;    
+    this->state = SLS_ALARM;    
 }
 //Get the value of the photoresistor
 PhotoResistor SmartLightSystem::getPhotoresistor(){

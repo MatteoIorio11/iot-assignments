@@ -15,8 +15,6 @@ SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
 long period = 0;        //Period used inside the main's timer
 
-
-
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
     sls->init();
@@ -28,7 +26,7 @@ void setAlarm(){
 }
 
 bool isInAlarmState(){
-    return sls->getState() == ALARM;
+    return sls->getState() == SLS_ALARM;
 }
 
 void changePeriod(int p){
@@ -49,6 +47,7 @@ void checkForLuminosity(){
 }
 
 void tickSLS(){
+    Serial.println("ESEGUO");
     switch (sls->getState())
     {
         case DETECTED:
@@ -80,7 +79,7 @@ void tickSLS(){
                 sls->detected();
             }
             break;
-        case ALARM:
+        case SLS_ALARM:
             
             if(sls->getLed().readValue() == HIGH){
                 sls->turnOffLed();
