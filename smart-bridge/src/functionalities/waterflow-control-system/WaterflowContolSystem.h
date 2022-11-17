@@ -56,6 +56,10 @@ class WaterflowControlSystem{
         int getSonarTrigPin();
         int getRedLedPin();
         int getGreenLedPin();
+
+        void behaveAsNormal();
+        void behaveAsPreAlaram();
+        void behaveAsAlarm();
         
         
 };
