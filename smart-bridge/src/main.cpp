@@ -8,7 +8,7 @@
 
 Bridge* b;
 
-void c(){
+void changeTheState(){
   b->getTimer()->changeState();
 }
 
@@ -17,7 +17,7 @@ void setup()
   Serial.begin(9600);
   b = new Bridge();
   b->init();
-  b->getTimer()->getTimerOne()->attachInterrupt(c); 
+  b->getTimer()->getTimerOne()->attachInterrupt(changeTheState); 
 }
 
 
@@ -25,5 +25,4 @@ void loop() {
   // put your main code here, to run repeatedly:
   b->getTimer()->waitForTheNextTick();
   b->tick();
-  delay(100);
 }

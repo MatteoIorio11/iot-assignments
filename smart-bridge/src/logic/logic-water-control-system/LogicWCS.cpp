@@ -2,6 +2,7 @@
 #include "functionalities/waterflow-control-system/WaterflowContolSystem.h"
 #include "LogicWCS.h"
 #include "logic/logic-smart-light-system/LogicSLS.h"
+#include <EnableInterrupt.h>
 
 MotorControl* mc;
 WaterflowControlSystem* wcs;

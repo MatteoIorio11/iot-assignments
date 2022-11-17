@@ -15,12 +15,7 @@ SmartLightSystem* sls; //The smart light system
 int timer_tick = 0;    //Timer for the light 
 long period = 0;        //Period used inside the main's timer
 
-void myF(){
-    if(sls->getState() != ALARM){
-        Serial.println("CIAO");
-        sls->detected();
-    }
-}
+
 
 void initSLS(int pin_pir, int pin_led, int pin_photo, int per){
     sls = new SmartLightSystem(pin_pir, pin_led, pin_photo);
