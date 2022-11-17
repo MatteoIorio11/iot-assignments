@@ -39,7 +39,7 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     mc->init();
     wcs->init();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
-    wcs->behaveAsPreAlaram(timer);
+    wcs->behaveAsAlarm(timer);
 }
 
 void automatic(){
@@ -60,15 +60,10 @@ void tickWCS(){
             break;
         case PRE_ALARM:
             //tickSLS();
-            Serial.println(t_s);
-            Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
+            //Serial.println(t_s);
+            //Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
             if(t_s >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
-                Serial.println("CIAO");
-                if(wcs->getRedLed().readValue() == HIGH){
-                    wcs->turnOffRedLed();
-                }else{
-                    wcs->turnOnRedLed();
-                }
+                wcs->RedLedBlink();
                 t_s = 0;
             }else{
                 t_s++;

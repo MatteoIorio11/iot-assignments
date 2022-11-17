@@ -10,9 +10,11 @@ RedLed::RedLed(int pin){
 }
 
 void RedLed::blink(){
-    this->ledOn();
-    delay(TIME);
-    this->ledOff();
+    if(this->readValue() == HIGH){
+        this->ledOff();
+    }else{
+        this->ledOn();
+    }
 }
 
 void RedLed::ledOn(){

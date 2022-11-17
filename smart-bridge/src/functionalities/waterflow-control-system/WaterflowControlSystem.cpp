@@ -115,10 +115,12 @@ void WaterflowControlSystem::behaveAsPreAlaram(Timer* timer){
         this->turnOnDisplay();
 }
 
-void WaterflowControlSystem::behaveAsAlarm(){
-        this->turnOffGreenLed();
-        this->turnOnRedLed();
-        this->turnOnDisplay();
+void WaterflowControlSystem::behaveAsAlarm(Timer* timer){
+    this->state = ALARM;
+    timer->changePeriod(ALARM);
+    this->turnOffGreenLed();
+    this->turnOnRedLed();
+    this->turnOnDisplay();
 }
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){

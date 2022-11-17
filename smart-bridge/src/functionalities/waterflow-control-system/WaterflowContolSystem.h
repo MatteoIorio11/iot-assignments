@@ -59,7 +59,7 @@ class WaterflowControlSystem{
 
         void behaveAsNormal();
         void behaveAsPreAlaram(Timer* timer);
-        void behaveAsAlarm();
+        void behaveAsAlarm(Timer* timer);
         
         
 };
