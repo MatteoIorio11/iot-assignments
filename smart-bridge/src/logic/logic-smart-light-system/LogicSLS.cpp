@@ -6,8 +6,8 @@
 //tick of the timer inside the main, this value is used for the "timer_tick".
 #define TIMER_PERIOD period
 //The timer1 is ten seconds based on the period
-#define TIMER_T1_A(p) ((int)pow(10,7)/p)
-#define SAMPLING_FREQUENCE(p) ((int)p/4)
+#define TIMER_T1_A(p) (pow(10,7)/(p))
+#define SAMPLING_FREQUENCE(p) ((p)/2)
 #define MY_TIME pow(10,7)
 #define MY_SAMPLING 50
 
@@ -38,20 +38,24 @@ void resetStatus(){
 }
 
 void checkForLuminosity(){
+    
     if(sls->getLuminosity() >= 0 and sls->getLuminosity() < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         sls->turnOnLed();
     }else{
         sls->turnOffLed();
     }
+    
+   // sls->turnOnLed();
 }
 
 void tickSLS(){
-    Serial.println("ESEGUO");
+    //float a = pow(10,7)/period;
+    //Serial.println(TIMER_T1_A(period));
     switch (sls->getState())
     {
         case DETECTED:
-            checkForLuminosity();
+            //checkForLuminosity();
             if(timer_tick >= TIMER_T1_A(period)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
@@ -63,7 +67,7 @@ void tickSLS(){
                 so in order to resolve this problem, I recognise another person when the signal is HIGH and 
                 the signal is sent after SAMPLING_FREQUENCE seconds 
                 */
-                if(sls->checkTheBridge() == HIGH and (timer_tick) % MY_SAMPLING == 0){
+                if(sls->checkTheBridge() == HIGH and (timer_tick) % 50 == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
                     Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"
@@ -75,12 +79,12 @@ void tickSLS(){
             sls->turnOffLed();
             if(sls->checkTheBridge() == HIGH){
                 timer_tick = 0;
+                sls->turnOnLed();
                 Serial.println("A person has been detected");
                 sls->detected();
             }
             break;
         case SLS_ALARM:
-            
             if(sls->getLed().readValue() == HIGH){
                 sls->turnOffLed();
                 timer_tick = 0;
