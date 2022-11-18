@@ -49,12 +49,12 @@ void MonitorLcd::displayPreAlarm(double level){
 void MonitorLcd::displayAlarm(double level, int op_degree){
     this->lcd->clear();
     this->lcd->setCursor(FIRST_COL,FIRST_ROW);
-    this->lcd->println(STRING_ALARM);
+    this->lcd->print(STRING_ALARM);
     if(this->rows > 2){
         this->lcd->setCursor(FIRST_COL,SECOND_ROW);
-        this->lcd->println(WATER_LEVEL(String(level)));
+        this->lcd->print(WATER_LEVEL(String(level)));
         this->lcd->setCursor(FIRST_COL,THIRD_ROW);
-        this->lcd->println(OPENING_DEGREE(String(op_degree)));
+        this->lcd->print(OPENING_DEGREE(String(op_degree)));
     }
     delay(20);
 }
