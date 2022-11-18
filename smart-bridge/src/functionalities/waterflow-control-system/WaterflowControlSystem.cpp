@@ -146,8 +146,8 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
     }else{
         if(this->state != NORMAL){
             this->state = NORMAL;
+            this->turnOffDisplay();
             Serial.println("NORMAL");
-            this->turnOnDisplay();
             this->turnOnGreenLed();
             this->turnOffRedLed();
             timer->changePeriod(NORMAL);

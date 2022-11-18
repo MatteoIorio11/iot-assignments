@@ -3,6 +3,11 @@
 
 #include <LiquidCrystal_I2C.h>
 #include "State.h"
+#define FIRST_ROW 0
+#define SECOND_ROW 1
+#define THIRD_ROW 2
+#define FIRST_COL 0
+
 
 class MonitorLcd{
     private:
