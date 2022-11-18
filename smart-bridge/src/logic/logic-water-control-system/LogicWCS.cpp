@@ -71,10 +71,10 @@ void tickWCS(){
                 timer_blinking++;
             }
            // wcs->RedLedBlink(); 
-            wcs->displayPreAlarm(wcs->getWaterLevel()); // non spostare
+            wcs->displayPreAlarm(wcs->getWaterLevel());
             break;
         case ALARM:
-            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle()); // non spostare 
+            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle());
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted
                 setAlarm();

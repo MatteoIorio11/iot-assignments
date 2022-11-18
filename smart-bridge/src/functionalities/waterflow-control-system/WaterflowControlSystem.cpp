@@ -50,6 +50,7 @@ void WaterflowControlSystem::updateState(WaterState state){
 }
 
 void WaterflowControlSystem::displayAlarm(double level, int op_degree){
+    Serial.println(op_degree);
     this->lcd->displayAlarm(level, op_degree);
 }
 
