@@ -19,6 +19,7 @@ class MonitorLcd{
     public:
         MonitorLcd(int address, int rows, int cols);
         void init();
+        void displaySetUp();
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
         void displayON();

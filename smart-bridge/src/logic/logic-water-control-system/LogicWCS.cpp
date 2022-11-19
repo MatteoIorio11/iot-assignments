@@ -31,6 +31,14 @@ void buttonHandler(){
     }
 }
 
+void setupHardware(){
+    wcs->turnOnDisplay();
+    wcs->displaySetUp();
+    delay(3000);
+    wcs->turnOffDisplay();
+}
+
+
 
 void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led, int address, int rows, int cols){
     timer = t;
@@ -38,6 +46,7 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     wcs = new WaterflowControlSystem(sonar_echoPin, sonar_trigPin, red_pin_led, green_pin_led, address, rows, cols);
     mc->init();
     wcs->init();
+    setupHardware();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
 }
 
@@ -71,10 +80,11 @@ void tickWCS(){
                 timer_blinking++;
             }
            // wcs->RedLedBlink(); 
-            wcs->displayPreAlarm(wcs->getWaterLevel());
+            wcs->displayPreAlarm(wcs->getLastLevelDetected());
             break;
         case ALARM:
-            wcs->displayAlarm(wcs->getWaterLevel(), mc->getServoMotor().getAngle());
+            float level = wcs->getLastLevelDetected();
+            wcs->displayAlarm(level, mc->getServoMotor().getAngle());
             if(!isInAlarmState()){
                 //If the Smart light system is not in the alarm state It must be setted
                 setAlarm();
@@ -89,7 +99,10 @@ void tickWCS(){
                     }
                     break;
                 case AUTOMATIC:
-                    mc->automaticControl(MINIMUM_SONAR_DISTANCE, WL2_BOUND, wcs->getWaterLevel());
+                    if(level < WL2_BOUND){
+                        /// Because maybe I am not in the ALARM State so I do not have to turn on the
+                        mc->automaticControl(MINIMUM_SONAR_DISTANCE, WL2_BOUND, level);
+                    }
                     break;
                 case MANUAL:
                     mc->manualControl();

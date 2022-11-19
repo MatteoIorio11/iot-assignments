@@ -14,6 +14,7 @@ WaterflowControlSystem::WaterflowControlSystem(int sonar_echoPin, int sonar_trig
     this->address = address;
     this->rows = rows;
     this->cols = cols;
+    this->last_level_detected = 0.0;
     this->state = SHUT;
 }
 
@@ -49,6 +50,10 @@ void WaterflowControlSystem::updateState(WaterState state){
     this->state = state;
 }
 
+void WaterflowControlSystem::displaySetUp(){
+    this->lcd->displaySetUp();
+}
+
 void WaterflowControlSystem::displayAlarm(double level, int op_degree){
     Serial.println(op_degree);
     this->lcd->displayAlarm(level, op_degree);
@@ -66,8 +71,8 @@ void WaterflowControlSystem::turnOffDisplay(){
     this->lcd->displayOFF();
 }
 
-float WaterflowControlSystem::getWaterLevel(){
-    return this->sonar->readValue();
+float WaterflowControlSystem::getWaterLevel(){ 
+    return this->sonar->readValue(); 
 }
 
 WaterState WaterflowControlSystem::getState(){
@@ -124,10 +129,14 @@ void WaterflowControlSystem::behaveAsAlarm(Timer* timer){
     this->turnOnDisplay();
 }
 
+float WaterflowControlSystem::getLastLevelDetected(){
+    return this->last_level_detected;
+}
+
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
-    float level = this->getWaterLevel();
-    Serial.println(level);
-    if(level <= WL2_BOUND){
+    this->last_level_detected = this->getWaterLevel();
+    Serial.println(this->last_level_detected);
+    if(this->last_level_detected <= WL2_BOUND){
         if(this->state != ALARM){
             this->state = ALARM;
             Serial.println("ALARM");
@@ -136,7 +145,7 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
             this->turnOnDisplay();
             timer->changePeriod(ALARM);
         }
-    }else if(level > WL2_BOUND && level <= WL1_BOUND){
+    }else if(this->last_level_detected > WL2_BOUND && this->last_level_detected <= WL1_BOUND){
         if(this->state != PRE_ALARM){
             this->state = PRE_ALARM;
             Serial.println("PREALARM");

@@ -36,6 +36,7 @@ int MotorControl::mapF(float x, float in_min, float in_max, float out_min, float
 
 void MotorControl::automaticControl(float minWaterLevel, float maxWaterLevel, float waterLevel){
     int angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
+    Serial.println("ESTOY ACQUI SIUM " + String(angle));
     this->servoMotor->setAngle(angle);
 }
 

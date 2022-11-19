@@ -8,13 +8,14 @@
 #include "logic/timer/Timer.h"
 #include "State.h"
 
-#define MINIMUM_SONAR_DISTANCE (float)0.00
+#define MINIMUM_SONAR_DISTANCE (float)0.001
 #define WL2_BOUND (float)0.3
 #define WL1_BOUND (float)0.9
 #define MAXIMUM_SONAR_DISTANCE (float)1.00
 
 class WaterflowControlSystem{
     private:
+        float last_level_detected;
         int sonar_echoPin;
         int sonar_trigPin;
         int red_pin_led;
@@ -42,6 +43,7 @@ class WaterflowControlSystem{
         float getWaterLevel();
         void refreshWaterState(Timer* timer);
         //Lcd
+        void displaySetUp();
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
         void turnOnDisplay();
@@ -56,7 +58,8 @@ class WaterflowControlSystem{
         int getSonarTrigPin();
         int getRedLedPin();
         int getGreenLedPin();
-
+        float getLastLevelDetected();
+        
         void behaveAsNormal();
         void behaveAsPreAlaram(Timer* timer);
         void behaveAsAlarm(Timer* timer);

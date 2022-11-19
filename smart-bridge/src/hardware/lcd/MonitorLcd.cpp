@@ -4,6 +4,7 @@
 
 #define STRING_PRE_ALARM "!!PRE-ALARM!!"
 #define STRING_ALARM "!!ALARM!!"
+#define STRING_SETUP "System SETUP. Please wait"
 #define WATER_LEVEL(l) ("Water Lvl(cm):"+l)
 #define OPENING_DEGREE(d) ("Op degree :"+d)
 
@@ -29,6 +30,11 @@ void MonitorLcd::displayON(){
 void MonitorLcd::displayOFF(){
     this->lcd->noBacklight();
     this->state = MONITOR_OFF;
+}
+
+void MonitorLcd::displaySetUp(){
+    this->lcd->clear();
+    this->lcd->print(STRING_SETUP);
 }
 
 //The LCD is turned on, informing about the pre-alarm and displaying the current water level
