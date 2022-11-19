@@ -107,28 +107,6 @@ int WaterflowControlSystem::getGreenLedPin(){
     return this->greenLed->getPin();
 }
 
-void WaterflowControlSystem::behaveAsNormal(){
-        this->state = NORMAL;
-        this->turnOnDisplay();
-        this->turnOnGreenLed();
-        this->turnOffRedLed();
-}
-
-void WaterflowControlSystem::behaveAsPreAlaram(Timer* timer){
-        this->state = PRE_ALARM;
-        this->turnOffGreenLed();
-        timer->changePeriod(PRE_ALARM);
-        this->turnOnDisplay();
-}
-
-void WaterflowControlSystem::behaveAsAlarm(Timer* timer){
-    this->state = ALARM;
-    timer->changePeriod(ALARM);
-    this->turnOffGreenLed();
-    this->turnOnRedLed();
-    this->turnOnDisplay();
-}
-
 float WaterflowControlSystem::getLastLevelDetected(){
     return this->last_level_detected;
 }

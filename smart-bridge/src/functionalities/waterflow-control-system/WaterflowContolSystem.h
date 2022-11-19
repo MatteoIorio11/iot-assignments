@@ -60,11 +60,6 @@ class WaterflowControlSystem{
         int getGreenLedPin();
         float getLastLevelDetected();
         
-        void behaveAsNormal();
-        void behaveAsPreAlaram(Timer* timer);
-        void behaveAsAlarm(Timer* timer);
-        
-        
 };
 
 
