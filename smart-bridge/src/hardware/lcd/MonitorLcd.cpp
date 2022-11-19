@@ -19,8 +19,6 @@ void MonitorLcd::init(){
     this->lcd->init();
     this->lcd->backlight();
     this->lcd->setCursor(2,1);
-    this->lcd->print("CIAO");
-
 }
 
 void MonitorLcd::displayON(){
