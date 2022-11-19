@@ -40,7 +40,6 @@ void MonitorLcd::displayPreAlarm(double level){
         this->lcd->setCursor(FIRST_COL,SECOND_ROW);
         this->lcd->print(WATER_LEVEL(String(level)));
     }
-    delay(20);
 }
 
 //The LCD is still on, informing about the alarm situation and displaying both the current water level and the opening degrees of the valve 
@@ -54,7 +53,6 @@ void MonitorLcd::displayAlarm(double level, int op_degree){
         this->lcd->setCursor(FIRST_COL,THIRD_ROW);
         this->lcd->print(OPENING_DEGREE(String(op_degree)));
     }
-    delay(20);
 }
 
 MonitorState MonitorLcd::getState(){
