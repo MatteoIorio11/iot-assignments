@@ -11,36 +11,21 @@ subplot = fig.add_subplot()
 subplot._axis3don = False  
 axfreq = plt.axes([0.25, 0, 0.60, 0.03])
 
-sfreq = Slider(axfreq, 'Freq', 0, 180.0, valinit=0, valstep=1)
+sfreq = Slider(axfreq, 'Angle', 0, 180.0, valinit=0, valstep=1)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 
 
-<<<<<<< HEAD
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=.1)
-
-def show_values(value=None):
-    #print(w.get())
-    x = {
-        "angle": w.get()
-        }
-    y = json.dumps(x)
-    #print(y)
-    arduino.write(y)
-=======
 def update(val):
     freq = sfreq.val
-    print(freq)
->>>>>>> 1e4517f15dd458eb1385bfa526876b91966d64d7
+    x = {
+        "angle": freq
+    }
+    y = json.dumps(x)
+    arduino.write(bytes(y, 'utf-8'))
 
 
-<<<<<<< HEAD
-master = Tk()
-w = Scale(master, from_=0, to=100, orient=HORIZONTAL, command=show_values)
-w.pack()
-=======
 sfreq.on_changed(update)
 
-#arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
->>>>>>> 1e4517f15dd458eb1385bfa526876b91966d64d7
 count = 0
 x=[]
 y=[]
@@ -49,34 +34,25 @@ def myFunction(i):
     global count
     count +=1
 
-<<<<<<< HEAD
     if(arduino.inWaiting() > 0):
         try:
             msg = arduino.readline()
-            j = json.loads(msg)
-            print(j)
-            val = j['waterLevel']*100
-            print(val)
-            int_k = int(val)
+            print(msg)
+            json_parsed = json.loads(msg)
+            water_level = int(json_parsed['waterLevel']*100)
+            angle = int(json_parsed['angle'])
+            if len(x) == 30:
+                x.pop(0)
+                y.pop(0)
+            y.append(water_level)
             x.append(count)
-            y.append(int_k)
-            plt.cla()
-            plt.plot(x,y)
-        except:
-            print("")
+            subplot.cla() 
+            subplot.plot(x,y)
+        except Exception as e:
+            count-=1
 
 
 anima = animation.FuncAnimation(plt.gcf(), myFunction, interval=10)
-=======
-    x.append(count)
-    y.append(rnd.randint(1,10))
-    a = subplot.cla() 
-    subplot.plot(x,y)
-
-
-
-
-anima = animation.FuncAnimation(plt.gcf(), myFunction, interval=1500)
-
->>>>>>> 1e4517f15dd458eb1385bfa526876b91966d64d7
 plt.show()
+
+arduino.write("START")

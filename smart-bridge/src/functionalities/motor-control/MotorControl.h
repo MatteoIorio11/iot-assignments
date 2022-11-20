@@ -8,9 +8,11 @@
 #include "hardware/button/Button.h"
 #include "functionalities/json/json-deserialization/JsonDeserializer.h"
 #include "State.h"
+ 
 
 class MotorControl{
     private:
+        bool MANUAL_CONTROL_PC;
         int pin_servo;
         int pin_pot;
         int pin_button;

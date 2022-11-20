@@ -7,7 +7,7 @@ class JsonDeserializer{
     private:
         JsonDeserializer();
     public:
-        static int getAngle();
+        static int getAngle(bool control);
 };
 
 #endif

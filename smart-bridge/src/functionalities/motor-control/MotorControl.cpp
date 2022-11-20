@@ -10,6 +10,7 @@ MotorControl::MotorControl(int pin_servo, int pin_pot, int pin_button){
     this->pin_button = pin_button;
     this->pin_pot = pin_pot;
     this->pin_servo = pin_servo;
+    this->MANUAL_CONTROL_PC = false;
     this->state = AUTOMATIC;
 }
 
@@ -25,10 +26,14 @@ void MotorControl::buttonHandler(){
 }
 
 void MotorControl::manualControl(){
-    if(!Serial.available()){
-        this->servoMotor->setAngle(this->potentiometer->readValue());
+    int angle = this->potentiometer->readValue();
+    if(!Serial.available() && !this->MANUAL_CONTROL_PC){
+        this->servoMotor->setAngle(angle);
     }else{
-        this->servoMotor->setAngle(JsonDeserializer::getAngle());
+        angle = JsonDeserializer::getAngle();
+        if(angle != -1){
+            this->servoMotor->setAngle(angle);
+        }
     }
 }
 
@@ -39,12 +44,7 @@ int MotorControl::mapF(float x, float in_min, float in_max, float out_min, float
 }
 
 void MotorControl::automaticControl(float minWaterLevel, float maxWaterLevel, float waterLevel){
-    int angle = 0;
-    if(!Serial.available()){
-        angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
-    }else{
-        angle = JsonDeserializer::getAngle();
-    }
+    int angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
     this->servoMotor->setAngle(angle);
 }
 
