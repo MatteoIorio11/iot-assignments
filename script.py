@@ -4,8 +4,16 @@ import time
 from matplotlib import animation
 import random as rnd
 import matplotlib.pyplot as plt
+from tkinter import *
 
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+def show_values(value=None):
+    print(w.get())
+
+
+master = Tk()
+w = Scale(master, from_=0, to=100, orient=HORIZONTAL, command=show_values)
+w.pack()
+#arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 count = 0
 x=[]
 y=[]
