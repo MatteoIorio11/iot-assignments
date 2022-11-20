@@ -24,6 +24,7 @@
 class Bridge : public Task{
     private:
         Timer *timer;
+        void Synchronize();
     public:
         Bridge();
         void init();

@@ -5,23 +5,13 @@ from matplotlib import animation
 import random as rnd
 import matplotlib.pyplot as plt
 
-#arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
-count = 0
-x=[]
-y=[]
-
-def myFunction(i):
-    global count
-    count +=1
-
-    x.append(count)
-    y.append(rnd.randint(1,10))
-    plt.cla()
-    plt.plot(x,y)
+arduino = serial.Serial(port='/dev/ttyACM1', baudrate=9600)
 
 
+def main():
+    msg = "ciao"
+    arduino.write(bytes(msg, 'utf-8'))
 
 
-anima = animation.FuncAnimation(plt.gcf(), myFunction, interval=1500)
-
-plt.show()
+if __name__ == "__main__":
+    main()
