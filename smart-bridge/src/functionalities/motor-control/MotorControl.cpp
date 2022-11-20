@@ -26,14 +26,16 @@ void MotorControl::buttonHandler(){
 }
 
 void MotorControl::manualControl(){
-    int angle = this->potentiometer->readValue();
-    if(!Serial.available() && !this->MANUAL_CONTROL_PC){
+    int res = JsonDeserializer::getAngle();
+    Serial.print(res);
+
+    if(res >= 0){
+        this->servoMotor->setAngle(res);
+        this->MANUAL_CONTROL_PC=false;
+    }else if(res == -2 || this->MANUAL_CONTROL_PC){
+        this->MANUAL_CONTROL_PC=true;
+        int angle = this->potentiometer->readValue();
         this->servoMotor->setAngle(angle);
-    }else{
-        angle = JsonDeserializer::getAngle();
-        if(angle != -1){
-            this->servoMotor->setAngle(angle);
-        }
     }
 }
 
