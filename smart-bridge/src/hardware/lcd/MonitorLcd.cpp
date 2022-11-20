@@ -1,5 +1,4 @@
 #include "MonitorLcd.h"
-#include <LiquidCrystal_I2C.h>
 #include "Arduino.h"
 
 #define STRING_PRE_ALARM "!!PRE-ALARM!!"
@@ -18,8 +17,6 @@ MonitorLcd::MonitorLcd(int address, int rows, int cols){
 void MonitorLcd::init(){
     this->lcd = new LiquidCrystal_I2C(this->address, this->rows, this->cols); 
     this->lcd->init();
-    this->lcd->backlight();
-    this->lcd->setCursor(2,1);
 }
 
 void MonitorLcd::displayON(){

@@ -3,6 +3,8 @@
 #include <ArduinoJson.h>
 #include "functionalities/waterflow-control-system/State.h"
 #define ARDUINO_TO_PC "Arduino"
+#define OPEN_PARENTHESES "{"
+#define CLOSE_PARENTHESES "{"
 #define PC_TO_ARDUINO "PC"
 #define ANGLE_NOT_SET -1
 

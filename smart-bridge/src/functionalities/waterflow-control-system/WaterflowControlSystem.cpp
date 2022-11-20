@@ -55,7 +55,6 @@ void WaterflowControlSystem::displaySetUp(){
 }
 
 void WaterflowControlSystem::displayAlarm(double level, int op_degree){
-    Serial.println(op_degree);
     this->lcd->displayAlarm(level, op_degree);
 }
 
@@ -113,11 +112,9 @@ float WaterflowControlSystem::getLastLevelDetected(){
 
 void WaterflowControlSystem::refreshWaterState(Timer* timer){
     this->last_level_detected = this->getWaterLevel();
-    Serial.println(this->last_level_detected);
     if(this->last_level_detected <= WL2_BOUND){
         if(this->state != ALARM){
             this->state = ALARM;
-            Serial.println("ALARM");
             this->turnOffGreenLed();
             this->turnOnRedLed();
             this->turnOnDisplay();
@@ -126,7 +123,6 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
     }else if(this->last_level_detected > WL2_BOUND && this->last_level_detected <= WL1_BOUND){
         if(this->state != PRE_ALARM){
             this->state = PRE_ALARM;
-            Serial.println("PREALARM");
             this->turnOffGreenLed();
             this->turnOnDisplay();
             timer->changePeriod(PRE_ALARM);
@@ -135,7 +131,6 @@ void WaterflowControlSystem::refreshWaterState(Timer* timer){
         if(this->state != NORMAL){
             this->state = NORMAL;
             this->turnOffDisplay();
-            Serial.println("NORMAL");
             this->turnOnGreenLed();
             this->turnOffRedLed();
             timer->changePeriod(NORMAL);
