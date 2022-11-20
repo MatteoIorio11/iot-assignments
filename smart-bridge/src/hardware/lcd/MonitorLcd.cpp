@@ -34,7 +34,10 @@ void MonitorLcd::displayOFF(){
 
 void MonitorLcd::displaySetUp(){
     this->lcd->clear();
+    this->displayON();
     this->lcd->print(STRING_SETUP);
+    delay(3000);
+    this->displayOFF();
 }
 
 //The LCD is turned on, informing about the pre-alarm and displaying the current water level

@@ -32,10 +32,7 @@ void buttonHandler(){
 }
 
 void setupHardware(){
-    wcs->turnOnDisplay();
     wcs->displaySetUp();
-    delay(3000);
-    wcs->turnOffDisplay();
 }
 
 
