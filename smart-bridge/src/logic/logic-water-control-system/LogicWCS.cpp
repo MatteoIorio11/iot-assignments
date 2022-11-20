@@ -47,6 +47,15 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
 }
 
+void blink(){
+    if(timer_blinking >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
+        wcs->RedLedBlink();
+        timer_blinking = 0;
+    }else{
+        timer_blinking++;
+    }
+}
+
 void automatic(){
     mc->automatic();
 }
@@ -68,16 +77,9 @@ void tickWCS(){
                 resetStatus();
             }   
             tickSLS(PREALARM_STATE_SAMPLING);
-            //Serial.println(timer_blinking);
-            //Serial.println(BLINK_2SEC(PREALARM_STATE_SAMPLING));
-            if(timer_blinking >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
-                wcs->RedLedBlink();
-                timer_blinking = 0;
-            }else{
-                timer_blinking++;
-            }
-           // wcs->RedLedBlink(); 
+            blink();
             wcs->displayPreAlarm(wcs->getLastLevelDetected());
+            JsonSerializer::serialize(PRE_ALARM, wcs->getLastLevelDetected(), ANGLE_NOT_SET);
             break;
         case ALARM:
             float level = wcs->getLastLevelDetected();
@@ -99,10 +101,12 @@ void tickWCS(){
                     if(level < WL2_BOUND){
                         /// Because maybe I am not in the ALARM State so I do not have to turn on the
                         mc->automaticControl(MINIMUM_SONAR_DISTANCE, WL2_BOUND, level);
+                        JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle());
                     }
                     break;
                 case MANUAL:
                     mc->manualControl();
+                    JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle());
                     break;
             }
             break;

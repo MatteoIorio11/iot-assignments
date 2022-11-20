@@ -28,7 +28,9 @@ void MotorControl::manualControl(){
     if(!Serial.available()){
         this->servoMotor->setAngle(this->potentiometer->readValue());
     }else{
-        int angle = 0;
+        int angle = JsonDeserializer::getAngle();
+        this->servoMotor->setAngle(angle);
+        /*
         try{
             angle = JsonDeserializer::getAngle();
             this->servoMotor->setAngle(angle);
@@ -38,6 +40,7 @@ void MotorControl::manualControl(){
             this->automatic();
             this->servoMotor->setAngle(this->potentiometer->readValue());
         }
+        */
     }
 }
 
@@ -52,12 +55,15 @@ void MotorControl::automaticControl(float minWaterLevel, float maxWaterLevel, fl
     if(!Serial.available()){
         angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
     }else{
+        angle = JsonDeserializer::getAngle();
+        /*
         try{
             angle = JsonDeserializer::getAngle();
         }catch(...){
             //If I get any type of error during the deserialization I need to manage the valve at all cost, so we do it automatically
             angle = mapF(waterLevel, minWaterLevel, maxWaterLevel, 0, 180);
         }
+        */
     }
     this->servoMotor->setAngle(angle);
 }

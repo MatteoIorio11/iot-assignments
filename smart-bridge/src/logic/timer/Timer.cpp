@@ -27,6 +27,9 @@ TimerState Timer::getState(){
 void Timer::changePeriod(WaterState waterS){
     switch (waterS)
     {
+        case SHUT:
+            this->timer->setPeriod(NORMAL_STATE_SAMPLING);
+            break;
         case NORMAL: 
             this->timer->setPeriod(NORMAL_STATE_SAMPLING);
             break;
