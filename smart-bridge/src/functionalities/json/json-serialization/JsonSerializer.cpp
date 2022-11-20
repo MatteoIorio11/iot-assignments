@@ -1,14 +1,22 @@
 #include "JsonSerializer.h"
 
 void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
+    String tagState = "\"waterState\":";
+    String tagWater = ",\"waterLevel\":"; 
+    String tagDegree = ",\"angle\":"; 
+    String json =  OPEN_PARENTHESES +  tagState + state + tagWater + waterLevel + tagDegree + angle + CLOSE_PARENTHESES;
+    //String c = ",\"angle\": " + "C" + "}";
+    //String json = "{\"waterState\":" + "ciao" + ",\"waterLevel\":" + String(waterLevel) +",\"angle\":"+ String(angle)+"}";
+    /*
     DynamicJsonDocument doc(1024);
-    doc["destination"] = ARDUINO_TO_PC;
     doc["waterState"] = state;
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
 
+
     serializeJson(doc, Serial);
-    String json = Serial.readString();
-    //serializeJson(doc, s, doc.size());
+    */
+    //String json = Serial.readString();
+    
     Serial.println(json);
 }

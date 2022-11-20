@@ -42,19 +42,14 @@ void checkForLuminosity(){
     }else{
         sls->turnOffLed();
     }
-    
-   // sls->turnOnLed();
 }
 
 void tickSLS(float p){
     period = p;
-    //Serial.println(period);
     switch (sls->getState())
     {
         case DETECTED:
             checkForLuminosity();
-            //Serial.println(TIMER_T1_A(period));
-            //Serial.println(SAMPLING_FREQUENCE(TIMER_T1_A(period)));
             if(timer_tick >= TIMER_T1_A(period)){
                 timer_tick = 0;
                 //The light has to be on only for T1 seconds, in this case the T1 = TIMER_PERIOD
@@ -69,7 +64,6 @@ void tickSLS(float p){
                int z = TIMER_T1_A(period)/2;
                 if(sls->checkTheBridge() == HIGH and (timer_tick) % z == 0){
                     //Another person have been detected, I have to re-initialize the timer_tick
-                    Serial.println("Another person has been detected");
                     timer_tick = 0; // reset of the "timer"
                 }
             }
@@ -79,7 +73,6 @@ void tickSLS(float p){
             sls->turnOffLed();
             if(sls->checkTheBridge() == HIGH){
                 timer_tick = 0;
-                Serial.println("A person has been detected");
                 sls->detected();
             }
             break;
@@ -89,7 +82,6 @@ void tickSLS(float p){
                 timer_tick = 0;
             }
             break;
-        
         default:
             break;
     }

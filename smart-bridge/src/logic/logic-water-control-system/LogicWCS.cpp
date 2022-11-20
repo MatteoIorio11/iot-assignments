@@ -71,6 +71,7 @@ void tickWCS(){
                 resetStatus();
             }        
             tickSLS(NORMAL_STATE_SAMPLING);
+            JsonSerializer::serialize(NORMAL, wcs->getLastLevelDetected(), ANGLE_NOT_SET);
             break;
         case PRE_ALARM:
             if(isInAlarmState()){
