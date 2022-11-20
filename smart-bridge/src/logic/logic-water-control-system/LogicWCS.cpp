@@ -15,8 +15,10 @@ void buttonHandler(){
     static unsigned long last_interrupt_time = 0;
     unsigned long interrupt_time = millis();
     // If interrupts come faster than 200ms, assume it's a bounce and ignore
-    if (interrupt_time - last_interrupt_time > 100) 
+    if (interrupt_time - last_interrupt_time > 500) 
     {
+        last_interrupt_time = interrupt_time;
+        Serial.println("pressed");
         switch(mc->getState())
         {
             case OFF:
@@ -37,7 +39,7 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     wcs = new WaterflowControlSystem(sonar_echoPin, sonar_trigPin, red_pin_led, green_pin_led, address, rows, cols);
     mc->init();
     wcs->init();
-    enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
+    enableInterrupt(mc->getButton().getPin(), buttonHandler, HIGH);
 }
 
 void blink(){

@@ -9,7 +9,7 @@ from matplotlib.widgets import Slider, Button, RadioButtons
 fig = plt.figure(figsize = (8,8))            
 subplot = fig.add_subplot()
 subplot._axis3don = False  
-axfreq = plt.axes([0.25, 0, 0.60, 0.03])
+axfreq = plt.axes([0.25, 0, 0.50, 0.03])
 
 sfreq = Slider(axfreq, 'Angle', -1, 180.0, valinit=0, valstep=1)
 arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
@@ -66,5 +66,3 @@ def myFunction(i):
 
 anima = animation.FuncAnimation(plt.gcf(), myFunction, interval=10)
 plt.show()
-
-arduino.write("START")
