@@ -7,7 +7,14 @@ import matplotlib.pyplot as plt
 from tkinter import *
 
 def show_values(value=None):
-    print(w.get())
+    #print(w.get())
+    x = {
+        "angle": w.get()
+        }
+    y = json.dumps(x)
+    print(y)
+
+    
 
 
 master = Tk()
