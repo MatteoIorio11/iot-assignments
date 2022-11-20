@@ -6,6 +6,7 @@
 #include "hardware/servomotor/ServoMotor.h"
 #include "hardware/potentiometer/Potentiometer.h"
 #include "hardware/button/Button.h"
+#include "functionalities/json/json-deserialization/JsonDeserializer.h"
 #include "State.h"
 
 class MotorControl{
