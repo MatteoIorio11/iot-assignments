@@ -43,7 +43,6 @@ class WaterflowControlSystem{
         float getWaterLevel();
         void refreshWaterState(Timer* timer);
         //Lcd
-        void displaySetUp();
         void displayPreAlarm(double level);
         void displayAlarm(double level, int op_degree);
         void turnOnDisplay();

@@ -31,19 +31,12 @@ void buttonHandler(){
     }
 }
 
-void setupHardware(){
-    wcs->displaySetUp();
-}
-
-
-
 void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led, int address, int rows, int cols){
     timer = t;
     mc = new MotorControl(pin_servo, pin_pot, pin_button);
     wcs = new WaterflowControlSystem(sonar_echoPin, sonar_trigPin, red_pin_led, green_pin_led, address, rows, cols);
     mc->init();
     wcs->init();
-    setupHardware();
     enableInterrupt(mc->getButton().getPin(), buttonHandler, RISING);
 }
 

@@ -7,6 +7,7 @@ Bridge::Bridge(){
 void Bridge::Synchronize(){
     while(!Serial.available()){}
     //This method is used in order to synchronize the PC to the Arduino because we do not want to lose messages
+    Serial.println(Serial.readString());
 }
 
 void Bridge::init(){

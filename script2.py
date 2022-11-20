@@ -1,22 +1,18 @@
 import time
-import psutil
 import matplotlib.pyplot as plt
+import json
+import serial
 
-plt.rcParams['animation.html'] = 'jshtml'
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=.1)
+arduino.flush()
 
-fig = plt.figure()
-ax = fig.subplots(111)
+def main():
+    
+    while True:
+        if(arduino.inWaiting() > 0):
+            msg = arduino.readline()
+            j = json.loads(msg)
+            print(j)
 
-fig.show()
-
-i = 0
-
-x, y = [], []
-
-while True:
-    x.append(i)
-    y.append(psutil.cpu_percent())
-    ax.plot(x, y, color='b')
-    fig.canvas.draw()
-    time.sleep(1)
-    i+=1
+if __name__ == "__main__":
+    main()

@@ -33,5 +33,4 @@ void loop() {
   b->getTimer()->waitForTheNextTick();
   b->tick();
   //JsonSerializer::serialize(NORMAL, 10.0, 1);
-  delay(1000);
 }

@@ -17,24 +17,19 @@ MonitorLcd::MonitorLcd(int address, int rows, int cols){
 void MonitorLcd::init(){
     this->lcd = new LiquidCrystal_I2C(this->address, this->rows, this->cols); 
     this->lcd->init();
+    this->lcd->backlight();
 }
 
 void MonitorLcd::displayON(){
+    this->lcd->on();
     this->lcd->backlight();
     this->state = MONITOR_ON;
 }
 
 void MonitorLcd::displayOFF(){
     this->lcd->noBacklight();
+    this->lcd->off();
     this->state = MONITOR_OFF;
-}
-
-void MonitorLcd::displaySetUp(){
-    this->lcd->clear();
-    this->displayON();
-    this->lcd->print(STRING_SETUP);
-    delay(3000);
-    this->displayOFF();
 }
 
 //The LCD is turned on, informing about the pre-alarm and displaying the current water level

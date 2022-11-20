@@ -50,10 +50,6 @@ void WaterflowControlSystem::updateState(WaterState state){
     this->state = state;
 }
 
-void WaterflowControlSystem::displaySetUp(){
-    this->lcd->displaySetUp();
-}
-
 void WaterflowControlSystem::displayAlarm(double level, int op_degree){
     this->lcd->displayAlarm(level, op_degree);
 }
