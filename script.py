@@ -3,23 +3,25 @@ import json
 import time
 from matplotlib import animation
 import random as rnd
+
 import matplotlib.pyplot as plt
-from tkinter import *
+from matplotlib.widgets import Slider, Button, RadioButtons
 
-def show_values(value=None):
-    #print(w.get())
-    x = {
-        "angle": w.get()
-        }
-    y = json.dumps(x)
-    print(y)
+fig = plt.figure(figsize = (8,8))            
+subplot = fig.add_subplot()
+subplot._axis3don = False  
+axfreq = plt.axes([0.25, 0, 0.60, 0.03])
 
-    
+sfreq = Slider(axfreq, 'Freq', 0, 180.0, valinit=0, valstep=1)
 
 
-master = Tk()
-w = Scale(master, from_=0, to=100, orient=HORIZONTAL, command=show_values)
-w.pack()
+def update(val):
+    freq = sfreq.val
+    print(freq)
+
+
+sfreq.on_changed(update)
+
 #arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 count = 0
 x=[]
@@ -31,8 +33,8 @@ def myFunction(i):
 
     x.append(count)
     y.append(rnd.randint(1,10))
-    plt.cla()
-    plt.plot(x,y)
+    a = subplot.cla() 
+    subplot.plot(x,y)
 
 
 
