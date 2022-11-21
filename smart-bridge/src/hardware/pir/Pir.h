@@ -2,8 +2,7 @@
 #define __PIR__
 
 #include "hardware/component/Component.h"
-
-#define CALIBRATION_TIME_SEC 20
+#include "contants/Constants.h"
 
 class Pir: public Component{
     private:

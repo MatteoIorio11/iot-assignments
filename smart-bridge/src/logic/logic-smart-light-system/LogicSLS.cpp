@@ -1,11 +1,9 @@
 #include "functionalities/smart-light-system/SmartLightSystem.h"
 #include "LogicSLS.h"
 #include "Arduino.h"
-
+#include "contants/Constants.h"
 //The bound where we can decide if the led is On or Off
-#define LUMINOSITY_LOWERBOUND (float)2
-//The timer1 is ten seconds based on the period
-#define TIMER_T1(p) (pow(10,7)/(p))
+
 
 SmartLightSystem* sls;  //The smart light system
 int timer_tick = 0;     //Timer for the light 

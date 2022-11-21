@@ -1,9 +1,6 @@
 #ifndef __SMARTLIGHTSYSTEM__
 #define __SMARTLIGHTSYSTEM__
 
-#define TIMER_T1 3*pow(10, 6)
-
-
 #include "task/Task.h"
 #include "hardware/pir/Pir.h"
 #include "hardware/photoresistor/PhotoResistor.h"

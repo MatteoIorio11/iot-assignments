@@ -3,10 +3,8 @@
 
 #include "hardware/component/SimpleComponent.h"
 #include "ServoTimer2.h"
+#include "contants/Constants.h"
 
-#define ZERO_SERVO 550
-#define FLAT_ANGLE_SERVO 2300
-#define FLAT_ANGLE 180
 
 class ServoMotor: public SimpleComponent{
     private:

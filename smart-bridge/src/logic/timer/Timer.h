@@ -4,10 +4,7 @@
 #include <TimerOne.h>
 #include "functionalities/waterflow-control-system/State.h"
 #include "State.h"
-
-#define NORMAL_STATE_SAMPLING pow(10, 6)
-#define PREALARM_STATE_SAMPLING pow(10, 6)/2
-#define ALARM_STATE_SAMPLING pow(10, 6)/4
+#include "contants/Constants.h"
 
 class Timer{
     private:

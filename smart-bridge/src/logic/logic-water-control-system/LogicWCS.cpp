@@ -4,7 +4,6 @@
 #include "logic/logic-smart-light-system/LogicSLS.h"
 #include <EnableInterrupt.h>
 
-#define BLINK_2SEC(p) ((pow(10,6))/(p))
 
 MotorControl* mc;
 WaterflowControlSystem* wcs;

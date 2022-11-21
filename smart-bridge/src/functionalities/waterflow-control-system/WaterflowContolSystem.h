@@ -5,13 +5,10 @@
 #include "hardware/led/GreenLed.h"
 #include "hardware/led/RedLed.h"
 #include "hardware/lcd/MonitorLcd.h"
+#include "contants/Constants.h"
 #include "logic/timer/Timer.h"
 #include "State.h"
 
-#define MINIMUM_SONAR_DISTANCE (float)0.001
-#define WL2_BOUND (float)0.3
-#define WL1_BOUND (float)0.9
-#define MAXIMUM_SONAR_DISTANCE (float)1.00
 
 class WaterflowControlSystem{
     private:
