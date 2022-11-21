@@ -5,7 +5,12 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
     String tagState = "\"waterState\":";
     String tagWater = ",\"waterLevel\":"; 
     String tagDegree = ",\"angle\":"; 
-    String json =  OPEN_PARENTHESES +  tagState + state + tagWater + waterLevel + tagDegree + angle + CLOSE_PARENTHESES;
+    String json =  
+    OPEN_PARENTHESES +  
+     tagState + state +
+     tagWater + waterLevel + 
+     tagDegree + angle + 
+     CLOSE_PARENTHESES;
    /*
     DynamicJsonDocument doc(1024);
     doc["waterState"] = state;
