@@ -11,6 +11,7 @@ WaterflowControlSystem* wcs;
 Timer* timer;
 int timer_blinking = 0;
 
+/// @brief Handler for the button pression 
 void buttonHandler(){
     static unsigned long last_interrupt_time = 0;
     unsigned long interrupt_time = millis();
@@ -33,6 +34,18 @@ void buttonHandler(){
     }
 }
 
+/// @brief This method initialize the system without asking to the main user to do it
+/// @param t the timer used to manage the detection period
+/// @param pin_servo The servo pin
+/// @param pin_pot The potentiometer pin
+/// @param pin_button The button pin
+/// @param sonar_echoPin The sonar echo pin
+/// @param sonar_trigPin The sonar Trig pin
+/// @param red_pin_led The red pin led
+/// @param green_pin_led The green led pin
+/// @param address The LCD diplay address
+/// @param rows The LCD screen rows
+/// @param cols The LCD screen cols
 void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_echoPin, int sonar_trigPin, int red_pin_led, int green_pin_led, int address, int rows, int cols){
     timer = t;
     mc = new MotorControl(pin_servo, pin_pot, pin_button);
@@ -42,6 +55,7 @@ void initWCS(Timer* t, int pin_servo, int pin_pot, int pin_button, int sonar_ech
     enableInterrupt(mc->getButton().getPin(), buttonHandler, HIGH);
 }
 
+/// @brief Manages the Red Led Blink
 void blink(){
     if(timer_blinking >= BLINK_2SEC(PREALARM_STATE_SAMPLING)){
         wcs->RedLedBlink();
@@ -51,15 +65,17 @@ void blink(){
     }
 }
 
+/// @brief Sets the servo motor to the automatic movement
 void automatic(){
     mc->automatic();
 }
 
+/// @brief This method is called every tick and it checks everytime the situation on the system.
 void tickWCS(){
     wcs->refreshWaterState(timer);
     switch (wcs->getState())
     {
-        case SHUT:
+        case SHUT: 
             break;
         case NORMAL:
             if(isInAlarmState()){
