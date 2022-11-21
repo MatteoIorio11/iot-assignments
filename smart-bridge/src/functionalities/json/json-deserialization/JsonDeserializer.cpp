@@ -6,16 +6,16 @@ int JsonDeserializer::getAngle(){
         int index = json.indexOf(':');
         String angle_json = json.substring(index+2, json.length()-1);
         if(angle_json.equals("")){
-            return -1;
+            return CODE_EMPTY_MESSAGE;
         }else{
             int angle =  angle_json.toInt(); 
             if(angle >= 0){
                 return angle;
             }else{
-                return -2;
+                return CODE_SWITCH_CONTROL;
             }
         }
     }else{
-        return -1;
+        return CODE_EMPTY_MESSAGE;
     }
 }
