@@ -7,7 +7,6 @@ void initSLS(int pin_pir, int pin_led, int pin_photo, int per);
 void tickSLS(float p);
 void setAlarm();
 void resetStatus();
-void changePeriod(long p);//Period of the Timer
 bool isInAlarmState();
 SmartLightSystem* getSLS();
 

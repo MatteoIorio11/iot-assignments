@@ -1,7 +1,6 @@
 #include "Pir.h"
 #include "Arduino.h"
 
-#define CALIBRATION_TIME_SEC 1
 
 Pir::Pir(int pin){
     this->pin = pin;
@@ -9,13 +8,13 @@ Pir::Pir(int pin){
 }
 
 void Pir::calibrate(){
-    Serial.println("Pir calibration : START");
+    //Serial.println("Pir calibration : START");
     for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
-        Serial.print(".");
+        //Serial.print(".");
         delay(1000);
     }
-    Serial.println();
-    Serial.println("Pir calibration : END");
+    //Serial.println();
+    //Serial.println("Pir calibration : END");
 }
 
 int Pir::readValue(){

@@ -3,6 +3,8 @@
 
 #include "hardware/component/Component.h"
 
+#define CALIBRATION_TIME_SEC 20
+
 class Pir: public Component{
     private:
         int pin;
