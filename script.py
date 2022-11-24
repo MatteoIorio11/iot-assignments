@@ -12,7 +12,7 @@ subplot._axis3don = False
 axfreq = plt.axes([0.25, 0, 0.50, 0.03])
 
 sfreq = Slider(axfreq, 'Angle', -1, 180.0, valinit=0, valstep=1)
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+arduino = serial.Serial(port='COM3', baudrate=9600)
 
 def add(val):
     x = {
@@ -42,7 +42,7 @@ count = 0
 x=[]
 y=[]
 
-def myFunction(i):
+def updateFunction(i):
     global count
     count +=1
 
@@ -64,5 +64,5 @@ def myFunction(i):
             count-=1
 
 
-anima = animation.FuncAnimation(plt.gcf(), myFunction, interval=10)
+anima = animation.FuncAnimation(plt.gcf(), updateFunction, interval=10)
 plt.show()

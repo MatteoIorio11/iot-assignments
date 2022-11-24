@@ -1,7 +1,7 @@
 #include "JsonSerializer.h"
 
 void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
-    
+    /*
     String tagState = "\"waterState\":";
     String tagWater = ",\"waterLevel\":"; 
     String tagDegree = ",\"angle\":"; 
@@ -11,16 +11,12 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
      tagWater + waterLevel + 
      tagDegree + angle + 
      CLOSE_PARENTHESES;
-   /*
-    DynamicJsonDocument doc(1024);
+   */
+    DynamicJsonDocument doc(256);
     doc["waterState"] = state;
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
-
-
     serializeJson(doc, Serial);
-    
-    String json = Serial.readString();
-    */
+    String json = Serial.readString(); 
     Serial.println(json);
 }
