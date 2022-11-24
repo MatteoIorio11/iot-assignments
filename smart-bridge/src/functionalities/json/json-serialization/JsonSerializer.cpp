@@ -1,5 +1,12 @@
 #include "JsonSerializer.h"
-
+/*
+TEMPLATE OF A SENDING JSON
+{
+  "waterState": x,
+  "waterLevel"; y,
+  "angle": z
+}
+*/
 void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
     /*
     String tagState = "\"waterState\":";
@@ -16,7 +23,7 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
     doc["waterState"] = state;
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
-    serializeJson(doc, Serial);
-    String json = Serial.readString(); 
-    Serial.println(json);
+    serializeJson(doc, Serial); //serializing the JSON
+    String json = Serial.readString();  
+    Serial.println(json); //sending the JSON to the PC
 }

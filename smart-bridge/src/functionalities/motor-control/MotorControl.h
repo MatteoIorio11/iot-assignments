@@ -40,8 +40,6 @@ class MotorControl{
         Button getButton();
         ServoMotor getServoMotor();
         void closeValve();
-        //buttonHandler
-        void buttonHandler();
 };
 
 #endif

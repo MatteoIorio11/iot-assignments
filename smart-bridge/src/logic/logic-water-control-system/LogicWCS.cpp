@@ -18,7 +18,6 @@ void buttonHandler(){
     if (interrupt_time - last_interrupt_time > 500) 
     {
         last_interrupt_time = interrupt_time;
-        Serial.println("pressed");
         switch(mc->getState())
         {
             case OFF:
