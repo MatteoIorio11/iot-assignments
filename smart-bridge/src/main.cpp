@@ -2,7 +2,12 @@
 #include <TimerOne.h>
 #include <ArduinoJson.h>
 #include "bridge/Bridge.h"
-
+/*
+AUTHORS :
+  Iorio Matteo
+  Vincenzi Fabio
+  Rapolla Luca
+*/
 
 
 /*
