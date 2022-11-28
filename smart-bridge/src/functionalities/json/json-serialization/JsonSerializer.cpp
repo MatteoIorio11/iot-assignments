@@ -7,7 +7,7 @@ TEMPLATE OF A SENDING JSON
   "angle": z
 }
 */
-void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
+void JsonSerializer::serialize(WaterState state, double waterLevel, int angle, bool detected){
     /*
     String tagState = "\"waterState\":";
     String tagWater = ",\"waterLevel\":"; 
@@ -23,6 +23,7 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle){
     doc["waterState"] = state;
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
+    doc["led"] = detected;
     serializeJson(doc, Serial); //serializing the JSON
     String json = Serial.readString();  
     Serial.println(json); //sending the JSON to the PC

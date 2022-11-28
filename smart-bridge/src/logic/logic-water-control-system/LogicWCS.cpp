@@ -80,7 +80,7 @@ void tickWCS(){
                 resetStatus();
             }        
             tickSLS(NORMAL_STATE_SAMPLING);
-            JsonSerializer::serialize(NORMAL, wcs->getLastLevelDetected(), ANGLE_NOT_SET);
+            JsonSerializer::serialize(NORMAL, wcs->getLastLevelDetected(), ANGLE_NOT_SET, detected());
             break;
         case PRE_ALARM:
             if(isInAlarmState()){
@@ -89,7 +89,7 @@ void tickWCS(){
             tickSLS(PREALARM_STATE_SAMPLING);
             blink();
             wcs->displayPreAlarm(wcs->getLastLevelDetected());
-            JsonSerializer::serialize(PRE_ALARM, wcs->getLastLevelDetected(), ANGLE_NOT_SET);
+            JsonSerializer::serialize(PRE_ALARM, wcs->getLastLevelDetected(), ANGLE_NOT_SET, detected());
             break;
         case ALARM:
             float level = wcs->getLastLevelDetected();
@@ -111,12 +111,12 @@ void tickWCS(){
                     if(level < WL2_BOUND){
                         /// Because maybe I am not in the ALARM State so I do not have to turn on the
                         mc->automaticControl(MINIMUM_SONAR_DISTANCE, WL2_BOUND, level);
-                        JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle());
+                        JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle(), detected());
                     }
                     break;
                 case MANUAL:
                     mc->manualControl();
-                    JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle());
+                    JsonSerializer::serialize(ALARM, level, mc->getServoMotor().getAngle(), detected());
                     break;
             }
             break;

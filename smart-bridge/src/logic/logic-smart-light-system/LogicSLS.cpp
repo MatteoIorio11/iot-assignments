@@ -30,6 +30,10 @@ void resetStatus(){
     sls->notDetected();             // Changing the state of the bridge in NOT_DETECTED. 
 }
 
+bool detected(){
+    return sls->getState() == DETECTED;
+}
+
 void checkForLuminosity(){
     if(sls->getLuminosity() >= 0 and sls->getLuminosity() < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on

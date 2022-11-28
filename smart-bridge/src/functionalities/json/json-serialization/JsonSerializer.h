@@ -8,7 +8,7 @@ class JsonSerializer{
     private:
         JsonSerializer();
     public:
-        static void serialize(WaterState state, double waterLevel, int angle);
+        static void serialize(WaterState state, double waterLevel, int angle, bool detected);
 };
 
 #endif
