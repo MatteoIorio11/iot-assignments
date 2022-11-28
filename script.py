@@ -15,11 +15,11 @@ sfreq = Slider(axfreq, 'Angle', -1, 180.0, valinit=0, valstep=1)
 arduino = serial.Serial(port='COM3', baudrate=9600)
 
 def add(val):
-    x = {
+    val = {
         "angle": -1
     }
-    y = json.dumps(x)
-    arduino.write(bytes(y, 'utf-8'))
+    json_d = json.dumps(val)
+    arduino.write(bytes(json_d, 'utf-8'))
 
 
 
@@ -29,11 +29,11 @@ button = Button(axes, 'Control to POT',color="red")
 button.on_clicked(add)
 def update(val):
     freq = sfreq.val
-    x = {
+    val = {
         "angle": freq
     }
-    y = json.dumps(x)
-    arduino.write(bytes(y, 'utf-8'))
+    json_d = json.dumps(val)
+    arduino.write(bytes(json_d, 'utf-8'))
 
 
 sfreq.on_changed(update)
