@@ -2,9 +2,10 @@
 /*
 TEMPLATE OF A SENDING JSON
 {
-  "waterState": x,
-  "waterLevel"; y,
-  "angle": z
+  "waterState": w,
+  "waterLevel"; x,
+  "angle": y,
+  "led": z
 }
 */
 void JsonSerializer::serialize(WaterState state, double waterLevel, int angle, bool detected){
