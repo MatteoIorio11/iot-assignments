@@ -52,7 +52,6 @@ def updateFunction(i):
             print(msg)
             json_parsed = json.loads(msg)
             water_level = int(json_parsed['waterLevel']*100)
-            angle = int(json_parsed['angle'])
             if len(x) == 30:
                 x.pop(0)
                 y.pop(0)
@@ -60,6 +59,10 @@ def updateFunction(i):
             x.append(count)
             subplot.cla() 
             subplot.plot(x,y)
+            led = json_parsed["led"]
+            print("State : " + json_parsed["waterState"])
+            print("SLS's LED : " + led)
+
         except Exception as e:
             count-=1
 

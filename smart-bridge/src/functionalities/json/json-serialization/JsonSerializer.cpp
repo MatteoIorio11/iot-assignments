@@ -20,10 +20,10 @@ void JsonSerializer::serialize(WaterState state, double waterLevel, int angle, b
      CLOSE_PARENTHESES;
    */
     DynamicJsonDocument doc(256);
-    doc["waterState"] = state;
+    doc["waterState"] = state == NORMAL ? "Normal State" : state == PRE_ALARM ? "Pre Alarm State" : "Alarm state"; 
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
-    doc["led"] = detected;
+    doc["led"] = detected == true ? "ON" : "OFF";
     serializeJson(doc, Serial); //serializing the JSON
     String json = Serial.readString();  
     Serial.println(json); //sending the JSON to the PC
