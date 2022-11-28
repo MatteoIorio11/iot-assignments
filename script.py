@@ -59,8 +59,8 @@ def updateFunction(i):
             x.append(count)
             subplot.cla() 
             subplot.plot(x,y)
-            print("State : " + str(json_parsed["waterState"]))
-            print("SLS's LED : " + str(json_parsed["led"]))
+            print("State : " + str(json_parsed["waterState"]), end='\r')
+            print("SLS's LED : " + str(json_parsed["led"]), end='\r')
 
         except Exception as e:
             count-=1
