@@ -8,7 +8,7 @@ this could be extended with more parameters in the future
 */
 
 /*
-__Old version for the serialization__
+__Old version for the deserialization__
 
 int JsonDeserializer::getAngle(){
     String json = Serial.readString();
