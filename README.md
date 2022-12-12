@@ -56,9 +56,19 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  
 ## Room App 
  La comunicazione con Arduino è attraverso BT, attraverso l'applicazione deve essere possibile accendere/spegnere il led del Room Controller e controllare il motore per le tapparelle. 
- 
+
+ <pre>
+ Room Controller <-- BLUETOOTH -- Room Mobile App
+ </pre>
+
+
  
  ----
  
 ## Room Dashboard
 Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ) e deve inoltre essere possibile controllare la luce e il motore delle tapparelle. 
+
+ <pre>
+Room Service <-- HTTP/TCP -- Room Dashboard
+ </pre>
+
