@@ -19,7 +19,7 @@ Room Sensor-Board (esp) : Componente che si occupa di gestire la stanza. Sensori
  
  "
  
- 
+ ----
  
  Room Controller (arduino) : Controller che si interfaccia tra server e applicazione mobile. Componenti hardware : 
  1) Green Led
@@ -27,12 +27,21 @@ Room Sensor-Board (esp) : Componente che si occupa di gestire la stanza. Sensori
  3) 1 Bluetooth module 
 Il servo motore controlla la simulazione del motore per la tapparella, 0 gradi vuol dire che è completamente su, 180 gradi vuol dire che è completamente giù. Il led emula il sistema di illuminazione
 
+
+----
+
  Room Service : 
  Comunicazione HTTP con il Room Sensor Board
  Comunicazione Seriale con il Room Controller
  
+ 
+ ----
+ 
  Room App : 
  La comunicazione con Arduino è attraverso BT
+ 
+ 
+ ----
  
  Room Dashboard : 
  Puo per esempio essere una web app che mostra 
