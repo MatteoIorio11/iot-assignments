@@ -30,12 +30,15 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  Comunicazione HTTP con il Room Sensor Board
  Comunicazione Seriale con il Room Controller
  
- Riceve le informazioni dal Room Sensor e inoltra queste informazioni al Room Dashboard
+ Riceve le informazioni dal Room Sensor e inoltra queste informazioni al Room Dashboard.
+ La comunicazione seriale serve per poter comandare il servomotore da remoto attraverso la Room Dashboard
  <pre>
 
   Room Sensor-Board -- MQTT/HTTP --> Room Service <-- HTTP/TCP -- Room Dashboard
+                                            ┴
                                             |
                                             |
+                                          SERIAL
                                             |
                                             |
                                             V
