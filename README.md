@@ -31,7 +31,8 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  Comunicazione Seriale con il Room Controller
  
  Riceve le informazioni dal Room Sensor e inoltra queste informazioni al Room Dashboard
- 
+ <pre>
+
   Room Sensor-Board -- MQTT/HTTP --> Room Service <-- HTTP/TCP -- Room Dashboard
                                             |
                                             |
@@ -40,7 +41,10 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
                                             V
                                       Room Controller 
 
+</pre>
  
+
+
  ----
  
 ## Room App 
