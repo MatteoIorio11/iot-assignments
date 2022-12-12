@@ -21,6 +21,7 @@ Controller che si interfaccia tra server e applicazione mobile. Componenti hardw
  1) Green Led
  2) 1 Servomotor
  3) 1 Bluetooth module 
+
 Il servo motore controlla la simulazione del motore per la tapparella, 0 gradi vuol dire che è completamente su, 180 gradi vuol dire che è completamente giù. Il led va acceso o spento tramite l'applicazione android. 
  
  <pre>
