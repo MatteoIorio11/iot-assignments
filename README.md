@@ -5,14 +5,12 @@ Componente che si occupa di gestire la stanza. Sensori che lo compongono :
  3) Photoresistor
  
  Se qualcuno entra all'interno della stanza e la stanza è buia la luce deve accendersi e quando la persona esce si spegne. 
- La board ESP comunica con Room Service attraverso MQTT/HTTP fornendogli le informazioni riguardo.
+ La board ESP comunica con Room Service attraverso MQTT/HTTP fornendogli le indicazioni riguardo quando la luce si è accesa e quando la luce si è spenta facendo, calcolando quindi per quanto tempo la luce è rimasta accesa.
  
  <pre>
  Room Sensor-Board -- MQTT/HTTP --> Room Service
  </pre>
-
- Deve inviare un messaggio al server quando la luce si accende e quando la luce si spegne. 
-
+ 
  
  ----
  
