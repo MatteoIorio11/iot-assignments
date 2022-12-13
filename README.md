@@ -29,7 +29,7 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
 
 ----
 
-## Room Service 
+## Room Service (python)
  Comunicazione HTTP con il Room Sensor Board
  Comunicazione Seriale con il Room Controller
  
@@ -53,7 +53,7 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
 
  ----
  
-## Room App 
+## Room App (android)
  La comunicazione con Arduino è attraverso BT, attraverso l'applicazione deve essere possibile accendere/spegnere il led del Room Controller e controllare il motore per le tapparelle. 
 
  <pre>
@@ -64,7 +64,7 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  
  ----
  
-## Room Dashboard
+## Room Dashboard (js usando axios)
 Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ) e deve inoltre essere possibile controllare la luce e il motore delle tapparelle. 
 
  <pre>
