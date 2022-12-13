@@ -5,7 +5,6 @@ Componente che si occupa di gestire la stanza. Sensori che lo compongono :
  3) Photoresistor
  
  Se qualcuno entra all'interno della stanza e la stanza è buia la luce deve accendersi e quando la persona esce si spegne.
- Le tapparelle (Servo) vengono tirate su automaticamente dopo le 8.00 se qualcuno entra e vengono tirate giù alle 19.00 se sono su e non c'è nessuno nella stanza in qual caso vengono tirate giù non appena la stanza viene liberata.
  La board ESP comunica con Room Service attraverso MQTT/HTTP fornendogli le indicazioni riguardo quando la luce si è accesa e quando la luce si è spenta facendo, calcolando quindi per quanto tempo la luce è rimasta accesa.
  
  <pre>
@@ -21,7 +20,8 @@ Controller che si interfaccia tra server e applicazione mobile. Componenti hardw
  2) 1 Servomotor
  3) 1 Bluetooth module 
 
-Il servo motore controlla la simulazione del motore per la tapparella, 0 gradi vuol dire che è completamente su, 180 gradi vuol dire che è completamente giù. Il led va acceso o spento tramite l'applicazione android. 
+Il servo motore controlla la simulazione del motore per la tapparella, 0 gradi vuol dire che è completamente su, 180 gradi vuol dire che è completamente giù. Il led va acceso o spento tramite l'applicazione android.
+Le tapparelle (Servo) vengono tirate su automaticamente dopo le 8.00 se qualcuno entra e vengono tirate giù alle 19.00 se sono su e non c'è nessuno nella stanza in qual caso vengono tirate giù non appena la stanza viene liberata.
  
  <pre>
 Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
