@@ -69,6 +69,6 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
 Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ). Deve inoltre essere possibile controllare la luce e il motore delle tapparelle (Room Controller). 
 
  <pre>
-Room Service <-- HTTP/TCP -- Room Dashboard
+Room Service <-- HTTP/TCP --> Room Dashboard
  </pre>
 
