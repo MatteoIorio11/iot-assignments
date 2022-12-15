@@ -71,6 +71,6 @@ Attraverso questo applicativo deve essere possibile controllare per quanto tempo
 Attraverso delle GET ottengo il monitoraggio della luce (Room Sensor-Board), attraverso dei post posso invece controllare i componenti del Room-Controller
 
  <pre>
-Room Service <-- HTTP/TCP --> Room Dashboard
+Room Service <-- HTTP/TCP -- Room Dashboard
  </pre>
 
