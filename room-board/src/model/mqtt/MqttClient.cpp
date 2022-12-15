@@ -3,7 +3,7 @@
 MqttClient::MqttClient(char* mqtt_server, char* topic){
     this->mqtt_server = mqtt_server;
     this->topic = topic;
-      randomSeed(micros());
+    randomSeed(micros());
     this->connect();
 }
 

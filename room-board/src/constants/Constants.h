@@ -1,6 +1,8 @@
 #ifndef __CONSTANTS__
 #define __CONSTANTS__
 
+#define WHOIS "ESP32-S3"
+
 // ==================================================================
 // PIR'S CONSTANTS:
 

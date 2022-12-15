@@ -6,6 +6,9 @@
 #include "hardware/led/Led.h"
 #include "hardware/pir/Pir.h"
 #include "hardware/photoresistor/Photoresistor.h"
+#include "model/mqtt/MqttClient.h"
+#include "utilities/serializer/JsonSerializer.h"
+#include "utilities/converter/Converter.h"
 
 class LightSystem: public Task{
     private:
@@ -14,11 +17,12 @@ class LightSystem: public Task{
         Led *led;
         Pir *pir;
         Photoresistor *photoresistor;
+        MqttClient *client;
         void attachLed();
         void attachPir();
         void attachPhotoresistor();
     public:
-        LightSystem(int pin_led, int pin_pir, int pin_photo);
+        LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* client);
         void init();
         void tick();
 };

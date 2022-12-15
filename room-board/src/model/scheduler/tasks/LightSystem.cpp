@@ -5,11 +5,12 @@
 /// @param pin_led Led's pin
 /// @param pin_pir Pir's pin
 /// @param pin_photo Photoresistor's pin
-LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo){
+LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* client){
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
     this->state = NOT_DETECTED;
+    this->client = client;
     this->init();
 }
 
@@ -44,14 +45,15 @@ void LightSystem::tick(){
             this->led->ledOn();
             // TODO : Send the message to the broker 
             this->state = DETECTED;
+            this->client->sendMessage(Converter::ConvertStringToArray(JsonSerializer::serialize(this->state)));
         }
         break;
     
     case DETECTED:
         if(this->pir->readValue() == HIGH){
             this->led->ledOff();
-            // TODO : Send the message to the broker
-            this->state = DETECTED;
+            this->state = NOT_DETECTED;
+            this->client->sendMessage(Converter::ConvertStringToArray(JsonSerializer::serialize(this->state)));
         }
         break;
     }
