@@ -24,7 +24,7 @@ Il servo motore controlla la simulazione del motore per la tapparella, 0 gradi v
 Le tapparelle (Servo) vengono tirate su automaticamente dopo le 8.00 se qualcuno entra e vengono tirate giù alle 19.00 se sono su e non c'è nessuno nella stanza in qual caso vengono tirate giù non appena la stanza viene liberata.
  
  <pre>
-Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
+Room Service <-- SERIAL -- Room Controller <-- BLUETOOTH -- Room Mobile App
  </pre>
 
 
@@ -66,7 +66,9 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  ----
  
 ## Room Dashboard (js usando axios)
-Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ) e deve inoltre essere possibile controllare la luce e il motore delle tapparelle. 
+Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ). Deve inoltre essere possibile controllare la luce e il motore delle tapparelle (Room Controller). 
+
+Attraverso delle GET ottengo il monitoraggio della luce (Room Sensor-Board), attraverso dei post posso invece controllare i componenti del Room-Controller
 
  <pre>
 Room Service <-- HTTP/TCP -- Room Dashboard
