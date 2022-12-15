@@ -66,7 +66,7 @@ Room Service <-- SERIAL --> Room Controller <-- BLUETOOTH -- Room Mobile App
  ----
  
 ## Room Dashboard (js usando axios)
-Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ) e deve inoltre essere possibile controllare la luce e il motore delle tapparelle. 
+Attraverso questo applicativo deve essere possibile controllare per quanto tempo la luce è stata accesa/spenta ( Room Sensor Board ). Deve inoltre essere possibile controllare la luce e il motore delle tapparelle (Room Controller). 
 
  <pre>
 Room Service <-- HTTP/TCP -- Room Dashboard
