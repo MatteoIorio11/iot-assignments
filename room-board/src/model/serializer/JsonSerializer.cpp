@@ -8,10 +8,9 @@ TEMPLATE OF A SENDING JSON
   "led": z
 }
 */
-void JsonSerializer::serialize(){
-
+void JsonSerializer::serialize(LightSystemStatus status){
     DynamicJsonDocument doc(256);
-    doc["waterState"] = state == NORMAL ? "Normal State" : state == PRE_ALARM ? "Pre Alarm State" : "Alarm state"; 
+    doc["status"] = state == NORMAL ? "Normal State" : state == PRE_ALARM ? "Pre Alarm State" : "Alarm state"; 
     doc["waterLevel"] = waterLevel;
     doc["angle"] = angle;
     doc["led"] = detected == true ? "ON" : "OFF";

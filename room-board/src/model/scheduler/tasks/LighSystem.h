@@ -1,8 +1,8 @@
 #ifndef __LIGHTSYSTEM__
 #define __LIGHTSYSTEM__
 
-#include "LightSystemStatus.h"
-#include "task/Task.h"
+#include "LightSystemState.h"
+#include "model/task/Task.h"
 #include "hardware/led/Led.h"
 #include "hardware/pir/Pir.h"
 #include "hardware/photoresistor/Photoresistor.h"
@@ -10,7 +10,7 @@
 class LightSystem: public Task{
     private:
         int pin_led, pin_pir, pin_photo;
-        LightSystemStatus status;
+        LightSystemState state;
         Led *led;
         Pir *pir;
         Photoresistor *photoresistor;

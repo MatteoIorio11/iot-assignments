@@ -9,7 +9,7 @@ LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo){
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
-    this->status = NOT_DETECTED;
+    this->state = NOT_DETECTED;
     this->init();
 }
 
@@ -37,13 +37,13 @@ void LightSystem::attachPhotoresistor(){
 
 /// @brief State Machine of the LightSystem
 void LightSystem::tick(){
-    switch (this->status)
+    switch (this->state)
     {
     case NOT_DETECTED:
         if(this->pir->readValue() == HIGH){
             this->led->ledOn();
             // TODO : Send the message to the broker 
-            this->status = DETECTED;
+            this->state = DETECTED;
         }
         break;
     
@@ -51,7 +51,7 @@ void LightSystem::tick(){
         if(this->pir->readValue() == HIGH){
             this->led->ledOff();
             // TODO : Send the message to the broker
-            this->status = DETECTED;
+            this->state = DETECTED;
         }
         break;
     }

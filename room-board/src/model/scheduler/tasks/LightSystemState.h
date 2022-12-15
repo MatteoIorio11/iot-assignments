@@ -1,7 +1,7 @@
 #ifndef __LSSTATUS__
 #define __LSSTATUS__
 
-enum LightSystemStatus{
+enum LightSystemState{
     DETECTED = 0,
     NOT_DETECTED = 1
 };
