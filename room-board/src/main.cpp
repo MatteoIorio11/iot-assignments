@@ -11,9 +11,9 @@ MqttClient *mqtt;
 
 void setup() {
   Serial.begin(9600);
-  wifi = new WiFiEsp();
-  mqtt = new MqttClient();
-  light_system = new LightSystem(PIN_LED, PIN_PIR, PIN_PHOTORESISTOR, mqtt);
+  //wifi = new WiFiEsp();
+  //mqtt = new MqttClient();
+  light_system = new LightSystem(PIN_LED, PIN_PIR, PIN_PHOTORESISTOR, NULL);
   scheduler = new Scheduler();
   scheduler->init();
   scheduler->addTask(light_system);

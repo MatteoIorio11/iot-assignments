@@ -4,6 +4,7 @@
 /// @param pin Led's pin
 Led::Led(int pin){
     this->pin = pin;
+    pinMode(this->pin, OUTPUT);
 }
 
 /// @brief Turn on the led

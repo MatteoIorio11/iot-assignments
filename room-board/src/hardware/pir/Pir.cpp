@@ -4,11 +4,13 @@
 /// @param pin digital pin of the pir
 Pir::Pir(int pin){
     this->pin = pin;
+    pinMode(this->pin, INPUT);
     this->calibrate();
 }
 
 /// @brief Calibration of the Sensor
 void Pir::calibrate(){
+    Serial.println("CALIBRATION");
     for(int i = 0; i < CALIBRATION_TIME_SEC; i++){
         delay(1000);
     }

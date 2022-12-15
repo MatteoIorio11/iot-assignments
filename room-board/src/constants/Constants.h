@@ -7,7 +7,7 @@
 // PIR'S CONSTANTS:
 
 #define PIN_PIR 48
-#define CALIBRATION_TIME_SEC 20
+#define CALIBRATION_TIME_SEC 1
 
 // ==================================================================
 

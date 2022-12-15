@@ -4,6 +4,7 @@
 /// @param pin Photoresistor's pin
 Photoresistor::Photoresistor(int pin){
     this->pin = pin;
+    pinMode(this->pin, INPUT);
 }
 
 /// @brief Get the Photoresistor's pin
