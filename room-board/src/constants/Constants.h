@@ -36,8 +36,20 @@
 // ==================================================================
 // MQTT'S CONSTANTS:
 
-#define PORT 1883
-#define MSG_MAX_SIZE 256
+#define MQTT_PORT 1883
+#define MQTT_SERVER "broker.mqtt-dashboard.com"
+#define MQTT_MSG_MAX_SIZE 256
+#define MQTT_TOPIC "esp-light"
+#define MQTT_CLIENTNAME "esp32-s3-"
+
+// ==================================================================
+
+
+// ==================================================================
+// WIFI'S CONSTANTS:
+
+#define WIFI_SSID "TIM-27646389"
+#define WIFI_PASSWORD "p"
 
 // ==================================================================
 

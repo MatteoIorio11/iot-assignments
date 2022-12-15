@@ -2,8 +2,6 @@
 #define __WIFIESP__
 
 #include <WiFi.h>
-#include 
-
 class WiFiEsp{
     private:
         char* ssid;

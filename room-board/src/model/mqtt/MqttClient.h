@@ -10,7 +10,6 @@ class MqttClient{
     private:
         char* mqtt_server;
         char* topic;
-        WiFiClient espClient;
         PubSubClient *client;
         void connect();
     public:

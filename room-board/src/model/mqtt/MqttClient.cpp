@@ -4,6 +4,9 @@ MqttClient::MqttClient(char* mqtt_server, char* topic){
     this->mqtt_server = mqtt_server;
     this->topic = topic;
     randomSeed(micros());
+    WiFiClient espClient;
+    this->client = new PubSubClient(espClient);
+    this->client->setServer(this->mqtt_server, MQTT_PORT);
     this->connect();
 }
 
@@ -11,7 +14,7 @@ MqttClient::MqttClient(char* mqtt_server, char* topic){
 void MqttClient::connect(){
     while (!this->client->connected()) {
         //Serial.print("Attempting MQTT connection...");
-        String clientId = String("esiot-2122-client-")+String(random(0xffff), HEX);
+        String clientId = String(MQTT_CLIENTNAME)+String(random(0xffff), HEX);
         if (this->client->connect(clientId.c_str())) {
             //Serial.println("connected");
             this->client->subscribe(this->topic);
