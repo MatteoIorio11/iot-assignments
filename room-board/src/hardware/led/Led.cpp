@@ -23,6 +23,8 @@ int Led::getPin(){
     return this->pin;
 }
 
+/// @brief Understand if the led is on or off
+/// @return Get the value read from the esp
 int Led::readValue(){
     return digitalRead(this->pin);
 }
