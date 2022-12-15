@@ -1,7 +1,9 @@
 #ifndef __HARDWARE__
 #define __HARDWARE__
 
-class Hardware{
+#include "SimpleHardware.h"
+
+class Hardware: public SimpleHardware{
     private:
         int pin;
     public:

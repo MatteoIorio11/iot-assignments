@@ -1,6 +1,7 @@
 #ifndef __PIR__
 #define __PIR__
 
+#include <Arduino.h>
 #include "hardware/hardware/Hardware.h"
 #include "contants/Constants.h"
 
