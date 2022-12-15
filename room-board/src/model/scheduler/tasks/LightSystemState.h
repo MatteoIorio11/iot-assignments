@@ -2,8 +2,8 @@
 #define __LSSTATUS__
 
 enum LightSystemState{
-    DETECTED = 0,
-    NOT_DETECTED = 1
+    LED_ON = 0,
+    LED_OFF = 1
 };
 
 #endif

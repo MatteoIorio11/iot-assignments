@@ -9,7 +9,7 @@ LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* cl
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
-    this->state = NOT_DETECTED;
+    this->state = LED_OFF;
     this->client = client;
     this->init();
 }
@@ -36,24 +36,33 @@ void LightSystem::attachPhotoresistor(){
     this->photoresistor = new Photoresistor(this->pin_photo);
 }
 
+void LightSystem::checkLuminosity(){
+    if(this->photoresistor->readValue() >= 0 and this->photoresistor->readValue() < LUMINOSITY_LOWERBOUND){
+        //There is no much light, so the led must be on
+        this->led->ledOn();            // Turning ON the led
+    }else{
+        this->led->ledOn();           // Turning OFF the led
+    }
+}
+
 /// @brief State Machine of the LightSystem
 void LightSystem::tick(){
     switch (this->state)
     {
-    case NOT_DETECTED:
+    case LED_OFF:
         if(this->pir->readValue() == HIGH){
             this->led->ledOn();
-            this->state = DETECTED;
+            this->state = LED_ON;
             Serial.println("DETECTED");
             //this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;
     
-    case DETECTED:
+    case LED_ON:
+        this->checkLuminosity();
         if(this->pir->readValue() == HIGH){
             this->led->ledOff();
-            this->state = NOT_DETECTED;
-            Serial.println("DETECTED");
+            this->state = LED_OFF;
             //this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;

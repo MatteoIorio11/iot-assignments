@@ -15,6 +15,7 @@
 // PHOTORESISTOR'S CONSTANTS:
 
 #define PIN_PHOTORESISTOR 11
+#define LUMINOSITY_LOWERBOUND (double)2
 #define DIVISION_CONTANT (double)5/1024
 // ==================================================================
 

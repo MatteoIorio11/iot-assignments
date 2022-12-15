@@ -20,6 +20,7 @@ class LightSystem: public Task{
         void attachLed();
         void attachPir();
         void attachPhotoresistor();
+        void checkLuminosity();
     public:
         LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* client);
         void init();
