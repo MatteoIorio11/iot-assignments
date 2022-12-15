@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "hardware/hardware/Hardware.h"
-#include "contants/Constants.h"
+#include "constants/Constants.h"
 
 class Pir: public Hardware{
     private:

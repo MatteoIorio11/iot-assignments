@@ -41,12 +41,16 @@ void LightSystem::tick(){
     {
     case NOT_DETECTED:
         if(this->pir->readValue() == HIGH){
+            this->led->ledOn();
+            // TODO : Send the message to the broker 
             this->status = DETECTED;
         }
         break;
     
     case DETECTED:
         if(this->pir->readValue() == HIGH){
+            this->led->ledOff();
+            // TODO : Send the message to the broker
             this->status = DETECTED;
         }
         break;

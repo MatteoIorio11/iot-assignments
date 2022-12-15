@@ -2,7 +2,7 @@
 #define __SCHEDULER__
 
 #include "task/Task.h"
-#include "contants/Constants.h"
+#include "constants/Constants.h"
 
 
 class Scheduler {
