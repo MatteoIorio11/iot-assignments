@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "hardware/pir/Pir.h"
 
 /// @brief Constructor

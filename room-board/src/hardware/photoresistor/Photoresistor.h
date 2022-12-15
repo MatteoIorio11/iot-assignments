@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "hardware/hardware/SimpleHardware.h"
+#include "contants/Constants.h"
 
 class Photoresistor: public SimpleHardware{
     private:
