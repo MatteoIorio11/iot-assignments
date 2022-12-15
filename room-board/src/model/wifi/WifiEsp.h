@@ -2,14 +2,16 @@
 #define __WIFIESP__
 
 #include <WiFi.h>
+#include <Arduino.h>
+#include "constants/Constants.h"
 class WiFiEsp{
     private:
-        char* ssid;
-        char* password;
+        const char* ssid = WIFI_SSID;
+        const char* password = WIFI_PASSWORD;
         void connect();
         void setup();
     public:
-        WiFiEsp(char* ssid, char* psw);
+        WiFiEsp();
 };
 
 #endif

@@ -8,7 +8,6 @@
 #include "hardware/photoresistor/Photoresistor.h"
 #include "model/mqtt/MqttClient.h"
 #include "utilities/serializer/JsonSerializer.h"
-#include "utilities/converter/Converter.h"
 
 class LightSystem: public Task{
     private:

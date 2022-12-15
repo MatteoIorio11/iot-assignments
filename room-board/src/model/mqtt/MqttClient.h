@@ -8,13 +8,13 @@
 
 class MqttClient{
     private:
-        char* mqtt_server;
-        char* topic;
+        const char* mqtt_server = MQTT_SERVER;
+        const char* topic = MQTT_TOPIC;
         PubSubClient *client;
         void connect();
     public:
-        MqttClient(char* mqtt_server, char* topic);
-        void sendMessage(char *msg);
+        MqttClient();
+        void sendMessage(String msg);
 };
 
 #endif

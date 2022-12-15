@@ -49,7 +49,7 @@
 // WIFI'S CONSTANTS:
 
 #define WIFI_SSID "TIM-27646389"
-#define WIFI_PASSWORD "p"
+#define WIFI_PASSWORD "i5mESEIA5DcTznCk7CssfAXv"
 
 // ==================================================================
 

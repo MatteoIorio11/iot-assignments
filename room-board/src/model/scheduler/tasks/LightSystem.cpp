@@ -43,9 +43,8 @@ void LightSystem::tick(){
     case NOT_DETECTED:
         if(this->pir->readValue() == HIGH){
             this->led->ledOn();
-            // TODO : Send the message to the broker 
             this->state = DETECTED;
-            this->client->sendMessage(Converter::ConvertStringToArray(JsonSerializer::serialize(this->state)));
+            this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;
     
@@ -53,7 +52,7 @@ void LightSystem::tick(){
         if(this->pir->readValue() == HIGH){
             this->led->ledOff();
             this->state = NOT_DETECTED;
-            this->client->sendMessage(Converter::ConvertStringToArray(JsonSerializer::serialize(this->state)));
+            this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;
     }

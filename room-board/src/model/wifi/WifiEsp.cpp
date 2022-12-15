@@ -1,11 +1,7 @@
 #include "WifiEsp.h"
 
 /// @brief Constructor
-/// @param ssid WIFI's ssid
-/// @param psw  WIFI's psw
-WiFiEsp::WiFiEsp(char* ssid, char* psw){
-    this->ssid = ssid;
-    this->password = psw;
+WiFiEsp::WiFiEsp(){
     this->setup();
     this->connect();
 }
@@ -22,12 +18,12 @@ void WiFiEsp::connect(){
         delay(500);
         //Serial.print(".");
     }
-    /*
+    
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-    */
+    
 }
 
 

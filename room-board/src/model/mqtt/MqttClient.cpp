@@ -1,8 +1,6 @@
 #include "MqttClient.h"
 
-MqttClient::MqttClient(char* mqtt_server, char* topic){
-    this->mqtt_server = mqtt_server;
-    this->topic = topic;
+MqttClient::MqttClient(){
     randomSeed(micros());
     WiFiClient espClient;
     this->client = new PubSubClient(espClient);
@@ -13,13 +11,13 @@ MqttClient::MqttClient(char* mqtt_server, char* topic){
 /// @brief Connect the Client to the Mqtt's Broker
 void MqttClient::connect(){
     while (!this->client->connected()) {
-        //Serial.print("Attempting MQTT connection...");
+        Serial.print("Attempting MQTT connection...");
         String clientId = String(MQTT_CLIENTNAME)+String(random(0xffff), HEX);
         if (this->client->connect(clientId.c_str())) {
-            //Serial.println("connected");
+            Serial.println("connected");
             this->client->subscribe(this->topic);
-            } else {
-            //Serial.print("failed, rc=");
+        } else {
+            Serial.print("failed, rc=");
             //Serial.print(client.state());
             //Serial.println(" try again in 5 seconds");
             // Wait 5 seconds before retrying
@@ -30,9 +28,16 @@ void MqttClient::connect(){
 
 /// @brief Send the message to the broker
 /// @param msg JSON file
-void MqttClient::sendMessage(char *msg){
+void MqttClient::sendMessage(String msg){
     if(!this->client->connected()){
         this->connect();
     }
-    this->client->publish(this->topic, msg);
+    
+    // Length (with one extra character for the null terminator)
+    int str_len = msg.length() + 1; 
+    // Prepare the character array (the buffer) 
+    char output[str_len];
+    // Copy it over 
+    msg.toCharArray(output, str_len);
+    this->client->publish(this->topic, output);
 }
