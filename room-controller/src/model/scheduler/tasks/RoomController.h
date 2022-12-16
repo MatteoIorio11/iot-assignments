@@ -4,6 +4,7 @@
 #include "RoomController.h"
 #include "model/task/Task.h"
 #include "hardware/led/Led.h"
+#include "hardware/servomotor/ServoMotor.h"
 #include "utilities/serializer/JsonSerializer.h"
 
 class RoomController: public Task{
