@@ -38,7 +38,6 @@ void LightSystem::attachPhotoresistor(){
 
 void LightSystem::checkLuminosity(){
     double lum = this->photoresistor->readValue();
-    Serial.println(lum);
     if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
@@ -48,7 +47,7 @@ void LightSystem::checkLuminosity(){
     }
 }
 
-/// @brief State Machine of the LightSystem
+/// @brief State Machine of the LightSystem. The light remains ON until the PIR does not detect any motion
 void LightSystem::tick(){
     switch (this->state)
     {
@@ -61,11 +60,13 @@ void LightSystem::tick(){
         break;
     
     case LED_ON:
-        this->checkLuminosity();
-        if(this->pir->readValue() == HIGH){
+        if(this->pir->readValue() == LOW){
             this->led->ledOff();
             this->state = LED_OFF;
             this->client->sendMessage(JsonSerializer::serialize(this->state));
+        }else{
+            // The person is still inside the room, the light remains ON if there is no light outside
+            this->checkLuminosity();
         }
         break;
     }
