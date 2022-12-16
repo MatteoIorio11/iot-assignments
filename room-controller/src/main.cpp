@@ -1,7 +1,10 @@
 #include <Arduino.h>
+#include "model/scheduler/Scheduler.h"
 
 void setup() {
-  // put your setup code here, to run once:
+  scheduler = new Scheduler();
+  scheduler->init();
+  scheduler->addTask(light_system);
 }
 
 void loop() {
