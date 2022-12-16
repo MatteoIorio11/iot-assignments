@@ -3,6 +3,7 @@ from flask import Flask
 from flask import request
 from paho.mqtt import client as mqtt_client
 from threading import Thread
+import json
 import serial
 
 #SETUP THE SERVER
@@ -37,13 +38,15 @@ def subscribe(client: mqtt_client):
     client.on_message = on_message
 
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/api/data', methods = ['GET', 'POST'])
 def handler():
     #return the values to the Room Dashboard
     if request.method == 'GET':
-        #return values to the dashboard
-        a = 0
-        return "return to the client a json file"
+        j = json.dumps({'PythonSays':'ciao'})
+        resp = Flask.make_response(app,j)
+        resp.headers['ContentType'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
     if request.method == 'POST':
         #write to arduino using the serial line
         n = 0
@@ -56,7 +59,7 @@ def startClient():
     client.loop_forever()    
 
 def startServer():
-    app.run(debug=False, host='127.0.0.100')
+    app.run(debug=False, host='127.0.0.100',port=5000)
 
 def run():
     t1 = Thread(target=startClient)

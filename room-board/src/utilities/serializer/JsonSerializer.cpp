@@ -11,8 +11,8 @@ TEMPLATE OF A SENDING JSON
 String JsonSerializer::serialize(LightSystemState state){
   DynamicJsonDocument doc(JSON_DIMENSION);
   doc["who"] = WHOIS;
-  doc["inside_room"] = state == LED_ON; 
-  doc["state"] = state == LED_ON ? "ON" : "OFF";
+  doc["inside_room"] = state == INSIDE_ROOM; 
+  doc["state"] = state == NOBODY ? "OFF" : "ON";
   doc["time"] = LocalTime::localTime();
   char buffer[JSON_DIMENSION]; 
   serializeJson(doc, buffer); //serializing the JSON

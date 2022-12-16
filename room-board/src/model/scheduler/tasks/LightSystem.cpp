@@ -9,7 +9,7 @@ LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* cl
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
-    this->state = LED_OFF;
+    this->state = NOBODY;
     this->client = client;
     this->init();
 }
@@ -38,12 +38,12 @@ void LightSystem::attachPhotoresistor(){
 
 void LightSystem::checkLuminosity(){
     double lum = this->photoresistor->readValue();
+    Serial.println(lum);
     if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
     }else{
         this->led->ledOff();           // Turning OFF the led
-        this->state = LED_OFF;
     }
 }
 
@@ -51,22 +51,20 @@ void LightSystem::checkLuminosity(){
 void LightSystem::tick(){
     switch (this->state)
     {
-        case LED_OFF:
+        case NOBODY:
             if(this->pir->readValue() == HIGH){
                 this->led->ledOn();
-                this->state = LED_ON;
+                this->state = INSIDE_ROOM;          // Someone is inside the room
+                this->checkLuminosity();                // The person is still inside the room, the light remains ON if there is no light outside
                 this->client->sendMessage(JsonSerializer::serialize(this->state));
             }
             break;
         
-        case LED_ON:
-            if(this->pir->readValue() == LOW){
+        case INSIDE_ROOM:
+            if(this->pir->readValue() == LOW){      // If there is no activity it means that the people leaved the room
                 this->led->ledOff();
-                this->state = LED_OFF;
+                this->state = NOBODY;               // Leave the room
                 this->client->sendMessage(JsonSerializer::serialize(this->state));
-            }else{
-                // The person is still inside the room, the light remains ON if there is no light outside
-                this->checkLuminosity();
             }
             break;
     }

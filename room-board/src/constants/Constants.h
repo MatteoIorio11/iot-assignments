@@ -7,7 +7,7 @@
 // PIR'S CONSTANTS:
 
 #define PIN_PIR 48
-#define CALIBRATION_TIME_SEC 1
+#define CALIBRATION_TIME_SEC 20
 
 // ==================================================================
 
@@ -15,7 +15,7 @@
 // PHOTORESISTOR'S CONSTANTS:
 
 #define PIN_PHOTORESISTOR 11
-#define LUMINOSITY_LOWERBOUND (double)2.5
+#define LUMINOSITY_LOWERBOUND (double)2
 #define DIVISION_CONSTANT 5/1024
 // ==================================================================
 
@@ -76,7 +76,7 @@
 // ==================================================================
 // TIMER'S CONSTANTS:
 
-#define TIMER_PERIOD pow(10,5)
+#define TIMER_PERIOD pow(10,6)
 
 // ==================================================================
 
