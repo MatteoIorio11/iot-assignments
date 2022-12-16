@@ -51,24 +51,24 @@ void LightSystem::checkLuminosity(){
 void LightSystem::tick(){
     switch (this->state)
     {
-    case LED_OFF:
-        if(this->pir->readValue() == HIGH){
-            this->led->ledOn();
-            this->state = LED_ON;
-            this->client->sendMessage(JsonSerializer::serialize(this->state));
-        }
-        break;
-    
-    case LED_ON:
-        if(this->pir->readValue() == LOW){
-            this->led->ledOff();
-            this->state = LED_OFF;
-            this->client->sendMessage(JsonSerializer::serialize(this->state));
-        }else{
-            // The person is still inside the room, the light remains ON if there is no light outside
-            this->checkLuminosity();
-        }
-        break;
+        case LED_OFF:
+            if(this->pir->readValue() == HIGH){
+                this->led->ledOn();
+                this->state = LED_ON;
+                this->client->sendMessage(JsonSerializer::serialize(this->state));
+            }
+            break;
+        
+        case LED_ON:
+            if(this->pir->readValue() == LOW){
+                this->led->ledOff();
+                this->state = LED_OFF;
+                this->client->sendMessage(JsonSerializer::serialize(this->state));
+            }else{
+                // The person is still inside the room, the light remains ON if there is no light outside
+                this->checkLuminosity();
+            }
+            break;
     }
     
 }
