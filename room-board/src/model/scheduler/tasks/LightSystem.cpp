@@ -36,7 +36,7 @@ void LightSystem::attachPir(){
 void LightSystem::attachPhotoresistor(){
     this->photoresistor = new Photoresistor(this->pin_photo);
 }
-
+/// @brief Check the luminosity of the room, in order to turn on the light or turn off the light.
 void LightSystem::checkLuminosity(){
     double lum = this->photoresistor->readValue();
     Serial.println(lum);
@@ -73,6 +73,8 @@ void LightSystem::tick(){
                 if(this->pir->readValue() == HIGH){
                     // A person is still inside the room. the state must be INSIDE_ROOM
                     this->light_timer = 0;
+                    this->checkLuminosity();
+                    this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
                 }
             }
             break;
