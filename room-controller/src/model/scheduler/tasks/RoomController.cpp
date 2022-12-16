@@ -5,9 +5,10 @@
 /// @param pin_led Led's pin
 /// @param pin_servo ServoMotor's pin
 RoomController::RoomController(int pin_led, int pin_servo){
+    Serial.println("cc");
     this->pin_led = pin_led;
     this->pin_servo = pin_servo;
-    //this->state = LED_OFF;
+    this->state = RUNNING;
     this->init();
 }
 
@@ -32,17 +33,18 @@ void RoomController::tick(){
     switch (this->state)
     {
         case RUNNING:
+            Serial.println("RUNNING");
             //if switch to ON
-            this->state = SETTING_LED_ON;
+            //this->state = SETTING_LED_ON;
 
             //if switch to OFF
-            this->state = SETTING_LED_OFF;
+            //this->state = SETTING_LED_OFF;
 
             //if time == 8.00
             this->state = WAITING_FOR_OPENING;
 
             //IF TIME == 19.00
-            this->state = WAITING_FOR_CLOSING;
+            //this->state = WAITING_FOR_CLOSING;
             
             
             break;
@@ -70,6 +72,8 @@ void RoomController::tick(){
             this->state = RUNNING;
             break;
         case SETTING_LED_ON:
+
+            Serial.println("ON");
             //turning the led on then going back to RUNNING
             this->led->ledOn();
             this->state = RUNNING;
