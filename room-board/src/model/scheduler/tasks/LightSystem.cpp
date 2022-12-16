@@ -39,7 +39,6 @@ void LightSystem::attachPhotoresistor(){
 /// @brief Check the luminosity of the room, in order to turn on the light or turn off the light.
 void LightSystem::checkLuminosity(){
     double lum = this->photoresistor->readValue();
-    Serial.println(lum);
     if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
