@@ -4,6 +4,7 @@
 #include <ArduinoJson.h>
 #include "model/scheduler/tasks/LightSystemState.h"
 #include "constants/Constants.h"
+#include "utilities/converter/Converter.h"
 
 class JsonSerializer{
     private:

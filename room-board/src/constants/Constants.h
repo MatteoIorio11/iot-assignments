@@ -15,8 +15,8 @@
 // PHOTORESISTOR'S CONSTANTS:
 
 #define PIN_PHOTORESISTOR 11
-#define LUMINOSITY_LOWERBOUND (double)2
-#define DIVISION_CONTANT (double)5/1024
+#define LUMINOSITY_LOWERBOUND (double)2.5
+#define DIVISION_CONSTANT 5/1024
 // ==================================================================
 
 // ==================================================================
@@ -54,5 +54,12 @@
 
 // ==================================================================
 
+
+// ==================================================================
+// JSONSERIALIZER'S CONSTANTS:
+
+#define JSON_DIMENSION 128
+
+// ==================================================================
 
 #endif

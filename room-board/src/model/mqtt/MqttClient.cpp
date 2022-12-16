@@ -1,11 +1,29 @@
 #include "MqttClient.h"
 
+static WiFiClient espClient;
+
 MqttClient::MqttClient(){
     randomSeed(micros());
-    WiFiClient espClient;
     this->client = new PubSubClient(espClient);
+    this->setupWIFI();
+    this->connectWIFI();
     this->client->setServer(this->mqtt_server, MQTT_PORT);
-    this->connect();
+}
+
+void MqttClient::connectWIFI(){
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        //Serial.print(".");
+    }
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+}
+
+void MqttClient::setupWIFI(){
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(this->ssid, this->password);
 }
 
 /// @brief Connect the Client to the Mqtt's Broker
@@ -32,9 +50,8 @@ void MqttClient::sendMessage(String msg){
     if(!this->client->connected()){
         this->connect();
     }
-    
     // Length (with one extra character for the null terminator)
-    int str_len = msg.length() + 1; 
+    int str_len = msg.length() + 1;
     // Prepare the character array (the buffer) 
     char output[str_len];
     // Copy it over 

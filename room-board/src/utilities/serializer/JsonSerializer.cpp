@@ -3,14 +3,16 @@
 TEMPLATE OF A SENDING JSON
 {
   "who": "ESP32-S3",
-  "state"; "DETECTED/NOT_DETECTED"
+  "state"; "ON/OFF"
 }
 */
 String JsonSerializer::serialize(LightSystemState state){
-    DynamicJsonDocument doc(256);
+
+    DynamicJsonDocument doc(JSON_DIMENSION);
     doc["who"] = WHOIS;
-    doc["state"] = state == DETECTED ? "DETECTED" : "NOT_DETECTED"; 
-    serializeJson(doc, Serial); //serializing the JSON
-    String json_serialized = Serial.readString();  
-    return json_serialized;
+    doc["state"] = state == LED_ON ? "ON" : "OFF";
+    char buffer[JSON_DIMENSION]; 
+    serializeJson(doc, buffer); //serializing the JSON
+    //String json = Serial.readString();
+    return Converter::convertoArrayToString(buffer, JSON_DIMENSION);
 }

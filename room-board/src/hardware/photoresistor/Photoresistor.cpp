@@ -14,7 +14,7 @@ int Photoresistor::getPin(){
 }
 
 double Photoresistor::readValue(){
-        int value = analogRead(this->pin);
-    return ((double) value) * DIVISION_CONTANT;
+    int value = analogRead(this->pin);
+    return ((double) value) * 5/1024;
 }
 

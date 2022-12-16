@@ -37,11 +37,14 @@ void LightSystem::attachPhotoresistor(){
 }
 
 void LightSystem::checkLuminosity(){
-    if(this->photoresistor->readValue() >= 0 and this->photoresistor->readValue() < LUMINOSITY_LOWERBOUND){
+    double lum = this->photoresistor->readValue();
+    Serial.println(lum);
+    if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
     }else{
-        this->led->ledOn();           // Turning OFF the led
+        this->led->ledOff();           // Turning OFF the led
+        this->state = LED_OFF;
     }
 }
 
@@ -53,8 +56,7 @@ void LightSystem::tick(){
         if(this->pir->readValue() == HIGH){
             this->led->ledOn();
             this->state = LED_ON;
-            Serial.println("DETECTED");
-            //this->client->sendMessage(JsonSerializer::serialize(this->state));
+            this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;
     
@@ -63,7 +65,7 @@ void LightSystem::tick(){
         if(this->pir->readValue() == HIGH){
             this->led->ledOff();
             this->state = LED_OFF;
-            //this->client->sendMessage(JsonSerializer::serialize(this->state));
+            this->client->sendMessage(JsonSerializer::serialize(this->state));
         }
         break;
     }
