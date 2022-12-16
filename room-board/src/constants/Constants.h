@@ -77,6 +77,7 @@
 // TIMER'S CONSTANTS:
 
 #define TIMER_PERIOD pow(10,6)
+#define LIGHT_TIMER(p) (pow(10,7)/(p))
 
 // ==================================================================
 

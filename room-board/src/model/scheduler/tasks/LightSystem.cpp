@@ -9,6 +9,7 @@ LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* cl
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
+    this->light_timer = 0;
     this->state = NOBODY;
     this->client = client;
     this->init();
@@ -53,6 +54,7 @@ void LightSystem::tick(){
     {
         case NOBODY:
             if(this->pir->readValue() == HIGH){
+                this->light_timer = 0;                  // Reset timer
                 this->state = INSIDE_ROOM;              // Someone is inside the room
                 this->checkLuminosity();                // The person is still inside the room, the light remains ON if there is no light outside
                 this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
@@ -60,10 +62,18 @@ void LightSystem::tick(){
             break;
         
         case INSIDE_ROOM:
-            if(this->pir->readValue() == HIGH){      // the person leaved the room, the led goes off
+            if(this->light_timer >= LIGHT_TIMER(TIMER_PERIOD)){
+                // If after 10 seconds nobody is in the room, the light must be OFF.
+                this->light_timer = 0;
+                this->state = NOBODY;
                 this->led->ledOff();
-                this->state = NOBODY;               // Leave the room
                 this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
+            }else{
+                this->light_timer++;
+                if(this->pir->readValue() == HIGH){
+                    // A person is still inside the room. the state must be INSIDE_ROOM
+                    this->light_timer = 0;
+                }
             }
             break;
     }

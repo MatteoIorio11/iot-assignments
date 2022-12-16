@@ -11,7 +11,7 @@
 
 class LightSystem: public Task{
     private:
-        int pin_led, pin_pir, pin_photo;
+        int pin_led, pin_pir, pin_photo, light_timer;
         LightSystemState state;
         Led *led;
         Pir *pir;
