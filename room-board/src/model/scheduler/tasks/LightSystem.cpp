@@ -53,18 +53,17 @@ void LightSystem::tick(){
     {
         case NOBODY:
             if(this->pir->readValue() == HIGH){
-                this->led->ledOn();
-                this->state = INSIDE_ROOM;          // Someone is inside the room
+                this->state = INSIDE_ROOM;              // Someone is inside the room
                 this->checkLuminosity();                // The person is still inside the room, the light remains ON if there is no light outside
-                this->client->sendMessage(JsonSerializer::serialize(this->state));
+                this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
             }
             break;
         
         case INSIDE_ROOM:
-            if(this->pir->readValue() == LOW){      // If there is no activity it means that the people leaved the room
+            if(this->pir->readValue() == HIGH){      // the person leaved the room, the led goes off
                 this->led->ledOff();
                 this->state = NOBODY;               // Leave the room
-                this->client->sendMessage(JsonSerializer::serialize(this->state));
+                this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
             }
             break;
     }
