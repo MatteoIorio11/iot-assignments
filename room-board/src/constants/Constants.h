@@ -7,7 +7,7 @@
 // PIR'S CONSTANTS:
 
 #define PIN_PIR 48
-#define CALIBRATION_TIME_SEC 20
+#define CALIBRATION_TIME_SEC 1
 
 // ==================================================================
 
@@ -51,6 +51,17 @@
 
 #define WIFI_SSID "TIM-27646389"
 #define WIFI_PASSWORD "i5mESEIA5DcTznCk7CssfAXv"
+#define WIFI_NTPSERVER "pool.ntp.org"
+
+
+// ==================================================================
+
+// ==================================================================
+// LOCALTIME'S CONSTANTS:
+
+#define NTP_SERVER "pool.ntp.org"
+#define GMT_OFFSET 3600
+#define DL_OFFSET 0
 
 // ==================================================================
 
@@ -65,7 +76,7 @@
 // ==================================================================
 // TIMER'S CONSTANTS:
 
-#define TIMER_PERIOD pow(10,6)
+#define TIMER_PERIOD pow(10,5)
 
 // ==================================================================
 

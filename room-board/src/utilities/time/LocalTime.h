@@ -2,6 +2,7 @@
 #define __LOCALTIME__
 #include <time.h>
 #include <Arduino.h>
+#include "constants/Constants.h"
 
 class LocalTime{
     private:
