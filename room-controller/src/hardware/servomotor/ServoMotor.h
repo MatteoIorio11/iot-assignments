@@ -9,12 +9,14 @@
 class ServoMotor: public SimpleHardware{
     private:
         int pin;
-        int angle;
+        int percentage;
         ServoTimer2* servoMotor;
     public:
         ServoMotor(int pin);
-        void setAngle(int angle);
-        int getAngle();
+        void setOpening(int percentage);
+        void close();
+        void open();
+        int getOpening();
 };
 
 #endif

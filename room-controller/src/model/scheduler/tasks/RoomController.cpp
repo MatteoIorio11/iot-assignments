@@ -32,18 +32,47 @@ void RoomController::tick(){
     switch (this->state)
     {
         case RUNNING:
+            //if switch to ON
+            this->state = SETTING_LED_ON;
+
+            //if switch to OFF
+            this->state = SETTING_LED_OFF;
+
+            //if time == 8.00
+            this->state = WAITING_FOR_OPENING;
+
+            //IF TIME == 19.00
+            this->state = WAITING_FOR_CLOSING;
+            
+            
             break;
         case WAITING_FOR_OPENING:
+            //if movement detected == true
+            this->state = OPENING_ROLLER_BLINDS;
             break;
         case WAITING_FOR_CLOSING:
+            //if movement detected == false
+            this->state = CLOSING_ROLLER_BLINDS;
             break;
         case OPENING_ROLLER_BLINDS:
+            //open roller blinds then going back to RUNNING
+            this->servo->open();
+            this->state = RUNNING;
             break;
         case CLOSING_ROLLER_BLINDS:
+            //close roller blinds then going back to RUNNING
+            this->servo->close();
+            this->state = RUNNING;
             break;
         case SETTING_LED_OFF:
+            //turning the led off then going back to RUNNING
+            this->led->ledOff();
+            this->state = RUNNING;
             break;
         case SETTING_LED_ON:
+            //turning the led on then going back to RUNNING
+            this->led->ledOn();
+            this->state = RUNNING;
             break;
     }
     
