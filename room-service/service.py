@@ -9,7 +9,7 @@ import serial
 # ==================== SETUP THE SERVER
 app = Flask(__name__)
 # ==================== SETUP ARDUINO
-#arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
 # ==================== SETUP MQTT
 broker = 'broker.mqtt-dashboard.com'
 port = 1883
@@ -69,19 +69,46 @@ def get_sec(time_str):
     return int(h) * 3600 + int(m) * 60 + int(s)
 
 
-@app.route('/api/data', methods = ['GET', 'POST'])
-def handler():
+@app.route('/api/data', methods = ['GET'])
+def handlerSeconds():
     #return the values to the Room Dashboard
     if request.method == 'GET':
-        j = json.dumps({'PythonSays': times[1]})
+        j = json.dumps({'seconds': times[1]})
+        resp = Flask.make_response(app,j)
+        resp.headers['ContentType'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+
+
+@app.route('/api/servo', methods=['GET', 'POST'])
+def handlerServo():
+    if request.method == 'GET':
+        j = json.dumps({'angle': 0})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
         return resp
     if request.method == 'POST':
-        #write to arduino using the serial line
-        n = 0
-        return "write to arduino"
+        j = json.dumps({'angle': 0})
+        resp = Flask.make_response(app,j)
+        resp.headers['ContentType'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+
+@app.route('/api/led', methods=['GET', 'POST'])
+def handlerLed():
+    if request.method == 'GET':
+        j = json.dumps({'state': "VALUE CHE CONOSCIAMO LEGGENDO DA ARDUINO, SE NON LO SAPPIAMO : OFF"})
+        resp = Flask.make_response(app,j)
+        resp.headers['ContentType'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+    if request.method == 'POST':
+        j = json.dumps({'state': "OFF/ON"})
+        resp = Flask.make_response(app,j)
+        resp.headers['ContentType'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
 
 
 def startClient():
@@ -92,13 +119,26 @@ def startClient():
 def startServer():
     app.run(debug=False, host='127.0.0.100',port=5000)
 
+def startArduino():
+    while True:
+        if(arduino.inWaiting() > 0):
+            #read the message
+            msg = arduino.readline()
+            msg_dese = json.loads(msg)
+            #save the infos about Servo and Led inside a variable and the there will be a button inside the Dashboard 
+            #such as Refresh, and It will return the infos about 
+        
+        
+
 def run():
     times.append(0)
     times.append(0)
-    t1 = Thread(target=startClient)
-    t2 = Thread(target=startServer)
-    t1.start()
-    t2.start()
+    
+    mqtt_thread = Thread(target=startClient)
+    server_thread = Thread(target=startServer)
+    arduino_thread = Thread(target=)
+    mqtt_thread.start()
+    server_thread.start()
     
 
 
