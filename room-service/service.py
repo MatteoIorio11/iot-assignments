@@ -87,9 +87,11 @@ def handlerServo():
     if request.method == 'GET':
         angle = request.args.get('angle')
         if angle != None:
-            j = json.dumps({'angle': servo_angle})
-            print("write to arduino") 
-        
+            j = json.dumps({'angle': angle})
+            print("Send data to arduino")
+            servo_angle = angle
+            #arduino.write(bytes(j, 'utf-8'))
+
         j = json.dumps({'angle': servo_angle})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
@@ -101,13 +103,17 @@ def handlerLed():
     if request.method == 'GET':
         state = request.args.get('state')
         if state != None:
+            j = json.dumps({"state":state})
             print("Send data to arduino")
+            led_state = state
+            #arduino.write(bytes(j, 'utf-8'))
         
-        j = json.dumps({'state': "VALUE CHE CONOSCIAMO LEGGENDO DA ARDUINO, SE NON LO SAPPIAMO : OFF"})
+        j = json.dumps({'state': led_state})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
         return resp
+
 
 
 def startClient():

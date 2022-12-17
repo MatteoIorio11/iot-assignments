@@ -47,7 +47,7 @@ btn_set_led_on.addEventListener("click", e => {
 });
 
 btn_set_led_off.addEventListener("click", e => {
-    axios.get(`http://127.0.0.100:5000/api/led?state=OFF`, {"angle":"OFF"})
+    axios.get(`http://127.0.0.100:5000/api/led?state=OFF`)
     .then(function(response){
         state = response["data"]["state"];
         label_led.innerHTML = `Led's state : ${state}`;
