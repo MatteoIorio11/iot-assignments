@@ -6,15 +6,15 @@ from threading import Thread
 import json
 import serial
 
-#SETUP THE SERVER
+# ==================== SETUP THE SERVER
 app = Flask(__name__)
-#SETUP ARDUINO
+# ==================== SETUP ARDUINO
 #arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
-#SETUP MQTT
+# ==================== SETUP MQTT
 broker = 'broker.mqtt-dashboard.com'
 port = 1883
 topic = "esp-light"
-# generate client ID with pub prefix randomly
+# ==================== generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
 
 
@@ -63,9 +63,9 @@ def startServer():
 
 def run():
     t1 = Thread(target=startClient)
-    t2 = Thread(target=startServer)
+    #t2 = Thread(target=startServer)
     t1.start()
-    t2.start()
+    #t2.start()
 
 if __name__ == '__main__':
     run()

@@ -39,11 +39,23 @@ void LightSystem::attachPhotoresistor(){
 /// @brief Check the luminosity of the room, in order to turn on the light or turn off the light.
 void LightSystem::checkLuminosity(){
     double lum = this->photoresistor->readValue();
+    LedState prevState = this->led->getState();
     if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
     }else{
         this->led->ledOff();           // Turning OFF the led
+    }
+    if(prevState != this->led->getState()){
+
+    }
+}
+
+void LightSystem::sendMessage(){
+    LedState prevState = this->led->getState(); // Get the prev state
+    this->checkLuminosity();                    // The person is still inside the room, the light remains ON if there is no light outside
+    if(prevState != this->led->getState()){
+        this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState())); // Write only if the state is changed
     }
 }
 
@@ -63,18 +75,18 @@ void LightSystem::tick(){
         case INSIDE_ROOM:
             if(this->light_timer >= LIGHT_TIMER(TIMER_PERIOD)){
                 // If after 10 seconds nobody is in the room, the light must be OFF.
-                this->light_timer = 0;
-                this->state = NOBODY;
-                this->led->ledOff();
+                this->light_timer = 0;                  // Reset of the timer
+                this->state = NOBODY;                   // No activity inside the room, the light is off
+                this->led->ledOff();                    // Shut the led
                 this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
             }else{
-                this->light_timer++;
                 if(this->pir->readValue() == HIGH){
                     // A person is still inside the room. the state must be INSIDE_ROOM
-                    this->light_timer = 0;
-                    this->checkLuminosity();
-                    this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
+                    this->light_timer = 0;                      // Reset of the timer, the person is still inside the room
+                }else{
+                    this->light_timer++;                        // No activity, the timer is incremented
                 }
+                this->sendMessage();
             }
             break;
     }
