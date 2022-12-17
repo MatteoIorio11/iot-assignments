@@ -73,4 +73,6 @@ Attraverso delle GET ottengo il monitoraggio della luce (Room Sensor-Board), att
  <pre>
 Room Service <-- HTTP/TCP -- Room Dashboard
  </pre>
+ 
+ (testo completo)[https://docs.google.com/document/d/112rKjaMyOpBb6vsrsLVG4Cn5RtWpUQLryebDFTC_uc0/edit?usp=sharing]
 
