@@ -40,7 +40,7 @@ btn_get_servo.addEventListener("click", e => {
 });
 
 btn_set_led_on.addEventListener("click", e => {
-    axios.get('http://127.0.0.100:5000/api/led?state=ON', options).then(function(response){
+    axios.get('http://127.0.0.100:5000/api/led?state=ON').then(function(response){
         state = response["data"]["state"];
         label_led.innerHTML = `Led's state : ${state}`;
     })
