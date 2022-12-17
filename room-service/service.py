@@ -4,7 +4,6 @@ from flask import request
 from paho.mqtt import client as mqtt_client
 from threading import Thread
 import json
-from datetime import datetime
 import serial
 
 # ==================== SETUP THE SERVER
@@ -18,8 +17,9 @@ topic = "esp-light"
 # ==================== generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
 # ==================== total time on
-time = 0
-start_time = 0
+#times[0] = start time led on
+#times[1] = total time
+times = list()
 
 
 def connect_mqtt() -> mqtt_client:
@@ -34,21 +34,46 @@ def connect_mqtt() -> mqtt_client:
     return client
 
 
-def subscribe(client: mqtt_client):
+def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-        calcTime(json.loads(msg.payload.decode()))
+        json_message = json.loads(msg.payload.decode())
+        calcTime(json_message, total_t, start_t, res)
                 
 
     client.subscribe(topic)
     client.on_message = on_message
 
 
+### Calculate the difference between the initial time ON and the last time OFF
+def calcTime(json_message: dict, total_t: int, start_t: int, res: list):
+    total_time = total_t
+    start_time = start_t
+    if json_message["inside_room"] == False:
+            total_time += get_sec(json_message["time"]) - res[0]
+            res[1] += total_time
+    else:
+        if json_message["state"] == "ON":
+            #get the start's seconds of the LED ON 
+            start_time = get_sec(json_message["time"])
+            res[0] = start_time
+        else:
+            if(res[0] > 0):
+                total_time += get_sec(json_message["time"]) - res[0]
+                res[1] += total_time
+    
+
+### CONVERT HH:MM:SS into seconds
+def get_sec(time_str):
+    h, m, s = time_str.split(':')
+    return int(h) * 3600 + int(m) * 60 + int(s)
+
+
 @app.route('/api/data', methods = ['GET', 'POST'])
 def handler():
     #return the values to the Room Dashboard
     if request.method == 'GET':
-        j = json.dumps({'PythonSays':'ciao'})
+        j = json.dumps({'PythonSays': times[1]})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -61,34 +86,21 @@ def handler():
 
 def startClient():
     client = connect_mqtt()
-    subscribe(client)
+    subscribe(client, times[0], times[1], times)
     client.loop_forever()    
 
 def startServer():
     app.run(debug=False, host='127.0.0.100',port=5000)
 
 def run():
+    times.append(0)
+    times.append(0)
     t1 = Thread(target=startClient)
-    #t2 = Thread(target=startServer)
+    t2 = Thread(target=startServer)
     t1.start()
-    #t2.start()
+    t2.start()
     
-### Calculate the difference between the initial time ON and the last time OFF
-def calcTime(json_message: dict):
-    if json_message["inside_room"] == False:
-        print("")
-    else:
-        if json_message["state"] == "ON":
-            #get the 
-            start_time = get_sec(json_message["time"])
-        else:
-            time += get_sec(json_message["time"]) - start_time
-            print(str(time))
 
-### CONVERT HH:MM:SS into seconds
-def get_sec(time_str):
-    h, m, s = time_str.split(':')
-    return int(h) * 3600 + int(m) * 60 + int(s)
 
 if __name__ == '__main__':
     run()
