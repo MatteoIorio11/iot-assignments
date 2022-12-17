@@ -4,6 +4,7 @@ from flask import request
 from paho.mqtt import client as mqtt_client
 from threading import Thread
 import json
+from datetime import datetime
 import serial
 
 # ==================== SETUP THE SERVER
@@ -16,6 +17,9 @@ port = 1883
 topic = "esp-light"
 # ==================== generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
+# ==================== total time on
+time = 0
+start_time = 0
 
 
 def connect_mqtt() -> mqtt_client:
@@ -33,6 +37,8 @@ def connect_mqtt() -> mqtt_client:
 def subscribe(client: mqtt_client):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        calcTime(json.loads(msg.payload.decode()))
+                
 
     client.subscribe(topic)
     client.on_message = on_message
@@ -66,6 +72,23 @@ def run():
     #t2 = Thread(target=startServer)
     t1.start()
     #t2.start()
+    
+### Calculate the difference between the initial time ON and the last time OFF
+def calcTime(json_message: dict):
+    if json_message["inside_room"] == False:
+        print("")
+    else:
+        if json_message["state"] == "ON":
+            #get the 
+            start_time = get_sec(json_message["time"])
+        else:
+            time += get_sec(json_message["time"]) - start_time
+            print(str(time))
+
+### CONVERT HH:MM:SS into seconds
+def get_sec(time_str):
+    h, m, s = time_str.split(':')
+    return int(h) * 3600 + int(m) * 60 + int(s)
 
 if __name__ == '__main__':
     run()
