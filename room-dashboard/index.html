@@ -1,10 +1,28 @@
 <!DOCTYPE html>
 <html>
 <main>
+    <h1> Manages ROOM </h1>
     <section>
-        <h1> Get the seconds for the led ON</h1>
-        <p id="lbl_seconds"></p>
+        <h2> Informations about Room Sensor Board</h2>
+        <label id="lbl_seconds"></label>
         <button id="get_seconds" type="button">Refresh</button> 
+    </section>
+    <section>
+        <h2> Informations about Room Controller</h2>
+        <label id="lbl_led"></label>
+        <button id="get_led" type="button">Refresh Led</button>
+        <br/> 
+        <label id="lbl_servo"></label>
+        <button id="get_servo" type="button">Refresh Servo</button> 
+    </section>
+        <section>
+        <h2> Manage Room Controller</h2>
+        <button id="set_led_on" type="button">Turn on</button> 
+        <button id="set_led_off" type="button">Turn off</button> 
+        <div class="slidecontainer">
+            <input type="range" min="1" max="180" value="0" class="slider" id="set_angle">
+        </div>
+        <button id="set_servo" type="button">Set angle</button> 
     </section>
 </main>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
