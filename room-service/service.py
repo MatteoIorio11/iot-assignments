@@ -10,6 +10,8 @@ import serial
 app = Flask(__name__)
 # ==================== SETUP ARDUINO
 #arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+servo_angle = 0
+led_state = False
 # ==================== SETUP MQTT
 broker = 'broker.mqtt-dashboard.com'
 port = 1883
@@ -82,18 +84,13 @@ def handlerSeconds():
 
 @app.route('/api/servo', methods=['GET', 'POST'])
 def handlerServo():
-    #print(request.data)
-    #print(request.headers)
     if request.method == 'GET':
-        username = request.args.get('angle')
-        print(username)
-        j = json.dumps({'angle': 0})
-        resp = Flask.make_response(app,j)
-        resp.headers['ContentType'] = 'application/json'
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        return resp
-    if request.method == 'POST':
-        j = json.dumps({'angle': 0})
+        angle = request.args.get('angle')
+        if angle != None:
+            j = json.dumps({'angle': servo_angle})
+            print("write to arduino") 
+        
+        j = json.dumps({'angle': servo_angle})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -102,13 +99,11 @@ def handlerServo():
 @app.route('/api/led', methods=['GET', 'POST'])
 def handlerLed():
     if request.method == 'GET':
+        state = request.args.get('state')
+        if state != None:
+            print("Send data to arduino")
+        
         j = json.dumps({'state': "VALUE CHE CONOSCIAMO LEGGENDO DA ARDUINO, SE NON LO SAPPIAMO : OFF"})
-        resp = Flask.make_response(app,j)
-        resp.headers['ContentType'] = 'application/json'
-        resp.headers['Access-Control-Allow-Origin'] = '*'
-        return resp
-    if request.method == 'POST':
-        j = json.dumps({'state': "OFF/ON"})
         resp = Flask.make_response(app,j)
         resp.headers['ContentType'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
