@@ -1,7 +1,6 @@
 const options = {
-    headers: {'Access-Control-Allow-Origin': '*'}
+    headers: {'aaa': '*'}
 }
-
 // Labels
 const label_seconds = document.getElementById("lbl_seconds");
 const label_led = document.getElementById("lbl_led");
@@ -34,32 +33,32 @@ btn_get_led.addEventListener("click", e=> {
 
 btn_get_servo.addEventListener("click", e => {
     let angle = 0;
-    axios.get('http://127.0.0.100:5000/api/servo').then(function (response) {
+    axios.get(`http://127.0.0.100:5000/api/servo`).then(function (response) {
         angle = response["data"]["angle"];
-        label_servo = `Servo's angle : ${angle}`;
+        label_servo.innerHTML = `Servo's angle : ${angle}`;
     });
 });
 
 btn_set_led_on.addEventListener("click", e => {
-    axios.post('http://127.0.0.100:5000/api/led', {"angle":"ON"}).then(function(response){
+    axios.get('http://127.0.0.100:5000/api/led?state=ON', options).then(function(response){
         state = response["data"]["state"];
         label_led.innerHTML = `Led's state : ${state}`;
     })
 });
 
 btn_set_led_off.addEventListener("click", e => {
-    axios.post('http://127.0.0.100:5000/api/led', {angle:OFF,})
+    axios.get(`http://127.0.0.100:5000/api/led?state=OFF`, {"angle":"OFF"})
     .then(function(response){
         state = response["data"]["state"];
         label_led.innerHTML = `Led's state : ${state}`;
     });
 });
 
-btn_set_servo.addEventListener("click" e => {
+btn_set_servo.addEventListener("click", e => {
     let input_angle = slider.value;
-    axios.post('http://127.0.0.100:5000/api/servo',{angle:input_angle,})
+    axios.get(`http://127.0.0.100:5000/api/servo?angle=${input_angle}`)
     .then(function(response){
         let angle = response["data"]["angle"];
-        label_servo = `Servo's angle : ${angle}`;
+        label_servo.innerHTML = `Servo's angle : ${angle}`;
     });
 });
