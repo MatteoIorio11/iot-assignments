@@ -11,6 +11,7 @@ class SerialMsgService {
         void init();  
         bool isMsgAvailable();
         Msg* receiveMsg();  
+        void serialEvent();
         void sendMsg(const String& msg);
 };
 extern SerialMsgService MsgService;

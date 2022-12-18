@@ -6,6 +6,7 @@ String content;
 SerialMsgService MsgService;
 
 bool SerialMsgService::isMsgAvailable(){
+  this->serialEvent();
   return msgAvailable;
 }
 
@@ -33,15 +34,12 @@ void SerialMsgService::sendMsg(const String& msg){
   Serial.println(msg);  
 }
 
-void serialEvent() {
+void SerialMsgService::serialEvent() {
   /* reading the content */
   while (Serial.available()) {
-    char ch = (char) Serial.read();
-    if (ch == '\n'){
+      content = Serial.readString();
       MsgService.currentMsg = new Msg(content);
-      MsgService.msgAvailable = true;      
-    } else {
-      content += ch;      
-    }
+      MsgService.msgAvailable = true;   
+      Serial.println("AA");  
   }
 }
