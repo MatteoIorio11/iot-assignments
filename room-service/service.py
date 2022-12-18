@@ -53,7 +53,7 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list, w:list):
     def on_message(client, userdata, msg):
-        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        #print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         json_message = json.loads(msg.payload.decode())
         calcTime(json_message, total_t, start_t, res, w)
                 
@@ -152,14 +152,22 @@ def startClient():
 def startServer():
     app.run(debug=False, host='127.0.0.100',port=5000)
 
-def startArduino():    
+def startArduino(): 
+    eigth = False   
+    seven = False
     while True:
         curr_hour, curr_min, curr_sec  = str(datetime.now().time()).split(':')
-        if(int(curr_hour) == 8 and int(curr_min) == 0 and int(curr_sec) == 0):
+        if(int(curr_hour) == 17 and int(curr_min) == 55 and int(float(curr_sec)) == 10 and eigth==False):
             j = json.dumps({'hardware': TIME_TAG, 'time': "8"})
-            print(j)
-        elif (int(curr_hour) == 19 and int(curr_min) == 0 and int(curr_sec) == 0):
+            eigth = True
+            seven = False
+            #print(j)
+            arduino.write(bytes(j, 'utf-8'))
+        elif (int(curr_hour) == 19 and int(curr_min) == 0 and int(float(curr_sec)) == 0 and seven == False):
+            eigth = False
+            seven = True
             j = json.dumps({'hardware':TIME_TAG, 'time': "19"})
+            arduino.write(bytes(j, 'utf-8'))
         if(arduino.inWaiting() > 0):
             try:
                 msg = arduino.readline()
