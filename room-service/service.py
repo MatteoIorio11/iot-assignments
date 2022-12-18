@@ -14,7 +14,7 @@ lock = threading.Lock()
 # ==================== SETUP THE SERVER
 app = Flask(__name__)
 # ==================== SETUP ARDUINO
-#arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 LED_TAG = "LED"
 SERVO_TAG = "SERVOMOTOR"
 TIME_TAG = "TIME"
@@ -156,23 +156,26 @@ def startArduino():
     while True:
         curr_hour, curr_min, curr_sec  = str(datetime.now().time()).split(':')
         if(int(curr_hour) == 8 and int(curr_min) == 0 and int(curr_sec) == 0):
-            j = json.dumps({'hardware': TIME_TAG, 'time': "8", 'state':components[1], 'angle':components[0], 'inside_room':components[2]})
+            j = json.dumps({'hardware': TIME_TAG, 'time': "8"})
             print(j)
         elif (int(curr_hour) == 19 and int(curr_min) == 0 and int(curr_sec) == 0):
-            j = json.dumps({'hardware':TIME_TAG, 'time': "19", 'state':components[1], 'angle':components[0], 'inside_room':components[2]})
-        if(1 > 0):
+            j = json.dumps({'hardware':TIME_TAG, 'time': "19"})
+        if(arduino.inWaiting() > 0):
             try:
-                #msg = arduino.readLine()
-                msg_p = j.loads(msg)
-                tmp = list()
-                tmp.append(msg_p['state'])
-                tmp.append(msg_p['angle'])
+                msg = arduino.readline()
+                print("ARDUINO")
+                print(msg)
+                #msg_p = j.loads(msg)
+                #tmp = list()
+                #tmp.append(msg_p['state'])
+                #tmp.append(msg_p['angle'])
             
-                lock.acquire()
-                components[0] = tmp[0]
-                components[1] = tmp[1]
-                lock.release()
+                #lock.acquire()
+                #components[0] = tmp[0]
+                #components[1] = tmp[1]
+                #lock.release()
             except Exception as e:
+                print(e)
                 time.sleep(0.5)
             #read the message
             #msg = arduino.readline()
@@ -181,27 +184,29 @@ def startArduino():
             #such as Refresh, and It will return the infos about
         if (writes[1]):
             lock.acquire()
-            j = json.dumps({'hardware':LED_TAG, 'time': curr_hour, 'state':components[1], 'angle':components[0], 'inside_room':components[2]})
+            j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
+            print(j)
             #invia un msg contenente le info del led
             writes[1] = False
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
         if (writes[0]):
             lock.acquire()
-            j = json.dumps({'hardware':SERVO_TAG, 'time': curr_hour, 'state':components[1], 'angle':components[0], 'inside_room':components[2]})
+            j = json.dumps({'hardware':SERVO_TAG, 'angle':components[0]})
             #invia un msg contentente le info del servo
             writes[0] = False
+            print(j)
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
         if (writes[2]):
             lock.acquire()
-            j = json.dumps({'hardware':PIR_TAG, 'time': curr_hour, 'state':components[1], 'angle':components[0], 'inside_room':components[2]})
+            j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2]})
             writes[2] = False
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
             print(j)
         
-        time.sleep(2)
+        time.sleep(0.1)
         
 
 def initVariables():
