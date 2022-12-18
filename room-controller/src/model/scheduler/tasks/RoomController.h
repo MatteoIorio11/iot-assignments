@@ -16,7 +16,7 @@ class RoomController: public Task{
         Led *led;
         ServoMotor *servo;
         Bluetooth *bluetooth;
-        DynamicJsonDocument *btMsg;
+        //DynamicJsonDocument *btMsg;
         DynamicJsonDocument *serialMsg;
         void attachLed();
         void attachServo();
