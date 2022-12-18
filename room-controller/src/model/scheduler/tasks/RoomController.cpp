@@ -56,6 +56,7 @@ bool RoomController::readSerialMessage(){
 bool RoomController::readBtMessage(){
     if(this->bluetooth->isMsgAvailable()){//checking if the android has sent any messages
         Msg* msg = this->bluetooth->read();  
+        Serial.println(msg->getContent());
         char ar [256];  
         msg->getContent().toCharArray(ar, msg->getContent().length());
         deserializeJson(*this->serialMsg, ar); //deserializing of te JSON
@@ -73,7 +74,7 @@ void RoomController::tick(){
     {
         case RUNNING:
             //if we don't have any new message we don't do anything
-            
+            Serial.println("RUNNING");
             if(this->readSerialMessage())
             {
                 String el = (*this->serialMsg)["hardware"];
@@ -94,6 +95,7 @@ void RoomController::tick(){
                 }else if(el == "PIR"){
 
                 } else if(el == "TIME"){
+                    //Serial.print("HHHH");
                     //if time == 8.00
                     if((*this->serialMsg)["time"] == "8"){
                         this->state = WAITING_FOR_OPENING;
@@ -121,14 +123,16 @@ void RoomController::tick(){
             
             break;
         case WAITING_FOR_OPENING:
+            //Serial.println("WAITINGFOROPENING");    
             //if movement detected == true
-            if((*this->serialMsg)["inside_room"]){
+            if(this->readSerialMessage() && (*this->serialMsg)["inside_room"])
+            {
                 this->state = OPENING_ROLLER_BLINDS;
             }
             break;
         case WAITING_FOR_CLOSING:
             //if movement detected == false
-            if(!(*this->serialMsg)["inside_room"]){
+            if(this->readSerialMessage() && !(*this->serialMsg)["inside_room"]){
                 this->state = CLOSING_ROLLER_BLINDS;
             }
             break;

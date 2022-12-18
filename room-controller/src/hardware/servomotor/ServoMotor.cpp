@@ -29,5 +29,5 @@ void ServoMotor::close(){
 
 /// @brief fully open the sevo motor
 void ServoMotor::open(){
-    this->setOpening(100);    
+    this->setOpening(180);    
 }
