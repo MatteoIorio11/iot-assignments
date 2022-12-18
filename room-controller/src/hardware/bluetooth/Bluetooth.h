@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "SoftwareSerial.h"
-#include "Msg.h"
+#include "model/msg/Msg.h"
 
 class Bluetooth{
     private:
