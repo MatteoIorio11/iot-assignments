@@ -1,7 +1,7 @@
 #ifndef __CONSTANTS__
 #define __CONSTANTS__
 
-#define WHOIS "Romm Sensor-Board"
+#define WHOIS "Room Sensor-Board"
 
 // ==================================================================
 // PIR'S CONSTANTS:
@@ -14,7 +14,7 @@
 // ==================================================================
 // PHOTORESISTOR'S CONSTANTS:
 
-#define PIN_PHOTORESISTOR 11
+#define PIN_PHOTORESISTOR 4
 #define LUMINOSITY_LOWERBOUND (double)2
 #define DIVISION_CONSTANT 5/1024
 // ==================================================================
