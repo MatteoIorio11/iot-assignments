@@ -9,7 +9,8 @@ LightSystem::LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* cl
     this->pin_led = pin_led;
     this->pin_pir = pin_pir;
     this->pin_photo = pin_photo;
-    this->state = LED_OFF;
+    this->light_timer = 0;
+    this->state = NOBODY;
     this->client = client;
     this->init();
 }
@@ -35,37 +36,59 @@ void LightSystem::attachPir(){
 void LightSystem::attachPhotoresistor(){
     this->photoresistor = new Photoresistor(this->pin_photo);
 }
-
+/// @brief Check the luminosity of the room, in order to turn on the light or turn off the light.
 void LightSystem::checkLuminosity(){
-    if(this->photoresistor->readValue() >= 0 and this->photoresistor->readValue() < LUMINOSITY_LOWERBOUND){
+    double lum = this->photoresistor->readValue();
+    LedState prevState = this->led->getState();
+    if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
         this->led->ledOn();            // Turning ON the led
     }else{
-        this->led->ledOn();           // Turning OFF the led
+        this->led->ledOff();           // Turning OFF the led
+    }
+    if(prevState != this->led->getState()){
+
     }
 }
 
-/// @brief State Machine of the LightSystem
+void LightSystem::sendMessage(){
+    LedState prevState = this->led->getState(); // Get the prev state
+    this->checkLuminosity();                    // The person is still inside the room, the light remains ON if there is no light outside
+    if(prevState != this->led->getState()){
+        this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState())); // Write only if the state is changed
+    }
+}
+
+/// @brief State Machine of the LightSystem. The light remains ON until the PIR does not detect any motion
 void LightSystem::tick(){
     switch (this->state)
     {
-    case LED_OFF:
-        if(this->pir->readValue() == HIGH){
-            this->led->ledOn();
-            this->state = LED_ON;
-            Serial.println("DETECTED");
-            //this->client->sendMessage(JsonSerializer::serialize(this->state));
-        }
-        break;
-    
-    case LED_ON:
-        this->checkLuminosity();
-        if(this->pir->readValue() == HIGH){
-            this->led->ledOff();
-            this->state = LED_OFF;
-            //this->client->sendMessage(JsonSerializer::serialize(this->state));
-        }
-        break;
+        case NOBODY:
+            if(this->pir->readValue() == HIGH){
+                this->light_timer = 0;                  // Reset timer
+                this->state = INSIDE_ROOM;              // Someone is inside the room
+                this->checkLuminosity();                // The person is still inside the room, the light remains ON if there is no light outside
+                this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
+            }
+            break;
+        
+        case INSIDE_ROOM:
+            if(this->light_timer >= LIGHT_TIMER(TIMER_PERIOD)){
+                // If after 10 seconds nobody is in the room, the light must be OFF.
+                this->light_timer = 0;                  // Reset of the timer
+                this->state = NOBODY;                   // No activity inside the room, the light is off
+                this->led->ledOff();                    // Shut the led
+                this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
+            }else{
+                if(this->pir->readValue() == HIGH){
+                    // A person is still inside the room. the state must be INSIDE_ROOM
+                    this->light_timer = 0;                      // Reset of the timer, the person is still inside the room
+                }else{
+                    this->light_timer++;                        // No activity, the timer is incremented
+                }
+                this->sendMessage();
+            }
+            break;
     }
     
 }

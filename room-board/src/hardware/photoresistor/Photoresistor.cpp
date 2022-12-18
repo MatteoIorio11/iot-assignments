@@ -13,8 +13,10 @@ int Photoresistor::getPin(){
     return this->pin;
 }
 
+/// @brief Read the value from the Photoresistor, used in order to understand if the led must go ON or OFF
+/// @return return the value in voltage read from the photoresistor
 double Photoresistor::readValue(){
-        int value = analogRead(this->pin);
-    return ((double) value) * DIVISION_CONTANT;
+    int value = analogRead(this->pin);
+    return ((double) value) * 5/1024;
 }
 

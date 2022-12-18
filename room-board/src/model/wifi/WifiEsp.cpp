@@ -23,7 +23,6 @@ void WiFiEsp::connect(){
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
-    
 }
 
 

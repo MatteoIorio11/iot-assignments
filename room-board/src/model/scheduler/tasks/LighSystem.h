@@ -11,7 +11,7 @@
 
 class LightSystem: public Task{
     private:
-        int pin_led, pin_pir, pin_photo;
+        int pin_led, pin_pir, pin_photo, light_timer;
         LightSystemState state;
         Led *led;
         Pir *pir;
@@ -21,6 +21,7 @@ class LightSystem: public Task{
         void attachPir();
         void attachPhotoresistor();
         void checkLuminosity();
+        void sendMessage();
     public:
         LightSystem(int pin_led, int pin_pir, int pin_photo, MqttClient* client);
         void init();
