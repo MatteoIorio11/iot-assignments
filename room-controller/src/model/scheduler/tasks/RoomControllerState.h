@@ -8,7 +8,8 @@ enum RoomControllerState{
     OPENING_ROLLER_BLINDS = 3,
     CLOSING_ROLLER_BLINDS = 4,
     SETTING_LED_OFF = 5,
-    SETTING_LED_ON = 6
+    SETTING_LED_ON = 6,
+    SETTING_ANGLE = 7
 
 };
 
