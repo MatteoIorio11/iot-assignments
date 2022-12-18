@@ -16,7 +16,7 @@
 // SERVO MOTOR'S CONSTANTS
 #define ZERO_SERVO 550
 #define FLAT_ANGLE_SERVO 2300
-#define FLAT_ANGLE 100
+#define FLAT_ANGLE 180
 // ==================================================================
 
 
