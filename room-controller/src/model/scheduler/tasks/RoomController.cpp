@@ -17,8 +17,8 @@ RoomController::RoomController(int pin_led, int pin_servo, int RX_pin, int TX_pi
 void RoomController::init(){
     this->attachLed();
     this->attachServo();
-    this->btMsg = new DynamicJsonDocument(256);
-    this->serialMsg = new DynamicJsonDocument(256);
+    //this->btMsg = new DynamicJsonDocument(256);
+    this->serialMsg = new DynamicJsonDocument(128);
     this->bluetooth = new Bluetooth(this->RX_pin, this->TX_pin);
     MsgService.init();
 }
@@ -38,8 +38,8 @@ void RoomController::attachServo(){
 /// @return true if the message was advailable false otherwise
 bool RoomController::readSerialMessage(){
     if (MsgService.isMsgAvailable()) {
-        Msg* msg = MsgService.receiveMsg();    
-        DynamicJsonDocument doc(256);
+        Msg* msg = MsgService.receiveMsg();   
+        Serial.println(msg->getContent()); 
         char ar [256];
         msg->getContent().toCharArray(ar, msg->getContent().length());
         deserializeJson(*this->serialMsg, ar); //deserializing of te JSON
@@ -58,33 +58,39 @@ bool RoomController::readBtMessage(){
         Msg* msg = this->bluetooth->read();  
         char ar [256];  
         msg->getContent().toCharArray(ar, msg->getContent().length());
-        deserializeJson(*this->btMsg, ar); //deserializing of te JSON
+        deserializeJson(*this->serialMsg, ar); //deserializing of te JSON
         delete msg;
         return true;
     }else{
         return false;
     }
 }
-
+int angle;
 /// @brief State Machine of the RoomController
 void RoomController::tick(){
+    
     switch (this->state)
     {
         case RUNNING:
             //if we don't have any new message we don't do anything
+            
             if(this->readSerialMessage())
             {
                 String el = (*this->serialMsg)["hardware"];
                 if(el =="LED"){
-                    if((*this->serialMsg)["state"] == "ON"){
+                    Serial.println("LED");
+                    if((*this->serialMsg)["state"]){
+                        Serial.println("LED ON");
                         this->state = SETTING_LED_ON;
                     }
                     //if switch to OFF
-                    if((*this->serialMsg)["state"] == "ON"){
+                    if(!(*this->serialMsg)["state"]){
                         this->state = SETTING_LED_OFF;
                     }
                 }else if(el == "SERVOMOTOR"){
-
+                    angle = (int)((*this->serialMsg)["angle"]);
+                    Serial.println(angle);
+                    this->state = SETTING_ANGLE;
                 }else if(el == "PIR"){
 
                 } else if(el == "TIME"){
@@ -98,16 +104,19 @@ void RoomController::tick(){
                     }
                 }
             }
+            /*
             if(this->readBtMessage()){
                 //if switch to ON
-                if((*this->btMsg)["state"] == "ON"){
+                if((*this->serialMsg)["state"] == "ON"){
                     this->state = SETTING_LED_ON;
                 }
                 //if switch to OFF
-                if((*this->btMsg)["state"] == "OFF"){
+            
+                if((*this->serialMsg)["state"] == "OFF"){
                     this->state = SETTING_LED_OFF;
                 }
             }
+            */
             
             
             break;
@@ -139,11 +148,15 @@ void RoomController::tick(){
             this->state = RUNNING;
             break;
         case SETTING_LED_ON:
-
-            Serial.println("ON");
             //turning the led on then going back to RUNNING
             this->led->ledOn();
             this->state = RUNNING;
             break;
+        case SETTING_ANGLE:
+        Serial.println(angle);
+            this->servo->setOpening(angle);
+            this->state = RUNNING;
+            break;
     }
+    
 }
