@@ -8,8 +8,8 @@ const label_servo = document.getElementById("lbl_servo");
 const slider = document.getElementById("slider_angle");
 // Buttons for refresh 
 const btn_seconds = document.getElementById("get_seconds"); 
-const btn_get_led = document.getElementById("get_led");
-const btn_get_servo = document.getElementById("get_servo");
+//const btn_get_led = document.getElementById("get_led");
+//const btn_get_servo = document.getElementById("get_servo");
 // Manage the Room Controller
 const btn_set_led_on = document.getElementById("set_led_on");
 const btn_set_led_off = document.getElementById("set_led_off");
@@ -22,7 +22,7 @@ btn_seconds.addEventListener("click", e =>{
         label_seconds.innerHTML = `Light on for : ${seconds} s all day`;
     });    
 });
-
+/*
 btn_get_led.addEventListener("click", e=> {
     let state = "";
     axios.get('http://127.0.0.100:5000/api/led').then(function (response) {
@@ -38,7 +38,7 @@ btn_get_servo.addEventListener("click", e => {
         label_servo.innerHTML = `Servo's angle : ${angle}`;
     });
 });
-
+*/
 btn_set_led_on.addEventListener("click", e => {
     axios.get('http://127.0.0.100:5000/api/led?state=ON').then(function(response){
         state = response["data"]["state"];
