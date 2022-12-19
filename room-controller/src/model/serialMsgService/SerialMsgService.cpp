@@ -40,6 +40,5 @@ void SerialMsgService::serialEvent() {
       content = Serial.readString();
       MsgService.currentMsg = new Msg(content);
       MsgService.msgAvailable = true;   
-      Serial.println("AA");  
   }
 }

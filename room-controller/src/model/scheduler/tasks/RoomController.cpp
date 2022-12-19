@@ -17,7 +17,7 @@ RoomController::RoomController(int pin_led, int pin_servo, int RX_pin, int TX_pi
 void RoomController::init(){
     this->attachLed();
     this->attachServo();
-    //this->btMsg = new DynamicJsonDocument(256);
+    this->btMsg = new DynamicJsonDocument(256);
     this->serialMsg = new DynamicJsonDocument(128);
     this->bluetooth = new Bluetooth(this->RX_pin, this->TX_pin);
     MsgService.init();
@@ -55,6 +55,7 @@ bool RoomController::readSerialMessage(){
 /// @return true if the message was advailable false otherwise
 bool RoomController::readBtMessage(){
     if(this->bluetooth->isMsgAvailable()){//checking if the android has sent any messages
+        
         Msg* msg = this->bluetooth->read();  
         Serial.println(msg->getContent());
         char ar [256];  
@@ -74,14 +75,13 @@ void RoomController::tick(){
     {
         case RUNNING:
             //if we don't have any new message we don't do anything
-            Serial.println("RUNNING");
+            //Serial.println("RUNNING");
             if(this->readSerialMessage())
             {
                 String el = (*this->serialMsg)["hardware"];
                 if(el =="LED"){
                     Serial.println("LED");
                     if((*this->serialMsg)["state"]){
-                        Serial.println("LED ON");
                         this->state = SETTING_LED_ON;
                     }
                     //if switch to OFF
@@ -93,7 +93,11 @@ void RoomController::tick(){
                     Serial.println(angle);
                     this->state = SETTING_ANGLE;
                 }else if(el == "PIR"){
-
+                    if((*this->serialMsg)["lum"]){
+                        this->state = SETTING_LED_ON;
+                    }else{
+                        this->state = SETTING_LED_OFF;
+                    }
                 } else if(el == "TIME"){
                     //Serial.print("HHHH");
                     //if time == 8.00
@@ -106,8 +110,9 @@ void RoomController::tick(){
                     }
                 }
             }
-            /*
+            
             if(this->readBtMessage()){
+                Serial.println("BT");
                 //if switch to ON
                 if((*this->serialMsg)["state"] == "ON"){
                     this->state = SETTING_LED_ON;
@@ -118,7 +123,6 @@ void RoomController::tick(){
                     this->state = SETTING_LED_OFF;
                 }
             }
-            */
             
             
             break;
