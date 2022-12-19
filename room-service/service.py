@@ -180,36 +180,7 @@ def startArduino():
             seven = True
             j = json.dumps({'hardware':TIME_TAG, 'time': "19"})
             arduino.write(bytes(j, 'utf-8'))
-        if(arduino.inWaiting() > 0):
-            try:
-                msg = arduino.readline()
-                print("ARDUINO")
-                print(msg)
-                #msg_p = j.loads(msg)
-                #tmp = list()
-                #tmp.append(msg_p['state'])
-                #tmp.append(msg_p['angle'])
-            
-                #lock.acquire()
-                #components[0] = tmp[0]
-                #components[1] = tmp[1]
-                #lock.release()
-            except Exception as e:
-                print(e)
-                time.sleep(0.5)
-            #read the message
-            #msg = arduino.readline()
-            #msg_dese = json.loads(msg)
-            #save the infos about Servo and Led inside a variable and the there will be a button inside the Dashboard
-            #such as Refresh, and It will return the infos about
-        if (writes[1]):
-            lock.acquire()
-            j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
-            print(j)
-            #invia un msg contenente le info del led
-            writes[1] = False
-            lock.release()
-            arduino.write(bytes(j, 'utf-8'))
+        # Write the Servo's infomrations
         if (writes[0]):
             lock.acquire()
             j = json.dumps({'hardware':SERVO_TAG, 'angle':components[0]})
@@ -218,9 +189,19 @@ def startArduino():
             print(j)
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
+        # Write the Led's informations
+        if (writes[1]):
+            lock.acquire()
+            j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
+            print(j)
+            #invia un msg contenente le info del led
+            writes[1] = False
+            lock.release()
+            arduino.write(bytes(j, 'utf-8'))
+        # Write the Pir's informations
         if (writes[2]):
             lock.acquire()
-            j = json.dumps({'hardware':PIR_TAG, 'lum': components[3], 'inside_room':components[2]})
+            j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2], 'lum': components[3]})
             writes[2] = False
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
