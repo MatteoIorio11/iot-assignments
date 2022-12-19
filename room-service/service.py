@@ -73,7 +73,7 @@ def calcTime(json_message: dict, total_t: int, start_t: int, res: list, w:list):
     if json_message["inside_room"] == False:
         lock.acquire()
         components[2] = False
-        components[3] = False if json_message["state"] == "OFF" else True
+        components[3] = False
         lock.release()
         if(res[0] >= 0):
             total_time += get_sec(json_message["time"]) - res[0]
@@ -86,14 +86,20 @@ def calcTime(json_message: dict, total_t: int, start_t: int, res: list, w:list):
             #get the start's seconds of the LED ON 
             start_time = get_sec(json_message["time"])
             res[0] = start_time
+            lock.acquire()
             components[3] = True
+            lock.release()
+
 
         else:
             if(res[0] > 0):
                 if(res[0] >= 0):
                     total_time += get_sec(json_message["time"]) - res[0]
                     res[1] += total_time
+                    lock.acquire()
                     components[3] = False
+                    lock.release()
+
 
     
 
