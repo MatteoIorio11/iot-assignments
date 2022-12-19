@@ -22,6 +22,7 @@ PIR_TAG = "PIR"
 #components[0] = Servo's angle
 #components[1] = Led's state
 #components[2] = PIR's relevation
+#components[3] = Photoresistor's relevation
 components = list()
 #writes[0] = writeServo
 #writes[1] = writeLed
@@ -55,7 +56,7 @@ def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list, w:list
     def on_message(client, userdata, msg):
         #print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         json_message = json.loads(msg.payload.decode())
-        calcTime(json_message, total_t, start_t, res, w)
+        calcTime(json_message, total_t, start_t, res, w, c)
                 
 
     client.subscribe(topic)
@@ -72,6 +73,7 @@ def calcTime(json_message: dict, total_t: int, start_t: int, res: list, w:list):
     if json_message["inside_room"] == False:
         lock.acquire()
         components[2] = False
+        components[3] = False if json_message["state"] == "OFF" else True
         lock.release()
         if(res[0] >= 0):
             total_time += get_sec(json_message["time"]) - res[0]
@@ -84,11 +86,15 @@ def calcTime(json_message: dict, total_t: int, start_t: int, res: list, w:list):
             #get the start's seconds of the LED ON 
             start_time = get_sec(json_message["time"])
             res[0] = start_time
+            components[3] = True
+
         else:
             if(res[0] > 0):
                 if(res[0] >= 0):
                     total_time += get_sec(json_message["time"]) - res[0]
                     res[1] += total_time
+                    components[3] = False
+
     
 
 ### CONVERT HH:MM:SS into seconds
@@ -208,7 +214,7 @@ def startArduino():
             arduino.write(bytes(j, 'utf-8'))
         if (writes[2]):
             lock.acquire()
-            j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2]})
+            j = json.dumps({'hardware':PIR_TAG, 'lum': components[3], 'inside_room':components[2]})
             writes[2] = False
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
@@ -227,6 +233,7 @@ def initVariables():
     writes.append(False) # Write PIR's information
     # Components of our system
     components.append(0)
+    components.append(False)
     components.append(False)
     components.append(False)
 
