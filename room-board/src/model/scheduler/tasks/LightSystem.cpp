@@ -42,12 +42,9 @@ void LightSystem::checkLuminosity(){
     LedState prevState = this->led->getState();
     if(lum >= 0 and lum < LUMINOSITY_LOWERBOUND){
         //There is no much light, so the led must be on
-        this->led->changeState();            // Turning ON the led
+        this->led->stateOn();            // changing the state to ON 
     }else{
-        this->led->changeState();           // Turning OFF the led
-    }
-    if(prevState != this->led->getState()){
-
+        this->led->stateOff();           // changing the state to OFF
     }
 }
 
@@ -78,7 +75,7 @@ void LightSystem::tick(){
                 // If after 10 seconds nobody is in the room, the light must be OFF.
                 this->light_timer = 0;                  // Reset of the timer
                 this->state = NOBODY;                   // No activity inside the room, the light is off
-                this->led->turnOff();                    // Shut the led
+                this->led->turnOff();                   // Shut the led
                 this->client->sendMessage(JsonSerializer::serialize(this->state, this->led->getState()));
             }else{
                 if(this->pir->readValue() == HIGH){

@@ -14,7 +14,7 @@ lock = threading.Lock()
 # ==================== SETUP THE SERVER
 app = Flask(__name__)
 # ==================== SETUP ARDUINO
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+#arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 LED_TAG = "LED"
 SERVO_TAG = "SERVOMOTOR"
 TIME_TAG = "TIME"
@@ -22,7 +22,7 @@ PIR_TAG = "PIR"
 #components[0] = Servo's angle
 #components[1] = Led's state
 #components[2] = PIR's relevation
-#components[3] = Photoresistor's relevation
+#components[3] = Photoresistor's value
 components = list()
 #writes[0] = writeServo
 #writes[1] = writeLed
@@ -54,9 +54,9 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list, w:list):
     def on_message(client, userdata, msg):
-        #print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         json_message = json.loads(msg.payload.decode())
-        calcTime(json_message, total_t, start_t, res, w, c)
+        calcTime(json_message, total_t, start_t, res, w)
                 
 
     client.subscribe(topic)
@@ -229,10 +229,10 @@ def run():
     initVariables()    
     mqtt_thread = Thread(target=startClient)
     server_thread = Thread(target=startServer)
-    arduino_thread = Thread(target=startArduino)
+    #arduino_thread = Thread(target=startArduino)
     mqtt_thread.start()
     server_thread.start()
-    arduino_thread.start()
+    #arduino_thread.start()
     
 
 
