@@ -9,15 +9,19 @@ Led::Led(int pin){
 }
 
 /// @brief Turn on the led
-void Led::ledOn(){
+void Led::turnOn(){
     this->state = LED_ON;
     digitalWrite(this->pin, HIGH);
 }
 
 /// @brief Turn Off the led
-void Led::ledOff(){
+void Led::turnOff(){
     this->state = LED_OFF;
     digitalWrite(this->pin, LOW);
+}
+/// @brief Change the state of the led for the Room Controller's Led
+void Led::changeState(){
+    this->state = this->state == LED_ON ? LED_OFF : LED_ON;
 }
 
 

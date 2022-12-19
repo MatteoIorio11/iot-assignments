@@ -11,8 +11,9 @@ class Led: public Hardware{
         LedState state;
     public:
         Led(int pin);
-        void ledOn();
-        void ledOff();
+        void changeState();
+        void turnOn();
+        void turnOff();
         int getPin();
         int readValue();
         LedState getState();
