@@ -55,7 +55,6 @@ bool RoomController::readSerialMessage(){
 bool RoomController::readBtMessage(){
     if(this->bluetooth->isMsgAvailable()){//checking if the android has sent any messages
         Msg* msg = this->bluetooth->read();  
-        Serial.println(msg->getContent());
         char ar [256];  
         msg->getContent().toCharArray(ar, msg->getContent().length());
         deserializeJson(*this->btMsg, ar); //deserializing of te JSON
@@ -65,7 +64,20 @@ bool RoomController::readBtMessage(){
         return false;
     }
 }
-int angle;
+/// @brief it sets the led to ON
+void RoomController::setLedON(){
+    this->led->ledOn();
+}
+/// @brief it sets the led to OFF
+void RoomController::setLedOFF(){
+    this->led->ledOff();
+}
+/// @brief it sets the angle of the servo to the given one
+/// @param angle 
+void RoomController::setAngle(int angle){
+    this->servo->setOpening(angle);
+}
+
 /// @brief State Machine of the RoomController
 void RoomController::tick(){
     
@@ -73,38 +85,33 @@ void RoomController::tick(){
     {
         case RUNNING:
             //if we don't have any new message we don't do anything
-            //Serial.println("RUNNING");
             if(this->readSerialMessage())
             {
                 String el = (*this->serialMsg)["hardware"];
                 if(el =="LED"){
-                    Serial.println("LED");
                     if((*this->serialMsg)["state"]){
-                        this->state = SETTING_LED_ON;
+                        this->setLedON();
                     }
                     //if switch to OFF
                     if(!(*this->serialMsg)["state"]){
-                        this->state = SETTING_LED_OFF;
+                        this->setLedOFF();
                     }
                 }else if(el == "SERVOMOTOR"){
-                    angle = (int)((*this->serialMsg)["angle"]);
-                    Serial.println(angle);
-                    this->state = SETTING_ANGLE;
+                    this->setAngle((int)((*this->serialMsg)["angle"]));
                 }else if(el == "PIR"){
                     if((*this->serialMsg)["lum"]){
-                        this->state = SETTING_LED_ON;
+                        this->setLedON();
                     }else{
-                        this->state = SETTING_LED_OFF;
+                        this->setLedOFF();
                     }
                 } else if(el == "TIME"){
-                    //Serial.print("HHHH");
                     //if time == 8.00
                     if((*this->serialMsg)["time"] == "8"){
                         this->state = WAITING_FOR_OPENING;
                     }
                     //if time == 19.00
                     if((*this->serialMsg)["time"] == "19"){
-                        //this->state = WAITING_FOR_CLOSING;
+                        this->state = WAITING_FOR_CLOSING;
                     }
                 }
             }
@@ -115,61 +122,36 @@ void RoomController::tick(){
                 if(el == "LED"){
                     //if switch to ON
                     if((*this->btMsg)["state"]){
-                        this->state = SETTING_LED_ON;
+                        this->setLedON();
                     }
                     //if switch to OFF
                 
                     if(!(*this->btMsg)["state"]){
-                        this->state = SETTING_LED_OFF;
+                        this->setLedOFF();
                     }
                 }else if (el == "SERVOMOTOR"){
-                        angle = (*this->btMsg)["angle"];
-                        this->state = SETTING_ANGLE;
+                        this->setAngle((*this->btMsg)["angle"]);
                     }
                 }
             
             
             break;
-        case WAITING_FOR_OPENING:
-            //Serial.println("WAITINGFOROPENING");    
+        case WAITING_FOR_OPENING: 
             //if movement detected == true
             if(this->readSerialMessage() && (*this->serialMsg)["inside_room"])
             {
-                this->state = OPENING_ROLLER_BLINDS;
+                //open roller blinds then going back to RUNNING
+                this->servo->open();
+                this->state = RUNNING;
             }
             break;
         case WAITING_FOR_CLOSING:
             //if movement detected == false
             if(this->readSerialMessage() && !(*this->serialMsg)["inside_room"]){
-                this->state = CLOSING_ROLLER_BLINDS;
+                //close roller blinds then going back to RUNNING
+                this->servo->close();
+                this->state = RUNNING;
             }
             break;
-        case OPENING_ROLLER_BLINDS:
-            //open roller blinds then going back to RUNNING
-            this->servo->open();
-            this->state = RUNNING;
-            break;
-        case CLOSING_ROLLER_BLINDS:
-            //close roller blinds then going back to RUNNING
-            this->servo->close();
-            this->state = RUNNING;
-            break;
-        case SETTING_LED_OFF:
-            //turning the led off then going back to RUNNING
-            this->led->ledOff();
-            this->state = RUNNING;
-            break;
-        case SETTING_LED_ON:
-            //turning the led on then going back to RUNNING
-            this->led->ledOn();
-            this->state = RUNNING;
-            break;
-        case SETTING_ANGLE:
-        Serial.println(angle);
-            this->servo->setOpening(angle);
-            this->state = RUNNING;
-            break;
     }
-
-    
 }

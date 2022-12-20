@@ -23,6 +23,9 @@ class RoomController: public Task{
         void attachServo();
         bool readSerialMessage();
         bool readBtMessage();
+        void setLedOFF();
+        void setLedON();
+        void setAngle(int angle);
     public:
         RoomController(int pin_led, int pin_servo, int RX_pin, int TX_pin);
         void init();
