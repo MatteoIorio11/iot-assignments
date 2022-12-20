@@ -1,106 +1,262 @@
 package com.example.room_app;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.Switch;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private Switch ledSwitch;
-    private SeekBar servoBar;
 
-    public static final int REQUEST_ENABLE_BT=1;
-    ListView lv_paired_devices;
-    Set<BluetoothDevice> set_pairedDevices;
-    ArrayAdapter adapter_paired_devices;
-    BluetoothAdapter bluetoothAdapter;
-    public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    public static final int MESSAGE_READ=0;
-    public static final int MESSAGE_WRITE=1;
-    public static final int CONNECTING=2;
-    public static final int CONNECTED=3;
-    public static final int NO_SOCKET_FOUND=4;
+    private static final int REQUEST_ENABLE_BT = 1234;
+    private static final int REQUEST_PERMISSION_CONNECT = 758;
+    private static final int REQUEST_PERMISSION_SCAN = 759;
 
 
-    String bluetooth_message="00";
+    public static final String X_BLUETOOTH_DEVICE_EXTRA = "X_BLUETOOTH_DEVICE_EXTRA";
 
+    private List<BluetoothDevice> scannedDevices = new ArrayList<>();
+    private List<String> scannedNameList = new ArrayList<>();
 
-    @SuppressLint("HandlerLeak")
-    Handler mHandler=new Handler()
-    {
-        @Override
-        public void handleMessage(Message msg_type) {
-            super.handleMessage(msg_type);
+    private List<BluetoothDevice> pairedDevices = new ArrayList<>();
+    private List<String> pairedNameList = new ArrayList<>();
+    private BluetoothAdapter btAdapter;
 
-            switch (msg_type.what){
-                case MESSAGE_READ:
+    private ListView scannedListView;
+    private ListView pairedListView;
+    private Button scanButton;
+    private ArrayAdapter<String> scannedListAdapter;
+    private ArrayAdapter<String> pairedListAdapter;
+    private boolean bluetoothEnabled = false;
 
-                    byte[] readbuf=(byte[])msg_type.obj;
-                    String string_recieved=new String(readbuf);
-
-                    //do some task based on recieved string
-
-                    break;
-                case MESSAGE_WRITE:
-
-                    if(msg_type.obj!=null){
-                        ConnectedThread connectedThread=new ConnectedThread((BluetoothSocket)msg_type.obj);
-                        connectedThread.write(bluetooth_message.getBytes());
-
-                    }
-                    break;
-
-                case CONNECTED:
-                    Toast.makeText(getApplicationContext(),"Connected",Toast.LENGTH_SHORT).show();
-                    break;
-
-                case CONNECTING:
-                    Toast.makeText(getApplicationContext(),"Connecting...",Toast.LENGTH_SHORT).show();
-                    break;
-
-                case NO_SOCKET_FOUND:
-                    Toast.makeText(getApplicationContext(),"No socket found",Toast.LENGTH_SHORT).show();
-                    break;
+    //When new bluetooth devices are discovered Bluetooth the system sends out an event.
+    //A broadcast receiver is needed to capture system events and react accordingly
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                onBluetoothDeviceFound(device);
             }
         }
     };
+
+    @SuppressLint("MissingPermission")
+    private void onBluetoothDeviceFound(BluetoothDevice device) {
+        this.scannedDevices.add(device);
+        if(device.getName()!= null){
+            this.scannedNameList.add(device.getName());
+        } else {
+            this.scannedNameList.add(device.getAddress());
+        }
+        runOnUiThread(() -> scannedListAdapter.notifyDataSetChanged());
+    }
+
+    /* ================== LIFECYCLE ========================== */
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.ledSwitch = findViewById(R.id.ledSwitch);
-        this.servoBar = findViewById(R.id.servoBar);
-        this.BA = BluetoothAdapter.getDefaultAdapter();
+
+        //You need to register your receiver to the proper Intent filter
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(receiver, filter);
+
+        initUI();
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void initUI() {
+
+
+        scannedListView = findViewById(R.id.scannedView);
+
+        //the adapter will let you update the view notifying changes to the data source
+        scannedListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, scannedNameList);
+        scannedListView.setAdapter(scannedListAdapter);
+
+        //registering listeners
+        scannedListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            onDeviceClicked(scannedDevices.get(i));
+        });
+
+        //repeating for paired listview
+        pairedListView = findViewById(R.id.pairedView);
+        pairedListAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, pairedNameList);
+        pairedListView.setAdapter(pairedListAdapter);
+
+        pairedListView.setOnItemClickListener((adapterView, view, i, l) -> {
+            onDeviceClicked(pairedDevices.get(i));
+        });
+
+        scanButton = findViewById(R.id.scan_button);
+        scanButton.setOnClickListener((v) -> startScanning());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onStart() {
+        btAdapter = getSystemService(BluetoothManager.class).getAdapter();
+        if (btAdapter == null) {
+            displayError("Bluetooth not supported!");
+            finish();
+        }
         super.onStart();
-        this.ledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-            }
-        });
-        this.servoBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-            }
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                // TODO Auto-generated method stub
-            }
-        });
+        this.scanButton.setEnabled(false);
+        checkPermissionAndEnableBluetooth();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            //do not ask for permissions on resume otherwise you will get in a loop!
+            displayError("Please grant permissions first");
+        } else {
+            pairedDevices.clear();
+            pairedNameList.clear();
+            runOnUiThread(() -> pairedListAdapter.notifyDataSetChanged());
+            pairedDevices.addAll(btAdapter.getBondedDevices());
+            if (pairedDevices.size() > 0) {
+                // There are paired devices. Get the name and address of each paired device.
+                for (BluetoothDevice device : pairedDevices) {
+                    if(device.getName()!= null){
+                        this.pairedNameList.add(device.getName());
+                    } else {
+                        this.pairedNameList.add(device.getAddress());
+                    }
+                    runOnUiThread(() -> pairedListAdapter.notifyDataSetChanged());
+                }
+            }
+        }
+    }
+
+    /* ================== UI EVENT HANDLERS ========================== */
+
+    @SuppressLint("MissingPermission")
+    private void onDeviceClicked(BluetoothDevice device) {
+        logMessage(device.getName());
+        Intent intent = new Intent(this, LedSwitchActivity.class);
+        intent.putExtra(X_BLUETOOTH_DEVICE_EXTRA, device);
+        startActivity(intent);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void startScanning() {
+        //ask the scanning permission when needed
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.BLUETOOTH_SCAN}, REQUEST_PERMISSION_SCAN);
+            return;
+        } else {
+            //empty lists
+            if(!btAdapter.isDiscovering()) {
+                checkPermissionAndEnableBluetooth();
+                scannedDevices.clear();
+                scannedNameList.clear();
+                runOnUiThread(() -> scannedListAdapter.notifyDataSetChanged());
+                //debounce to avoid multiple discoveries
+                btAdapter.startDiscovery();
+            } else {
+                displayError("Already scanning! Wait please");
+            }
+        }
+    }
+
+    /* ================== PERMISSION MANAGEMENT ========================== */
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissionAndEnableBluetooth(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.BLUETOOTH_CONNECT}, REQUEST_PERMISSION_CONNECT);
+        } else {
+            if (!btAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            } else {
+                this.scanButton.setEnabled(true);
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_PERMISSION_CONNECT:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //go back to enabling bluetooth
+                    checkPermissionAndEnableBluetooth();
+                } else {
+                    //note, since android 11 permissions are asked only twice to the user.
+                    // You should avoid terminating your app and instead maybe redirect the user to the settings to enable the permission manually
+                    displayError("You need to grant bluetooth connection permissions to use this app");
+                }
+                break;
+            case REQUEST_PERMISSION_SCAN:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //go back at scanning after receiving the permission
+                    startScanning();
+                } else {
+                    displayError( "You need to grant bluetooth scan permission to use this feature");
+                }
+                break;
+            default:
+                logMessage("result of unknown activity request");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                if(resultCode == RESULT_OK) {
+                    this.scanButton.setEnabled(true);
+                } else {
+                    displayError("You need to enable bluetooth to use the app");
+                }
+                break;
+            default:
+                logMessage("result of unknown activity request");
+        }
+    }
+
+    /* ================== LOGGING AND ERROR HANDLING ========================== */
+
+    private void displayError(String s) {
+        Log.e(C.TAG, s);
+    }
+
+    private void logMessage(String message){
+        Log.i(C.TAG, message);
+    }
 }
