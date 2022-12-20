@@ -26,6 +26,7 @@ PIR_TAG = "PIR"
 components = list()
 #writes[0] = writeServo
 #writes[1] = writeLed
+#writes[2] = Pir
 writes = list()
 
 # ==================== SETUP MQTT
@@ -54,7 +55,7 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list, w:list):
     def on_message(client, userdata, msg):
-        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        #print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         json_message = json.loads(msg.payload.decode())
         calcTime(json_message, total_t, start_t, res, w)
                 
@@ -168,6 +169,7 @@ def startArduino():
     eigth = False   
     seven = False
     while True:
+        print(writes[1])
         curr_hour, curr_min, curr_sec  = str(datetime.now().time()).split(':')
         if(int(curr_hour) == 17 and int(curr_min) == 55 and int(float(curr_sec)) == 10 and eigth==False):
             j = json.dumps({'hardware': TIME_TAG, 'time': "8"})
@@ -182,26 +184,26 @@ def startArduino():
             arduino.write(bytes(j, 'utf-8'))
         # Write the Servo's infomrations
         if (writes[0]):
-            lock.acquire()
             j = json.dumps({'hardware':SERVO_TAG, 'angle':components[0]})
             #invia un msg contentente le info del servo
+            lock.acquire()
             writes[0] = False
             print(j)
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
         # Write the Led's informations
         if (writes[1]):
-            lock.acquire()
             j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
             print(j)
+            lock.acquire()
             #invia un msg contenente le info del led
             writes[1] = False
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
         # Write the Pir's informations
         if (writes[2]):
-            lock.acquire()
             j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2], 'lum': components[3]})
+            lock.acquire()
             writes[2] = False
             lock.release()
             arduino.write(bytes(j, 'utf-8'))
@@ -229,10 +231,10 @@ def run():
     initVariables()    
     mqtt_thread = Thread(target=startClient)
     server_thread = Thread(target=startServer)
-    #arduino_thread = Thread(target=startArduino)
+    arduino_thread = Thread(target=startArduino)
     mqtt_thread.start()
     server_thread.start()
-    #arduino_thread.start()
+    arduino_thread.start()
     
 
 
