@@ -39,6 +39,7 @@ void RoomController::attachServo(){
 bool RoomController::readSerialMessage(){
     if (MsgService.isMsgAvailable()) {
         Msg* msg = MsgService.receiveMsg();   
+        Serial.println("AAAA");
         Serial.println(msg->getContent()); 
         char ar [256];
         msg->getContent().toCharArray(ar, msg->getContent().length());
@@ -75,9 +76,9 @@ void RoomController::tick(){
     {
         case RUNNING:
             //if we don't have any new message we don't do anything
-            //Serial.println("RUNNING");
             if(this->readSerialMessage())
             {
+                Serial.println("RUNNING");
                 String el = (*this->serialMsg)["hardware"];
                 if(el =="LED"){
                     Serial.println("LED");
@@ -121,6 +122,11 @@ void RoomController::tick(){
             
                 if((*this->serialMsg)["state"] == "OFF"){
                     this->state = SETTING_LED_OFF;
+                }
+                if((*this->serialMsg)["state"] == "SERVOMOTOR"){
+                    angle = (int)((*this->serialMsg)["angle"]);
+                    Serial.println(angle);
+                    this->state = SETTING_ANGLE;
                 }
             }
             

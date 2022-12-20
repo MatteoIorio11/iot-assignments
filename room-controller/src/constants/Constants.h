@@ -3,7 +3,7 @@
 
 #define WHOIS "ARDUINO-UNO"
 //HARDWARE'S CONSTANTS:
-#define PIN_LED 3
+#define PIN_LED 2
 #define PIN_TX 5
 #define PIN_RX 4
 #define PIN_SERVO_MOTOR A0

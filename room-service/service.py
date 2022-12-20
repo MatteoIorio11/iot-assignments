@@ -14,7 +14,7 @@ lock = threading.Lock()
 # ==================== SETUP THE SERVER
 app = Flask(__name__)
 # ==================== SETUP ARDUINO
-#arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600)
 LED_TAG = "LED"
 SERVO_TAG = "SERVOMOTOR"
 TIME_TAG = "TIME"
@@ -191,9 +191,9 @@ def startArduino():
             arduino.write(bytes(j, 'utf-8'))
         # Write the Led's informations
         if (writes[1]):
-            lock.acquire()
             j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
             print(j)
+            lock.acquire()
             #invia un msg contenente le info del led
             writes[1] = False
             lock.release()
@@ -208,6 +208,24 @@ def startArduino():
             print(j)
         
         time.sleep(0.1)
+        if(arduino.inWaiting() > 0):
+            try:
+                msg = arduino.readline()
+                print("ARDUINO")
+                print(msg)
+                #msg_p = j.loads(msg)
+                #tmp = list()
+                #tmp.append(msg_p['state'])
+                #tmp.append(msg_p['angle'])
+
+                #lock.acquire()
+                #components[0] = tmp[0]
+                #components[1] = tmp[1]
+                #lock.release()
+            except Exception as e:
+                print(e)
+                time.sleep(0.5)
+
         
 
 def initVariables():
@@ -229,10 +247,10 @@ def run():
     initVariables()    
     mqtt_thread = Thread(target=startClient)
     server_thread = Thread(target=startServer)
-    #arduino_thread = Thread(target=startArduino)
+    arduino_thread = Thread(target=startArduino)
     mqtt_thread.start()
     server_thread.start()
-    #arduino_thread.start()
+    arduino_thread.start()
     
 
 

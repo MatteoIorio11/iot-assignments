@@ -18,7 +18,6 @@ void Bluetooth::init(){
 
 bool Bluetooth::isMsgAvailable(){
     String content = "";
-    Serial.println("ff");
     while (btChannel->available()) {
         char ch = (char)btChannel->read();
     Serial.println(ch);
