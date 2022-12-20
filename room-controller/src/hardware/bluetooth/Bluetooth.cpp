@@ -11,27 +11,16 @@ Bluetooth::Bluetooth(int RXpin, int TXpin){
 /// @brief initializing the component
 void Bluetooth::init(){
     this->btChannel = new SoftwareSerial(this->RXpin, this->TXpin);
-    btChannel->begin(9600);
-    btChannel->print("AT+NAMERoomController"); // Set the name to RoomController
-    Serial.println("aaa");
+    btChannel->begin(2400);
 }
 
 bool Bluetooth::isMsgAvailable(){
     String content = "";
     while (btChannel->available()) {
-        char ch = (char)btChannel->read();
-    Serial.println(ch);
-    if(ch == 'a'){
-        Serial.println("SSS");
-    }
-    delay(100);
-        if (ch == '\n'){
-            this->availableMsg = new Msg(content); 
-            content = "";
-            return true;    
-        } else {
-            content += ch;      
-        }
+        content= btChannel->readString();
+        this->availableMsg = new Msg(content); 
+        content = "";
+        return true;    
     }
     return false;  
 }

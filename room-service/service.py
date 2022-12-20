@@ -55,7 +55,7 @@ def connect_mqtt() -> mqtt_client:
 
 def subscribe(client: mqtt_client, total_t: int, start_t: int, res: list, w:list):
     def on_message(client, userdata, msg):
-        #print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
         json_message = json.loads(msg.payload.decode())
         calcTime(json_message, total_t, start_t, res, w)
                 
@@ -189,7 +189,7 @@ def startArduino():
             lock.acquire()
             writes[0] = False
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
         # Write the Led's informations
         if (writes[1]):
             j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
@@ -198,14 +198,14 @@ def startArduino():
             #invia un msg contenente le info del led
             writes[1] = False
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
         # Write the Pir's informations
         if (writes[2]):
             j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2], 'lum': components[3]})
             lock.acquire()
             writes[2] = False
             lock.release()
-            #arduino.write(bytes(j, 'utf-8'))
+            arduino.write(bytes(j, 'utf-8'))
             print(j)
         
         time.sleep(0.1)

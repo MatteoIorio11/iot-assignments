@@ -18,6 +18,7 @@ class RoomController: public Task{
         Bluetooth *bluetooth;
         DynamicJsonDocument *btMsg;
         DynamicJsonDocument *serialMsg;
+        SerialMsgService *msgService;
         void attachLed();
         void attachServo();
         bool readSerialMessage();
