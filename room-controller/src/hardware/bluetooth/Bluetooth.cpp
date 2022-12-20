@@ -14,6 +14,8 @@ void Bluetooth::init(){
     btChannel->begin(2400);
 }
 
+/// @brief tells if the message is advaiable
+/// @return true if there's any message false otherwise
 bool Bluetooth::isMsgAvailable(){
     String content = "";
     while (btChannel->available()) {

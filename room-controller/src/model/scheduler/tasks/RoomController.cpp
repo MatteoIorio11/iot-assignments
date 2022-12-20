@@ -1,6 +1,5 @@
 #include "RoomController.h"
 
-
 /// @brief Constructor of the RoomController
 /// @param pin_led Led's pin
 /// @param pin_servo ServoMotor's pin
@@ -32,7 +31,6 @@ void RoomController::attachLed(){
 void RoomController::attachServo(){
     this->servo = new ServoMotor(this->pin_servo);
 }
-
 
 /// @brief used to read the new messages from the dashboard
 /// @return true if the message was advailable false otherwise
