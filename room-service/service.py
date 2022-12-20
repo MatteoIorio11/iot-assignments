@@ -169,7 +169,6 @@ def startArduino():
     eigth = False   
     seven = False
     while True:
-        print(writes[1])
         curr_hour, curr_min, curr_sec  = str(datetime.now().time()).split(':')
         if(int(curr_hour) == 17 and int(curr_min) == 55 and int(float(curr_sec)) == 10 and eigth==False):
             j = json.dumps({'hardware': TIME_TAG, 'time': "8"})
@@ -186,11 +185,11 @@ def startArduino():
         if (writes[0]):
             j = json.dumps({'hardware':SERVO_TAG, 'angle':components[0]})
             #invia un msg contentente le info del servo
+            print(j)
             lock.acquire()
             writes[0] = False
-            print(j)
             lock.release()
-            arduino.write(bytes(j, 'utf-8'))
+            #arduino.write(bytes(j, 'utf-8'))
         # Write the Led's informations
         if (writes[1]):
             j = json.dumps({'hardware':LED_TAG, 'state':components[1]})
@@ -199,14 +198,14 @@ def startArduino():
             #invia un msg contenente le info del led
             writes[1] = False
             lock.release()
-            arduino.write(bytes(j, 'utf-8'))
+            #arduino.write(bytes(j, 'utf-8'))
         # Write the Pir's informations
         if (writes[2]):
             j = json.dumps({'hardware':PIR_TAG, 'inside_room':components[2], 'lum': components[3]})
             lock.acquire()
             writes[2] = False
             lock.release()
-            arduino.write(bytes(j, 'utf-8'))
+            #arduino.write(bytes(j, 'utf-8'))
             print(j)
         
         time.sleep(0.1)
