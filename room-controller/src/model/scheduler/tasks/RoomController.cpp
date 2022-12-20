@@ -76,39 +76,40 @@ void RoomController::setAngle(int angle){
     this->servo->setOpening(angle);
 }
 
+
 /// @brief State Machine of the RoomController
 void RoomController::tick(){
     
     switch (this->state)
     {
         case RUNNING:
-            //if we don't have any new message we don't do anything
+            //checking if we have any message
             if(this->readSerialMessage())
             {
-                String el = (*this->serialMsg)["hardware"];
+                String el = (*this->serialMsg)[HARDWARE];
                 if(el =="LED"){
-                    if((*this->serialMsg)["state"]){
+                    if((*this->serialMsg)[STATE]){
                         this->setLedON();
                     }
                     //if switch to OFF
-                    if(!(*this->serialMsg)["state"]){
+                    if(!(*this->serialMsg)[STATE]){
                         this->setLedOFF();
                     }
-                }else if(el == "SERVOMOTOR"){
-                    this->setAngle((int)((*this->serialMsg)["angle"]));
-                }else if(el == "PIR"){
-                    if((*this->serialMsg)["lum"]){
+                }else if(el == SERVOMOTOR){
+                    this->setAngle((int)((*this->serialMsg)[ANGLE]));
+                }else if(el == PIR){
+                    if((*this->serialMsg)[LUMINOSITY]){
                         this->setLedON();
                     }else{
                         this->setLedOFF();
                     }
-                } else if(el == "TIME"){
+                } else if(el == TIME_HARDWARE){
                     //if time == 8.00
-                    if((*this->serialMsg)["time"] == "8"){
+                    if((*this->serialMsg)[TIME_VALUE] == EIGTH_TIME){
                         this->state = WAITING_FOR_OPENING;
                     }
                     //if time == 19.00
-                    if((*this->serialMsg)["time"] == "19"){
+                    if((*this->serialMsg)[TIME_VALUE] == SEVEN_TIME){
                         this->state = WAITING_FOR_CLOSING;
                     }
                 }
@@ -116,27 +117,26 @@ void RoomController::tick(){
             
             if(this->readBtMessage()){
 
-                String el = (*this->btMsg)["hardware"];
+                String el = (*this->btMsg)[HARDWARE];
                 if(el == "LED"){
                     //if switch to ON
-                    if((*this->btMsg)["state"]){
+                    if((*this->btMsg)[STATE]){
                         this->setLedON();
                     }
                     //if switch to OFF
                 
-                    if(!(*this->btMsg)["state"]){
+                    if(!(*this->btMsg)[STATE]){
                         this->setLedOFF();
                     }
-                }else if (el == "SERVOMOTOR"){
-                        this->setAngle((*this->btMsg)["angle"]);
+                }else if (el == SERVOMOTOR){
+                        this->setAngle((*this->btMsg)[ANGLE]);
                     }
                 }
-            
             
             break;
         case WAITING_FOR_OPENING: 
             //if movement detected == true
-            if(this->readSerialMessage() && (*this->serialMsg)["inside_room"])
+            if(this->readSerialMessage() && (*this->serialMsg)[INSIDE_ROOM])
             {
                 //open roller blinds then going back to RUNNING
                 this->servo->open();
@@ -145,7 +145,7 @@ void RoomController::tick(){
             break;
         case WAITING_FOR_CLOSING:
             //if movement detected == false
-            if(this->readSerialMessage() && !(*this->serialMsg)["inside_room"]){
+            if(this->readSerialMessage() && !(*this->serialMsg)[INSIDE_ROOM]){
                 //close roller blinds then going back to RUNNING
                 this->servo->close();
                 this->state = RUNNING;

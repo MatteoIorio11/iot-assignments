@@ -19,5 +19,21 @@
 #define FLAT_ANGLE 180
 // ==================================================================
 
+// JSON'S CONSTANTS
+#define HARDWARE "hardware"
+#define STATE "state"
+#define LED "LED"
+#define SERVOMOTOR "SERVOMOTOR"
+#define PIR "PIR"
+#define ANGLE "angle"
+#define LUMINOSITY "lum"
+#define TIME_HARDWARE "TIME"
+#define TIME_VALUE "time"
+#define INSIDE_ROOM "inside_room"
+
+#define EIGTH_TIME "8"
+#define SEVEN_TIME "19"
+// ==================================================================
+
 
 #endif
