@@ -2,6 +2,12 @@
 #include "model/scheduler/Scheduler.h"
 #include "model/scheduler/tasks/RoomController.h"
 
+/*
+  AUTHORS :
+    IORIO MATTEO
+    VINCENZI FABIO
+*/
+
 Scheduler* scheduler;
 RoomController* room_controller;
 void setup() {
