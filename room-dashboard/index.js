@@ -1,6 +1,9 @@
-const options = {
-    headers: {'aaa': '*'}
-}
+
+/*
+  AUTHORS :
+    IORIO MATTEO
+    VINCENZI FABIO
+*/
 // Labels
 const label_seconds = document.getElementById("lbl_seconds");
 const label_led = document.getElementById("lbl_led");
