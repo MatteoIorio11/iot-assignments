@@ -8,6 +8,10 @@ import json
 from datetime import datetime
 import time 
 import serial
+#  AUTHORS :
+#    IORIO MATTEO
+#    VINCENZI FABIO
+
 
 # ==================== LOCK FOR THREADING
 lock = threading.Lock()
