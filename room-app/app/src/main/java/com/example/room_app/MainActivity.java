@@ -26,6 +26,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+/*
+  AUTHORS :
+    IORIO MATTEO
+    VINCENZI FABIO
+*/
 
 public class MainActivity extends AppCompatActivity {
 
